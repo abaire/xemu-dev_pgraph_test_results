@@ -10,14 +10,29 @@ concurrency:
 
 
 jobs:
-  UpdateWiki:
-    name: Diff new results against Xbox hardware results
+  GetOutputPaths:
+    name: Determine the path into which results for this branch will be written.
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    outputs:
+      output_path: ${{ steps.get_output_path.outputs.output_path }}
+      hw_diff_path: ${{ steps.get_output_path.outputs.hw_diffs }}
+      xemu_diff_path: ${{ steps.get_output_path.outputs.xemu_diffs }}
+    steps:
+      - name: Get wiki output path
+        id: get_output_path
+        run: |
+          set -x
+          echo "output_path=wiki/${{ github.ref_name }}" >> $GITHUB_OUTPUT 
+          echo "hw_diffs=wiki/${{ github.ref_name }}/compare_hw" >> $GITHUB_OUTPUT 
+          echo "xemu_diffs=wiki/${{ github.ref_name }}/compare_xemu" >> $GITHUB_OUTPUT 
+
+  GenerateHardwareDiffs:
+    needs: [ GetOutputPaths ]
+    name: Generates diffs between the dev results and Xbox hardware results
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     outputs:
-      sha: ${{ steps.sha.outputs.new_head_commit }}
+      hw_diff_artifact: ${{ steps.archive_results.outputs.archive_artifact }}
     steps:
       - name: Clone tree
         uses: actions/checkout@v4
@@ -38,64 +53,66 @@ jobs:
           pip3 install -r .github/scripts/requirements.txt
       - name: Generate new diffs
         run: |
-          python3 .github/scripts/generate_missing_hw_diffs.py
-      - name: Commit changes
+          python3 .github/scripts/generate_missing_hw_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.hw_diff_path }}"
+      - name: Archive diffs
+        id: archive_results
         run: |
-          git config --local user.email "$GITHUB_ACTOR+github-actions@users.noreply.github.com"
-          git config --local user.name "$GITHUB_ACTOR via action"
-          git add .
-          git diff-index --quiet HEAD || git commit -m "Auto generated diffs against HW results $GITHUB_RUN_NUMBER - $GITHUB_SHA"
-          git push
-      - name: get sha
-        id: sha
-        run: |
-          sha_new=$(git rev-parse HEAD)
-          echo ${sha_new}
-          echo "new_head_commit=${sha_new}" >> $GITHUB_OUTPUT
-
-  BuildSite:
-    runs-on: ubuntu-latest
-    needs: [ find-changes, DiffAgainstHW ]
-    if: needs.find-changes.outputs.site == 'true'
-    permissions:
-      contents: write
-    outputs:
-      sha: ${{ steps.sha.outputs.new_head_commit }}
-    steps:
-      - name: Clone tree
-        uses: actions/checkout@v4
+          artifact_name=hw_diffs.tgz
+          tar -czf "${artifact_name}" "${{ needs.GetOutputPaths.outputs.hw_diff_path }}"
+          echo "archive_artifact=${archive_name}" >> $GITHUB_OUTPUT
+      - uses: actions/upload-artifact@v4
         with:
-          ref: ${{ needs.DiffAgainstHW.outputs.sha }}
-          fetch-depth: 1
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-      - name: Install requirements
-        run: |
-          export PIP_BREAK_SYSTEM_PACKAGES=1
-          pip3 install -r .github/scripts/requirements.txt
-      - name: Generate site content
-        run: |
-          python3 .github/scripts/generate_results_site.py results .github/site --comparison-dir compare-results -v
-      - name: Commit changes
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: |
-          git fetch
-          git remote -v
-          git status
-          git checkout main
-          git pull
-          git config --local user.email "$GITHUB_ACTOR+github-actions@users.noreply.github.com"
-          git config --local user.name "$GITHUB_ACTOR via action"
-          git add .
-          git diff-index --quiet HEAD || git commit -m "Update from github action $GITHUB_RUN_NUMBER - $GITHUB_SHA"
-          git push
-      - name: get sha
-        id: sha
-        run: |
-          sha_new=$(git rev-parse HEAD)
-          echo ${sha_new}
-          echo "new_head_commit=${sha_new}" >> $GITHUB_OUTPUT
+          name: hardware_diffs.zip
+          path: ${{ steps.archive_results.outputs.archive_artifact }}
 
 
+#
+#  UpdateWiki:
+#    name: Generate a comparison page in the wiki for the current branch
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#    timeout-minutes: 45
+#    steps:
+#      - name: Clone tree
+#        uses: actions/checkout@v4
+#        with:
+#          fetch-depth: '1'
+#      - uses: actions/setup-python@v5
+#        with:
+#          python-version: '3.12'
+#          cache: 'pip'
+#      - name: Install requirements
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y \
+#            perceptualdiff
+#
+#          export PIP_BREAK_SYSTEM_PACKAGES=1
+#          pip3 install -r requirements.txt
+#          pip3 install -r .github/scripts/requirements.txt
+#
+#      - name: Clone wiki
+#        uses: actions/checkout@v2
+#        with:
+#          repository: ${{github.repository}}.wiki
+#          path: wiki
+#
+#      - name: Generate new HW diffs
+#        id: new_diffs
+#        run: |
+#          current_branch=$(git symbolic-ref --short HEAD)
+#          python3 .github/scripts/generate_missing_hw_diffs.py --output-dir "wiki/compare/${current_branch}"
+#          echo
+#
+#      - name: Generate new xemu diffs
+#
+#
+#      - name: Commit changes
+#        run: |
+#          git config --local user.email "$GITHUB_ACTOR+github-actions@users.noreply.github.com"
+#          git config --local user.name "$GITHUB_ACTOR via action"
+#          cd wiki
+#          git add .
+#          git diff-index --quiet HEAD || git commit -m "Auto generated diffs against HW results $GITHUB_RUN_NUMBER - $GITHUB_SHA"
+#          git push
