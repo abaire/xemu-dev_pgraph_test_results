@@ -1,0 +1,67 @@
+{% extends "base.html.j2" %}
+
+{% block title -%}
+    {{ run_identifier.xemu_version }}: {{ pretty_machine_info.platform }}, GL: {{ pretty_machine_info.gl }}, Shader: {{ pretty_machine_info.glsl }} - {{ suite_name }}
+{%- endblock %}
+
+{% block content -%}
+
+<h1>{{ suite_name }}</h1>
+
+<div class="label-value-grid">
+    <div class="label"><a href="https://xemu.app">xemu</a> version</div>
+    <div class="value">{{ run_identifier.xemu_version }}</div>
+
+    <div class="label">Platform</div>
+    <div class="value">{{ pretty_machine_info.platform }}</div>
+
+    <div class="label">Renderer</div>
+    <div class="value">{{ pretty_machine_info.renderer }}</div>
+
+    <div class="label">GL info</div>
+    <div class="value">{{ pretty_machine_info.gl }}</div>
+
+    <div class="label">GLSL version</div>
+    <div class="value">{{ pretty_machine_info.glsl }}</div>
+
+{%- if descriptor %}
+    {%- if descriptor.description %}
+    <div class="label">Description</div>
+    <div class="value">
+    {%- for line in descriptor.description %}
+        <div class="test-description-line">{{ line }}</div>
+    {% endfor -%}
+    </div>
+    {% endif -%}
+
+    {%- if descriptor.source_file %}
+    <div class="label">Suite class def</div>
+    <div class="value">
+        {%- if descriptor.source_url %}<a href="{{ descriptor.source_url }}">{% endif -%}
+        {{ descriptor.source_file }}
+        {%- if descriptor.source_url %}</a>{% endif -%}
+    </div>
+    {%- endif %}
+{%- endif %}
+</div>
+
+{% for test_name, info in results | dictsort -%}
+<h2 id="{{ test_name }}">{{ test_name }}</h2>
+    {%- if descriptor and descriptor.test_descriptions[test_name]  %}
+        <div class="test-case-description">{{ descriptor.test_descriptions[test_name] }}</div>
+    {% endif -%}
+    {%- if info.url %}
+<div class="image-container">
+        <img src="{{ info.url }}" alt="Test result for {{ suite_name }}::{{ test_name }}" class="inline-image">
+</div>
+    {% endif -%}
+
+    {%- if info.failures -%}
+        <h3>Failures</h3>
+        {% for test_failure in info.failures %}
+        <div class="code-snippet">{{ test_failure }}</div>
+        {% endfor -%}
+    {% endif %}
+{% endfor -%}
+
+{%- endblock %}

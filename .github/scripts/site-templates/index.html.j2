@@ -1,0 +1,35 @@
+{% extends "base.html.j2" %}
+
+{% block title %}
+    nxdk_pgraph_tests results
+{% endblock %}
+
+{% block content -%}
+
+    <h1>Test Results</h1>
+    {% for emulator_version, platforms in emulator_grouped_results | dictsort(reverse=true) -%}
+        <h2>{{ emulator_version }}</h2>
+        <ul>
+        {%- for platform, renderers in platforms | dictsort %}
+            <li>
+                {{ platform }}
+                <ul>
+                {%- for renderer, gl_infos in renderers | dictsort %}
+                    <li>
+                        {{ renderer }}
+                        <ul>
+                            {% for info in gl_infos | sort(attribute="machine_info.gl_info") %}
+                                <li>
+                                    <a href="{{ info.results_url | urlencode }}">{{ info.machine_info.gl_info }}</a>
+                                </li>
+                            {% endfor -%}
+                        </ul>
+                    </li>
+                {% endfor -%}
+                </ul>
+            </li>
+        {% endfor -%}
+        </ul>
+
+    {%- endfor -%}
+{%- endblock %}
