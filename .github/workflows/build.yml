@@ -1,0 +1,163 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+
+jobs:
+  find-changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      site: ${{ steps.filter.outputs.site }}
+      docker: ${{ steps.filter.outputs.docker }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            site:
+              - '.github/workflows/*.yml'
+              - '.github/scripts/**'
+              - '.github/site/**'
+              - 'results/**'
+              - 'compare-results/**'
+            scripts:
+              - '.github/workflows/*.yml'
+              - 'compare.py'
+              - 'execute.py'
+
+  DiffAgainstHW:
+    needs: [ find-changes ]
+    name: Diff new results against Xbox hardware results
+    runs-on: ubuntu-latest
+    if: needs.find-changes.outputs.site == 'true'
+    permissions:
+      contents: write
+    timeout-minutes: 45
+    outputs:
+      sha: ${{ steps.sha.outputs.new_head_commit }}
+    steps:
+      - name: Clone tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '1'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install requirements
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            perceptualdiff
+
+          export PIP_BREAK_SYSTEM_PACKAGES=1
+          pip3 install -r requirements.txt
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Generate new diffs
+        run: |
+          python3 .github/scripts/generate_missing_hw_diffs.py
+      - name: Commit changes
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          git config --local user.email "$GITHUB_ACTOR+github-actions@users.noreply.github.com"
+          git config --local user.name "$GITHUB_ACTOR via action"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Auto generated diffs against HW results $GITHUB_RUN_NUMBER - $GITHUB_SHA"
+          git push
+      - name: get sha
+        id: sha
+        run: |
+          sha_new=$(git rev-parse HEAD)
+          echo ${sha_new}
+          echo "new_head_commit=${sha_new}" >> $GITHUB_OUTPUT
+
+  BuildSite:
+    runs-on: ubuntu-latest
+    needs: [ find-changes, DiffAgainstHW ]
+    if: needs.find-changes.outputs.site == 'true'
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.sha.outputs.new_head_commit }}
+    steps:
+      - name: Clone tree
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.DiffAgainstHW.outputs.sha }}
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install requirements
+        run: |
+          export PIP_BREAK_SYSTEM_PACKAGES=1
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Generate site content
+        run: |
+          python3 .github/scripts/generate_results_site.py results .github/site --comparison-dir compare-results -v
+      - name: Commit changes
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          git fetch
+          git remote -v
+          git status
+          git checkout main
+          git pull
+          git config --local user.email "$GITHUB_ACTOR+github-actions@users.noreply.github.com"
+          git config --local user.name "$GITHUB_ACTOR via action"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Update from github action $GITHUB_RUN_NUMBER - $GITHUB_SHA"
+          git push
+      - name: get sha
+        id: sha
+        run: |
+          sha_new=$(git rev-parse HEAD)
+          echo ${sha_new}
+          echo "new_head_commit=${sha_new}" >> $GITHUB_OUTPUT
+
+
+
+  DeploySite:
+    runs-on: ubuntu-latest
+    needs: [ find-changes, BuildSite ]
+    if: | 
+      github.event_name == 'workflow_dispatch' || 
+      (needs.find-changes.outputs.site == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push')
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Print site sha
+        run: echo "Site SHA is ${{ needs.BuildSite.outputs.sha }}"
+      - name: Clone tree
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.BuildSite.outputs.sha }}
+          fetch-depth: 1
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.github/site'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
