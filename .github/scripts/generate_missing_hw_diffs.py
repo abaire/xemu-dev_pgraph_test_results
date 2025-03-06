@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 
 from __future__ import annotations
 
@@ -69,7 +69,7 @@ def generate_missing_hw_diffs(results_dir: str, output_dir: str, compare_script:
     results_missing_comparisons = find_result_dirs_without_hw_diffs(results_dir, output_dir)
 
     for result in results_missing_comparisons:
-        subprocess.run([compare_script, result, "--verbose"], check=False)
+        subprocess.run([compare_script, result, "--output-dir", output_dir, "--verbose"], check=False)
 
 
 def main() -> int:

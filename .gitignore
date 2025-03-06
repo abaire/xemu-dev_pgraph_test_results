@@ -9,5 +9,7 @@
 /inputs/*
 !/inputs/README.md
 
+compare-results/
 local/
-
+xemu-golden-results/
+wiki/

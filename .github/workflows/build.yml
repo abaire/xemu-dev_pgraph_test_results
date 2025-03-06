@@ -17,18 +17,24 @@ jobs:
       output_path: ${{ steps.get_output_path.outputs.output_path }}
       hw_diff_path: ${{ steps.get_output_path.outputs.hw_diffs }}
       xemu_diff_path: ${{ steps.get_output_path.outputs.xemu_diffs }}
+      branch: ${{ steps.get_output_path.outputs.branch }}
     steps:
       - name: Get wiki output path
         id: get_output_path
         run: |
           set -x
-          echo "output_path=wiki/${{ github.ref_name }}" >> $GITHUB_OUTPUT 
-          echo "hw_diffs=wiki/${{ github.ref_name }}/compare_hw" >> $GITHUB_OUTPUT 
-          echo "xemu_diffs=wiki/${{ github.ref_name }}/compare_xemu" >> $GITHUB_OUTPUT 
+          branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          echo "branch=${branch}" >> $GITHUB_OUTPUT
+          # Replace any path separator characters in the branch name for 
+          # artifact outputs.
+          branch="${branch//\//_}"
+          echo "output_path=wiki/${branch}" >> $GITHUB_OUTPUT 
+          echo "hw_diffs=wiki/${branch}/compare_hw" >> $GITHUB_OUTPUT 
+          echo "xemu_diffs=wiki/${branch}/compare_xemu" >> $GITHUB_OUTPUT 
 
   GenerateHardwareDiffs:
     needs: [ GetOutputPaths ]
-    name: Generates diffs between the dev results and Xbox hardware results
+    name: Generate diffs between the dev results and Xbox hardware results
     runs-on: ubuntu-latest
     timeout-minutes: 45
     outputs:
@@ -53,66 +59,94 @@ jobs:
           pip3 install -r .github/scripts/requirements.txt
       - name: Generate new diffs
         run: |
+          set -x
           python3 .github/scripts/generate_missing_hw_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.hw_diff_path }}"
-      - name: Archive diffs
-        id: archive_results
-        run: |
-          artifact_name=hw_diffs.tgz
-          tar -czf "${artifact_name}" "${{ needs.GetOutputPaths.outputs.hw_diff_path }}"
-          echo "archive_artifact=${archive_name}" >> $GITHUB_OUTPUT
       - uses: actions/upload-artifact@v4
         with:
-          name: hardware_diffs.zip
-          path: ${{ steps.archive_results.outputs.archive_artifact }}
+          name: hardware_diffs
+          path: "${{ needs.GetOutputPaths.outputs.hw_diff_path }}/"
+          if-no-files-found: warn
+          compression-level: 1
 
+  GenerateXemuDiffs:
+    needs: [ GetOutputPaths ]
+    name: Generate diffs between the dev results and the latest xemu results
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      xemu_diff_artifact: ${{ steps.archive_results.outputs.archive_artifact }}
+    steps:
+      - name: Clone tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '1'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install requirements
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            perceptualdiff
 
-#
-#  UpdateWiki:
-#    name: Generate a comparison page in the wiki for the current branch
-#    runs-on: ubuntu-latest
-#    permissions:
-#      contents: write
-#    timeout-minutes: 45
-#    steps:
-#      - name: Clone tree
-#        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: '1'
-#      - uses: actions/setup-python@v5
-#        with:
-#          python-version: '3.12'
-#          cache: 'pip'
-#      - name: Install requirements
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get install -y \
-#            perceptualdiff
-#
-#          export PIP_BREAK_SYSTEM_PACKAGES=1
-#          pip3 install -r requirements.txt
-#          pip3 install -r .github/scripts/requirements.txt
-#
-#      - name: Clone wiki
-#        uses: actions/checkout@v2
-#        with:
-#          repository: ${{github.repository}}.wiki
-#          path: wiki
-#
-#      - name: Generate new HW diffs
-#        id: new_diffs
-#        run: |
-#          current_branch=$(git symbolic-ref --short HEAD)
-#          python3 .github/scripts/generate_missing_hw_diffs.py --output-dir "wiki/compare/${current_branch}"
-#          echo
-#
-#      - name: Generate new xemu diffs
-#
-#
-#      - name: Commit changes
-#        run: |
-#          git config --local user.email "$GITHUB_ACTOR+github-actions@users.noreply.github.com"
-#          git config --local user.name "$GITHUB_ACTOR via action"
-#          cd wiki
-#          git add .
-#          git diff-index --quiet HEAD || git commit -m "Auto generated diffs against HW results $GITHUB_RUN_NUMBER - $GITHUB_SHA"
-#          git push
+          export PIP_BREAK_SYSTEM_PACKAGES=1
+          pip3 install -r requirements.txt
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Generate new diffs
+        id: generate_diffs
+        run: |
+          set -x
+          python3 .github/scripts/generate_xemu_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.xemu_diff_path }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xemu_diffs
+          path: "${{ needs.GetOutputPaths.outputs.xemu_diff_path }}/"
+          if-no-files-found: warn
+          compression-level: 1
+
+  UpdateWiki:
+    name: Generate a comparison page in the wiki for the current branch
+    needs: [ GetOutputPaths, GenerateHardwareDiffs, GenerateXemuDiffs ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Clone tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '1'
+      - name: Clone wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{github.repository}}.wiki
+          fetch-depth: '1'
+          path: wiki
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - uses: actions/download-artifact@v4
+        with:
+          name: hardware_diffs
+          path: "${{ needs.GetOutputPaths.outputs.hw_diff_path }}"
+      - uses: actions/download-artifact@v4
+        with:
+          name: xemu_diffs
+          path: "${{ needs.GetOutputPaths.outputs.xemu_diff_path }}"
+      - name: Generate wiki markdown
+        run: |
+          set -x
+          python3 .github/scripts/update_wiki.py \
+            "${{ needs.GetOutputPaths.outputs.hw_diff_path }}" \
+            "${{ needs.GetOutputPaths.outputs.xemu_diff_path }}" \
+            "${{ needs.GetOutputPaths.outputs.branch }}" \
+            --output-dir "wiki"
+      - name: Commit changes
+        run: |
+          cd wiki 
+          git config --local user.email "$GITHUB_ACTOR+github-actions@users.noreply.github.com"
+          git config --local user.name "$GITHUB_ACTOR via action"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Auto generated diffs against PR results $GITHUB_RUN_NUMBER - $GITHUB_SHA"
+          git push

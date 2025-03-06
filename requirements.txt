@@ -1,5 +1,8 @@
 nxdk-pgraph-test-runner>=0.1.12
 requests~=2.32.3
 GitPython~=3.1.44
-lpips~=0.1.4
-opencv-python~=4.11.0.86
+
+# Reenable if using compare --use-lpips
+# These take considerable time to install.
+#lpips~=0.1.4
+#opencv-python~=4.11.0.86
