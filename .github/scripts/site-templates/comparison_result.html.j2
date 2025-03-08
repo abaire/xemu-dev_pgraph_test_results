@@ -1,0 +1,89 @@
+{% extends "base.html.j2" %}
+
+{% block title -%}
+    {{ branch }} regression results
+{%- endblock %}
+
+{% block content -%}
+
+    <h1 id="{{ branch }}">{{ branch }} regression results</h1>
+
+    <div class="warning-message">
+    <p>
+        <b>Note</b>: Only test results that differ from xemu goldens are displayed.
+        There may be many additional differences
+        compared to Xbox hardware.
+    </p>
+    </div>
+
+
+    {% for xemu_release, suite_results in diffs_by_xemu_version | dictsort %}
+
+        <h2 id="{{ xemu_release }}">vs {{ xemu_release }}</h2>
+
+        {%- for suite_name, diff_links in suite_results | dictsort %}
+
+            <h3 id="{{ suite_name }}">🔗 {{ suite_name }}</h3>
+
+            {%- for result in diff_links | sort(attribute='test_name') %}
+
+                <h4 id="{{ result.test_name }}">🔗 {{ result.test_name }}</h4>
+
+                <div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="{{ result.xemu_diff_url }}"
+                             alt="Diff result for {{ suite_name }}::{{ result.test_name }} vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="{{ result.result_url }}">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="{{ result.xemu_golden_url }}">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="{{ result.hw_golden_url }}">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="{{ result.result_url }}"
+                             alt="Source image for {{ suite_name }}::{{ result.test_name }}"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="{{ result.xemu_golden_url }}"
+                             alt="Golden image for {{ suite_name }}::{{ result.test_name }} in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="{{ result.hw_golden_url }}"
+                             alt="Golden image for {{ suite_name }}::{{ result.test_name }} on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    {% if result.hw_diff_url -%}
+                        <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="{{ result.hw_diff_url }}"
+                                 alt="Diff result for {{ suite_name }}::{{ result.test_name }} vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            {%- endfor %}
+
+        {% endfor -%}
+
+    {%- endfor %}
+
+{%- endblock -%}
