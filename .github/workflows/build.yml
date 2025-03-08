@@ -15,8 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       output_path: ${{ steps.get_output_path.outputs.output_path }}
-      hw_diff_path: ${{ steps.get_output_path.outputs.hw_diffs }}
-      xemu_diff_path: ${{ steps.get_output_path.outputs.xemu_diffs }}
+      hw_diff_path: ${{ steps.get_output_path.outputs.wiki_hw_diffs }}
+      xemu_diff_path: ${{ steps.get_output_path.outputs.wiki_xemu_diffs }}
+      site_hw_diff_path: ${{ steps.get_output_path.outputs.site_hw_diffs }}
+      site_xemu_diff_path: ${{ steps.get_output_path.outputs.site_xemu_diffs }}
       branch: ${{ steps.get_output_path.outputs.branch }}
     steps:
       - name: Get wiki output path
@@ -31,6 +33,8 @@ jobs:
           echo "output_path=wiki/${branch}" >> $GITHUB_OUTPUT 
           echo "hw_diffs=wiki/${branch}/compare_hw" >> $GITHUB_OUTPUT 
           echo "xemu_diffs=wiki/${branch}/compare_xemu" >> $GITHUB_OUTPUT 
+          echo "site_hw_diffs=site/${branch}/compare_hw" >> $GITHUB_OUTPUT 
+          echo "site_xemu_diffs=site/${branch}/compare_xemu" >> $GITHUB_OUTPUT 
 
   GenerateHardwareDiffs:
     needs: [ GetOutputPaths ]
@@ -60,11 +64,11 @@ jobs:
       - name: Generate new diffs
         run: |
           set -x
-          python3 .github/scripts/generate_missing_hw_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.hw_diff_path }}"
+          python3 .github/scripts/generate_missing_hw_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
       - uses: actions/upload-artifact@v4
         with:
           name: hardware_diffs
-          path: "${{ needs.GetOutputPaths.outputs.hw_diff_path }}/"
+          path: "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}/"
           if-no-files-found: warn
           compression-level: 1
 
@@ -97,11 +101,11 @@ jobs:
         id: generate_diffs
         run: |
           set -x
-          python3 .github/scripts/generate_xemu_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.xemu_diff_path }}"
+          python3 .github/scripts/generate_xemu_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}"
       - uses: actions/upload-artifact@v4
         with:
           name: xemu_diffs
-          path: "${{ needs.GetOutputPaths.outputs.xemu_diff_path }}/"
+          path: "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}/"
           if-no-files-found: warn
           compression-level: 1
 
@@ -129,17 +133,17 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: hardware_diffs
-          path: "${{ needs.GetOutputPaths.outputs.hw_diff_path }}"
+          path: "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
       - uses: actions/download-artifact@v4
         with:
           name: xemu_diffs
-          path: "${{ needs.GetOutputPaths.outputs.xemu_diff_path }}"
+          path: "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}"
       - name: Generate wiki markdown
         run: |
           set -x
           python3 .github/scripts/update_wiki.py \
-            "${{ needs.GetOutputPaths.outputs.hw_diff_path }}" \
-            "${{ needs.GetOutputPaths.outputs.xemu_diff_path }}" \
+            "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}" \
+            "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.branch }}" \
             --output-dir "wiki"
       - name: Commit changes
@@ -150,3 +154,82 @@ jobs:
           git add .
           git diff-index --quiet HEAD || git commit -m "Auto generated diffs against PR results $GITHUB_RUN_NUMBER - $GITHUB_SHA"
           git push
+
+
+  UpdateSite:
+    name: Generate a comparison page in GitHub Pages for the current branch
+    needs: [ GetOutputPaths, GenerateHardwareDiffs, GenerateXemuDiffs ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Clone tree
+        uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - uses: actions/download-artifact@v4
+        with:
+          name: hardware_diffs
+          path: "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}"
+      - uses: actions/download-artifact@v4
+        with:
+          name: xemu_diffs
+          path: "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}"
+      - name: Generate Pages site
+        run: |
+          set -x
+          python3 .github/scripts/update_site.py \
+            "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}" \
+            "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}" \
+            "${{ needs.GetOutputPaths.outputs.branch }}" \
+            --output-dir "site"
+      - name: Commit changes
+        run: |
+          git fetch
+          git remote -v
+          git status
+          git checkout site || git checkout -b site
+          git pull
+          git config --local user.email "$GITHUB_ACTOR+github-actions@users.noreply.github.com"
+          git config --local user.name "$GITHUB_ACTOR via action"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Update from github action $GITHUB_RUN_NUMBER - $GITHUB_SHA"
+          git push
+      - name: get sha
+        id: sha
+        run: |
+          sha_new=$(git rev-parse HEAD)
+          echo ${sha_new}
+          echo "new_head_commit=${sha_new}" >> $GITHUB_OUTPUT
+          
+
+  DeploySite:
+    runs-on: ubuntu-latest
+    needs: [ UpdateSite ]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Print site sha
+        run: echo "Site SHA is ${{ needs.UpdateSite.outputs.sha }}"
+      - name: Clone tree
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.UpdateSite.outputs.sha }}
+          fetch-depth: 1
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'site'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
