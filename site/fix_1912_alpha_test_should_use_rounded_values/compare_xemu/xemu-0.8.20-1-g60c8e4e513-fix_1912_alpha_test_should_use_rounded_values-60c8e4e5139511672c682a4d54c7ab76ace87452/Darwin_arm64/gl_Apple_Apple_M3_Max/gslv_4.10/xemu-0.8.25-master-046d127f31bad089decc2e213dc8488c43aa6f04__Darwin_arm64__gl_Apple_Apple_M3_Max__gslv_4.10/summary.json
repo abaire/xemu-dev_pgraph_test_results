@@ -1,0 +1,19 @@
+{
+  "golden_identifier": "xemu-0.8.25-master-046d127f31bad089decc2e213dc8488c43aa6f04:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.20-1-g60c8e4e513-fix_1912_alpha_test_should_use_rounded_values-60c8e4e5139511672c682a4d54c7ab76ace87452:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Antialiasing_tests:AAOnThenOffCPUWrite": -1,
+    "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": -1,
+    "Antialiasing_tests:NonAACPURoundTrip": -1,
+    "DMA_corruption_around_surfaces:DMAOverlap": -1,
+    "Stencil:Stencil_REPLACE_ST_DT": -1,
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": -1,
+    "Vertex_shader_rounding_tests:GeometrySubscreen_0.4999": -1,
+    "Vertex_shader_rounding_tests:RenderTarget": -1
+  },
+  "tests_without_goldens": []
+}
