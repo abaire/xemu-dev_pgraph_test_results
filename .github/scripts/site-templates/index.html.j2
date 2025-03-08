@@ -1,0 +1,16 @@
+{% extends "base.html.j2" %}
+
+{% block title %}
+    nxdk_pgraph_tests results
+{% endblock %}
+
+{% block content -%}
+
+    <h1>Test Results</h1>
+
+    <ul>
+    {% for branch, comparison_url in comparison_pages | dictsort(reverse=true) -%}
+        <li><a href="{{ comparison_url | urlencode }}">{{ branch }}</a></li>
+    {% endfor -%}
+    </ul>
+{%- endblock %}
