@@ -1,0 +1,21 @@
+{
+  "golden_identifier": "xemu-0.8.31-master-dfbf4dfd367cd9f9db195f15e700290e1ed7fa4a:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.20-2-gd8bfb357ed-pr_nv2a-wbuffering-fix-d8bfb357edd46044a61e49d75746b2264f2cbadf:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Alpha_func:AlphaFuncEqual_Enabled": -1,
+    "Alpha_func:AlphaFuncGreaterThanOrEqual_Enabled": -1,
+    "Alpha_func:AlphaFuncGreaterThan_Enabled": -1,
+    "Alpha_func:AlphaFuncLessThanOrEqual_Enabled": -1,
+    "Alpha_func:AlphaFuncLessThan_Enabled": -1,
+    "Alpha_func:AlphaFuncNotEqual_Enabled": -1,
+    "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": -1,
+    "Antialiasing_tests:NonAACPURoundTrip": -1,
+    "DMA_corruption_around_surfaces:DMAOverlap": -1,
+    "Stencil:Stencil_REPLACE_ST": -1
+  },
+  "tests_without_goldens": []
+}

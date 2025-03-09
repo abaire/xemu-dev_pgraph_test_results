@@ -20,7 +20,7 @@ function enableImagePairs(document) {
 
             if (newState === 'golden-xemu') {
                 pair.classList.add("image-group-golden-xemu");
-            } else if (newState === 'golden-hw' ) {
+            } else if (newState === 'golden-hw') {
                 pair.classList.add("image-group-golden");
             }
 
@@ -78,10 +78,11 @@ function enableViewLinks(document) {
 function enableAnchorCopying(document) {
     function addClickHandler(element) {
         if (element.id) {
+            element.style.cursor = 'pointer';
             element.addEventListener('click', () => {
-                const currentURL = window.location.href.split('#');
+                const currentURL = window.location.href.split('.html')[0];
                 const anchor = element.id;
-                const urlWithAnchor = `${currentURL}#${anchor}`;
+                const urlWithAnchor = `${currentURL}.html#${anchor}`;
 
                 navigator.clipboard.writeText(urlWithAnchor)
             });
@@ -92,6 +93,8 @@ function enableAnchorCopying(document) {
     h2Elements.forEach(addClickHandler);
     const h3Elements = document.querySelectorAll('h3');
     h3Elements.forEach(addClickHandler);
+    const h4Elements = document.querySelectorAll('h4');
+    h4Elements.forEach(addClickHandler);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
