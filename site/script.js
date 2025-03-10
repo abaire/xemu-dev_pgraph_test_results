@@ -1,4 +1,4 @@
-function enableImagePairs(document) {
+function enableImageCycling(document) {
     const imagePairs = document.querySelectorAll('.image-group');
 
     imagePairs.forEach(pair => {
@@ -27,17 +27,29 @@ function enableImagePairs(document) {
             activeState = newState;
         }
 
-        function swapImagesAndTitles() {
+        function swapImagesAndTitles(event) {
             var newState;
             switch (activeState) {
                 case "source":
-                    newState = "golden-xemu";
+                    if (event.shiftKey) {
+                        newState = "golden-hw";
+                    } else {
+                        newState = "golden-xemu";
+                    }
                     break;
                 case "golden-xemu":
-                    newState = "golden-hw";
+                    if (event.shiftKey) {
+                        newState = "source";
+                    } else {
+                        newState = "golden-hw";
+                    }
                     break;
                 default:
-                    newState = "source";
+                    if (event.shiftKey) {
+                        newState = "golden-xemu";
+                    } else {
+                        newState = "source";
+                    }
                     break;
             }
             applyActiveState(newState);
@@ -47,31 +59,6 @@ function enableImagePairs(document) {
         images.forEach(img => {
             img.addEventListener('click', swapImagesAndTitles);
         });
-    });
-}
-
-function enableViewLinks(document) {
-    const viewLinks = document.querySelectorAll('.view-link');
-
-    viewLinks.forEach(link => {
-
-        const container = link.closest('.titled-image-container');
-        if (container) {
-            const hiddenImage = container.querySelector('.hidden-image');
-            if (hiddenImage) {
-
-                link.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    hiddenImage.style.display = 'block';
-                    link.style.display = 'none';
-                });
-
-                hiddenImage.addEventListener('click', () => {
-                    hiddenImage.style.display = 'none';
-                    link.style.display = 'block';
-                });
-            }
-        }
     });
 }
 
@@ -98,7 +85,6 @@ function enableAnchorCopying(document) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    enableViewLinks(document);
-    enableImagePairs(document);
+    enableImageCycling(document);
     enableAnchorCopying(document);
 });
