@@ -1,0 +1,12 @@
+xemu_version: 0.8.34-4-gf17be80f94
+xemu_branch: hack_to_fix_halo_splitscreen
+xemu_commit: f17be80f942b49424d527c31680e44b1fa89a853
+xemu_date: Fri Mar 14 10:14:58 PM UTC 2025
+xemu_settings_get_base_path: base path: /home/logan/Code/xemu/dist/
+xemu_settings_get_path: config path: /home/logan/Code/xemu/dist/xemu.toml
+CPU:         Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz
+OS_Version: Pop!_OS 22.04 LTS
+GL_VENDOR: NVIDIA Corporation
+GL_RENDERER: Quadro P400/PCIe/SSE2
+GL_VERSION: 4.0.0 NVIDIA 560.35.03
+GL_SHADING_LANGUAGE_VERSION: 4.00 NVIDIA via Cg compiler
