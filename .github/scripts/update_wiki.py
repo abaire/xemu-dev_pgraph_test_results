@@ -74,7 +74,6 @@ class Generator:
             )
 
     def _find_hw_diffs(self):
-
         hw_diff_relative_path = self.hw_golden_comparison.replace(self.output_dir, "")
         for hw_diff in glob.glob("**/*.png", root_dir=self.hw_golden_comparison, recursive=True):
             suite, filename = hw_diff.split(os.path.sep)[-2:]
@@ -86,7 +85,6 @@ class Generator:
             diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
 
     def _find_xemu_diffs(self):
-
         xemu_diff_relative_path = self.xemu_golden_comparison.replace(self.output_dir, "")
 
         with open(os.path.join(self.xemu_golden_comparison, "comparisons.json")) as infile:
@@ -126,10 +124,12 @@ class Generator:
             diffs_by_xemu_version[diff.xemu_build_info].append(diff)
 
         with open(page_filename, "w") as outfile:
-            outfile.writelines([
-                f"{self.page_title}\n",
-                "===\n",
-            ])
+            outfile.writelines(
+                [
+                    f"{self.page_title}\n",
+                    "===\n",
+                ]
+            )
 
             for xemu_version in sorted(diffs_by_xemu_version):
                 outfile.write(f"# {xemu_version}\n")
@@ -159,12 +159,11 @@ class Generator:
                         if diff.hw_golden_url:
                             outfile.writelines(
                                 [
-
                                     "#### HW\n",
-                            f"![{diff.hw_golden_url}]({diff.hw_golden_url})\n",
-                            "#### PR vs HW\n",
-                            f"[[{diff.hw_diff_url}|{diff.hw_diff_url}]]\n",
-                                    ]
+                                    f"![{diff.hw_golden_url}]({diff.hw_golden_url})\n",
+                                    "#### PR vs HW\n",
+                                    f"[[{diff.hw_diff_url}|{diff.hw_diff_url}]]\n",
+                                ]
                             )
                         else:
                             outfile.write("#### HW\nPR matches hardware\n")

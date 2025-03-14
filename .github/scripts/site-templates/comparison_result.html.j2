@@ -29,6 +29,18 @@
 
                 <h4 id="{{ result.test_name }}">🔗 {{ result.test_name }}</h4>
 
+                {%- if result.known_issues %}
+                    <div class="known-issues">
+                    <ul>
+                    {%- for issue in result.known_issues %}
+                        <li>
+                        <div class="known-issue">{{ issue }}</div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    </div>
+                {% endif -%}
+
                 <div class="comparison-image-set">
 
                     <div class="titled-image-container">
