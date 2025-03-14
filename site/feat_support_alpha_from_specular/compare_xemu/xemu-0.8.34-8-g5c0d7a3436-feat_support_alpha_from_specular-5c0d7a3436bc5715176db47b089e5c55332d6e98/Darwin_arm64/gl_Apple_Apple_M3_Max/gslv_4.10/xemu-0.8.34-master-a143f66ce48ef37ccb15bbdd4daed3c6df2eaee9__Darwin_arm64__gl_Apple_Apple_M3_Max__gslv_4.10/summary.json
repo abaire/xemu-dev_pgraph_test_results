@@ -6,9 +6,9 @@
   ],
   "result_identifier": "xemu-0.8.34-8-g5c0d7a3436-feat_support_alpha_from_specular-5c0d7a3436bc5715176db47b089e5c55332d6e98:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
   "tests_with_differences": {
-    "Antialiasing_tests:AAOnThenOffCPUWrite": "36998",
+    "Antialiasing_tests:AAOnThenOffCPUWrite": "37001",
     "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": "11203",
-    "Antialiasing_tests:NonAACPURoundTrip": "29117",
+    "Antialiasing_tests:NonAACPURoundTrip": "28087",
     "Attrib_carryover:L-bd0.8_0.0_0.0_1.0-ib": "384",
     "Attrib_carryover:L-bs0.8_0.0_0.0_1.0-ib": "384",
     "Attrib_carryover:T-bd0.8_0.0_0.0_1.0-ib": "30720",
@@ -34,9 +34,11 @@
     "Specular:ControlFlagsNoLight_VS": "115852",
     "Specular:ControlFlags_FF": "40379",
     "Specular:ControlFlags_VS": "115852",
-    "Stencil:Stencil_REPLACE_ST": "40000",
-    "Surface_pitch:Swizzle": "7648",
-    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "2543"
+    "Stencil:Stencil_REPLACE_ST": "19900",
+    "Stencil:Stencil_REPLACE_ST_DT": "30000",
+    "Surface_pitch:Swizzle": "8192",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "104",
+    "Vertex_shader_rounding_tests:RenderTarget": "64980"
   },
   "tests_without_goldens": [
     "Specular:ControlFlagsLightDisable_FF",
