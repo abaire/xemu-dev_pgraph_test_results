@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 _HW_GOLDEN_GIT_URL = "https://github.com/abaire/nxdk_pgraph_tests_golden_results.git"
 PERCEPTUALDIFF_DIFFERENCE_RE = re.compile(r"(\d+) pixels are different")
 
+
 class ResultsInfo(NamedTuple):
     result_path: str
     xemu_version: str
@@ -184,7 +185,9 @@ def _compare_lpips(results_info: ResultsInfo, golden_info: ResultsInfo) -> tuple
     return only_results, only_goldens, differences
 
 
-def _compare_perceptualdiff(results_info: ResultsInfo, golden_info: ResultsInfo, perceptualdiff: str,comparison_output_directory: str) -> tuple[set[str], set[str], list[Difference]]:
+def _compare_perceptualdiff(
+    results_info: ResultsInfo, golden_info: ResultsInfo, perceptualdiff: str, comparison_output_directory: str
+) -> tuple[set[str], set[str], list[Difference]]:
     results_tests = results_info.get_flattened_tests()
     golden_tests = golden_info.get_flattened_tests()
 
@@ -226,8 +229,8 @@ def perform_comparison(
     output_dir: str,
     perceptualdiff: str,
     diff_threshold: float,
-        *,
-        use_lpips: bool = True,
+    *,
+    use_lpips: bool = True,
 ) -> None:
     results_info = ResultsInfo.parse(results_path)
 
@@ -271,10 +274,11 @@ def perform_comparison(
             logger.info("Generating diff image for %s", diff.fully_qualified_test_name)
             diff.generate_difference_image(perceptualdiff, comparison_output_directory)
     else:
-        only_results, only_golden, diffs  = _compare_perceptualdiff(results_info, golden_info, perceptualdiff, comparison_output_directory)
+        only_results, only_golden, diffs = _compare_perceptualdiff(
+            results_info, golden_info, perceptualdiff, comparison_output_directory
+        )
         if not (only_results or only_golden or diffs):
             return
-
 
     logger.debug("Writing output to %s", comparison_output_directory)
 
@@ -287,6 +291,7 @@ def perform_comparison(
     }
     with open(os.path.join(comparison_output_directory, "summary.json"), "w", encoding="utf-8") as outfile:
         json.dump(summary, outfile, ensure_ascii=True, indent=2, sort_keys=True)
+
 
 def _discover_results(results_root: str) -> list[str]:
     results_files = glob.glob("**/results.json", root_dir=results_root, recursive=True)
@@ -373,12 +378,7 @@ def _process_arguments_and_run():
     os.makedirs(args.output_dir, exist_ok=True)
 
     perform_comparison(
-        args.results,
-        golden_dir,
-        args.output_dir,
-        args.perceptualdiff,
-        args.diff_threshold,
-        use_lpips=args.use_lpips
+        args.results, golden_dir, args.output_dir, args.perceptualdiff, args.diff_threshold, use_lpips=args.use_lpips
     )
 
     return 0
