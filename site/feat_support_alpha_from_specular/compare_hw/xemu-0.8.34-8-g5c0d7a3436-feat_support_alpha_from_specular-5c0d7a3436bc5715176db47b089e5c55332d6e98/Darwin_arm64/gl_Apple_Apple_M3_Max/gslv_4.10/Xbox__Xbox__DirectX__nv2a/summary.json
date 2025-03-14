@@ -3,7 +3,18 @@
   "goldens_without_results": [
     "Color_zeta_overlap:AdjacentWithAA",
     "Color_zeta_overlap:ZetaIntoColor",
-    "Color_zeta_overlap:ZetaIntoColor_ZB"
+    "Color_zeta_overlap:ZetaIntoColor_ZB",
+    "Surface_clip:rt_x0y240_w640h240",
+    "Surface_clip:rt_x320y240_w320h240",
+    "Surface_clip:x0y0_w0h0_A8R8G8B8",
+    "Surface_clip:x0y0_w512h384_A8R8G8B8",
+    "Surface_clip:x0y0_w640h480_A8R8G8B8",
+    "Surface_clip:x0y240_w640h240",
+    "Surface_clip:x0y240_w640h240_A8R8G8B8",
+    "Surface_clip:x16y8_w512h384_A8R8G8B8",
+    "Surface_clip:x320y240_w320h240",
+    "Surface_clip:x320y240_w320h240_A8R8G8B8",
+    "Surface_clip:x8y16_w632h464_A8R8G8B8"
   ],
   "result_identifier": "xemu-0.8.34-8-g5c0d7a3436-feat_support_alpha_from_specular-5c0d7a3436bc5715176db47b089e5c55332d6e98:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
   "tests_with_differences": {
