@@ -17,6 +17,7 @@ If you are doing xemu development:
 1. Create a new instance of this template repository (click the "Use this template" button)
 2. Go to the `Settings` for your repository and change the `Pages` "Build and deployment" setting to `GitHub Actions`. https://github.com/<your_user>/xemu-dev_pgraph_test_results/settings/pages
 3. Edit the README.md file and update the "Results are browsable..." links just above to point at your repo instead of the template repo (generally just change `abaire` to your username).
+4. Run `pip install -r requirements.txt` from within the repo to install packages needed to run the tester. You will need at least Python 3.10.
 
 ### For each xemu PR
 1. Create a new branch in your repository, ideally matching the branch name of your xemu work, for clarity.
