@@ -16,6 +16,9 @@ If you are doing xemu development:
 2. Go to the `Settings` for your repository and change the `Pages` "Build and deployment" setting to `GitHub Actions`. https://github.com/<your_user>/xemu-dev_pgraph_test_results/settings/pages
 3. Edit the README.md file and update the "Results are browsable..." links just above to point at your repo instead of the template repo (generally just change `abaire` to your username).
 4. Run `pip install -r requirements.txt` from within the repo to install packages needed to run the tester. You will need at least Python 3.10.
+5. Go through the below steps for the first PR. The "Deploy site" step will fail with something like `not allowed to deploy to github-pages due to environment protection rules.`
+6. Go to `Settings` `Environments` and edit the `github-pages` environment. Change `Deployment branches and tags` from `Selected branches and tags` to `No restriction`
+7. Go back to the failed action via `Actions` in the top bar and "Re-run failed jobs"
 
 ### For each xemu PR
 1. Create a new branch in your repository, ideally matching the branch name of your xemu work, for clarity.
