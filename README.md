@@ -7,8 +7,6 @@ This repo is solely intended to showcase test results for pull requests of [xemu
 
 [Results are browsable on this repo's Pages page](https://abaire.github.io/xemu-dev_pgraph_test_results)
 
-[Results are also browsable in the wiki](https://github.com/abaire/xemu-dev_pgraph_test_results/wiki)
-
 ## Usage for xemu contributors
 
 If you are doing xemu development:
