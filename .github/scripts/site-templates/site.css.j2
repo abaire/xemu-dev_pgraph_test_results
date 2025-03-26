@@ -82,30 +82,16 @@
 .comparison-image-set {
     display: flex;
     align-items: center;
-    {#width: 100%;#}
-    gap: 40px;
+{#width: 100%;#} gap: 40px;
 }
 
-.comparison-image-set >.image-container {
+.comparison-image-set > .image-container {
     margin-top: 0;
 }
 
-.comparison-image-set >.image-container:has(+.image-group) {
+.comparison-image-set > .image-container:has(+.image-group) {
     margin-top: 40px;
 }
-
-{#@media (max-width: 1280px) {#}
-{#  .comparison-image-set {#}
-{#        flex-direction: column;#}
-{#    }#}
-{##}
-{#  .image-group-title-bar {#}
-{#        margin-left: 20px;#}
-{#    }#}
-{#  .image-group {#}
-{#        margin-left: 20px;#}
-{#    }#}
-{#}#}
 
 .missing-image {
     display: flex;
@@ -142,29 +128,66 @@
 }
 
 .page-content {
-  margin-left: {{ sidenav_width }}px;
-  padding: 0 10px;
+    margin-left: {{ sidenav_width }}px;
+    padding: 0 10px;
 }
 
 .sidenav {
-  height: 100%;
-  width: {{ sidenav_width }}px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  overflow-x: hidden;
-  padding-top: 20px;
+    height: 100%;
+    width: {{ sidenav_width }}px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
 }
 
 .sidenav a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
 }
 
 .sidenav a:hover {
-  color: #f1f1f1;
+    color: #f1f1f1;
+}
+
+.known-issues {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    padding: 15px;
+    margin: 10px auto;
+    width: calc(100% - 60px);
+    box-sizing: border-box;
+    border-radius: 5px;
+    position: relative;
+    font-family: sans-serif;
+    line-height: 1.6;
+}
+
+.known-issues::before {
+    content: "⚠️";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+}
+
+.known-issues ul {
+    list-style-type: disc;
+    margin: 10px 0 10px 30px;
+    padding-left: 0;
+}
+
+.known-issues li {
+    margin-bottom: 5px;
+}
+
+.known-issues li:last-child {
+    margin-bottom: 0;
 }

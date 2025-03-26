@@ -1,32 +1,47 @@
 #!/usr/bin/env python3
 
+# ruff: noqa: S701 By default, jinja2 sets `autoescape` to `False`. Consider using `autoescape=True` or the `select_autoescape` function to mitigate XSS vulnerabilities.
+
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import glob
 import json
 import os
+import re
 import sys
 from collections import defaultdict
 from dataclasses import dataclass
+from typing import Any
 
 from jinja2 import Environment, FileSystemLoader
 
 
 @dataclass
 class DiffLink:
+    # Info about the test artifact.
     filename: str
     suite: str
     result_url: str
 
+    # Info about the machine used to generate the test results.
+    machine: str
+    gl: str
+    glsl: str
+
+    # The related Xbox test artifact.
     hw_diff_image: str = ""
     hw_diff_url: str = ""
     hw_golden_url: str = ""
 
+    # The related xemu release test artifact.
     xemu_build_info: str = ""
     xemu_diff_image: str = ""
     xemu_diff_url: str = ""
     xemu_golden_url: str = ""
+
+    known_issues: list[str] = dataclasses.field(default_factory=list)
 
     @property
     def sort_key(self) -> str:
@@ -40,6 +55,61 @@ class DiffLink:
     def test_name(self) -> str:
         return self.filename[:-4]
 
+    def add_known_issues(self, registry: dict[str, Any]):
+        known_issues = registry.get(self.suite)
+        if not known_issues:
+            return
+
+        for issue in known_issues.get("issues", []):
+            self._process_known_issue(issue)
+
+        test_issues = known_issues.get(self.test_name)
+        if test_issues:
+            for issue in test_issues.get("issues", []):
+                self._process_known_issue(issue)
+
+    def _process_known_issue(self, issue: dict[str, Any]):
+        # Check for a suite-level issue
+        suite_issue_text = issue.get("text")
+        if suite_issue_text and self._should_apply(issue.get("filter", {})):
+            self.known_issues.append(suite_issue_text)
+
+    @staticmethod
+    def _match(comparator: str, value: str) -> bool:
+        elements = comparator.split("*")
+        comparison = r".*".join([re.escape(component) for component in elements])
+
+        match = re.match(comparison, value)
+        return bool(match)
+
+    def _matches_platform(self, comparator: str) -> bool:
+        return self._match(comparator, self.machine)
+
+    def _matches_gl(self, comparator: str) -> bool:
+        return self._match(comparator, self.gl)
+
+    def _matches_glsl(self, comparator: str) -> bool:
+        return self._match(comparator, self.glsl)
+
+    def _should_apply(self, filter: dict[str, Any]) -> bool:
+        for comparator_key, match_func in {"platform": self._matches_platform, "gl": self._matches_gl, "glsl": self._matches_glsl}.items():
+            comparators = filter.get(comparator_key)
+            if not comparators:
+                continue
+
+            match = False
+            for comparator in comparators:
+                if match_func(comparator):
+                    match = True
+                    break
+            if not match:
+                return False
+
+        for subfilter in filter.get("subfilters", []):
+            if not self._should_apply(subfilter):
+                return False
+
+        return True
 
 class Generator:
     def __init__(
@@ -55,7 +125,7 @@ class Generator:
         xemu_golden_base_url: str,
         output_dir: str,
         jinja_env: Environment,
-            top_index_only: bool,
+        top_index_only: bool,
     ):
         self.branch = branch
         self.results_dir = results_dir
@@ -79,10 +149,17 @@ class Generator:
 
     def _find_results(self):
         for result in glob.glob("**/*.png", root_dir=self.results_dir, recursive=True):
-            suite, filename = result.split(os.path.sep)[-2:]
+            components = result.split(os.path.sep)
+            suite, filename = components[-2:]
+            machine, gl, glsl = components[-5:-2]
             diff_key = os.path.join(suite, filename)
             self.results[diff_key] = DiffLink(
-                filename=filename, suite=suite, result_url=f"{self.results_base_url}/results/{result}"
+                filename=filename,
+                suite=suite,
+                machine=machine,
+                gl=gl,
+                glsl=glsl,
+                result_url=f"{self.results_base_url}/results/{result}",
             )
 
     def _home_url(self, output_dir: str) -> str:
@@ -92,7 +169,6 @@ class Generator:
         return f"{self.site_resources_base_url}/{os.path.basename(self.output_dir)}/{path}"
 
     def _find_hw_diffs(self):
-
         hw_diff_relative_path = self.hw_golden_comparison.replace(self.output_dir, "")
         for hw_diff in glob.glob("**/*.png", root_dir=self.hw_golden_comparison, recursive=True):
             suite, filename = hw_diff.split(os.path.sep)[-2:]
@@ -104,7 +180,6 @@ class Generator:
             diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
 
     def _find_xemu_diffs(self):
-
         xemu_diff_relative_path = self.xemu_golden_comparison.replace(self.output_dir, "")
 
         with open(os.path.join(self.xemu_golden_comparison, "comparisons.json")) as infile:
@@ -142,10 +217,17 @@ class Generator:
         # status quo.
         # diffs_vs_hw = {diff.sort_key: diff for diff in self.results.values() if diff.hw_diff_url}
 
+        known_issues_file = os.path.join(self.xemu_golden_comparison, "known_issues.json")
+        if os.path.isfile(known_issues_file):
+            known_issues_registry = _load_known_issues(known_issues_file)
+        else:
+            known_issues_registry = {}
+
         diffs_by_xemu_version: dict[str, dict[str, list[DiffLink]]] = defaultdict(lambda: defaultdict(list))
         for diff in self.results.values():
             if not diff.xemu_diff_url:
                 continue
+            diff.add_known_issues(known_issues_registry)
             diffs_by_xemu_version[diff.xemu_build_info][diff.suite].append(diff)
 
         with open(os.path.join(output_dir, "index.html"), "w") as outfile:
@@ -204,6 +286,22 @@ class Generator:
         return 0
 
 
+def _load_known_issues(known_issues_file: str) -> dict[str, Any]:
+    with open(known_issues_file) as infile:
+        content = json.load(infile)
+        known_issues = content.get("known_issues", {})
+
+    def sanitize_name(name: str) -> str:
+        return name.replace(" ", "_")
+
+    def sanitize_value(value: Any) -> Any:
+        if isinstance(value, dict):
+            return {sanitize_name(key): sanitize_value(val) for key, val in value.items()}
+        return value
+
+    return {sanitize_name(key): sanitize_value(value) for key, value in known_issues.items()}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -252,7 +350,7 @@ def main() -> int:
     parser.add_argument(
         "--top-index-only",
         action="store_true",
-        help="Only regenerate the top level index.html file, do not scan for images."
+        help="Only regenerate the top level index.html file, do not scan for images.",
     )
 
     args = parser.parse_args()

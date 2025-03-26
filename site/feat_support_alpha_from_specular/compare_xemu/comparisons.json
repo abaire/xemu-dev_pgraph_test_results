@@ -1,3 +1,3 @@
 {
-  "results/xemu-0.8.34-8-g5c0d7a3436-feat_support_alpha_from_specular-5c0d7a3436bc5715176db47b089e5c55332d6e98/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10": "xemu-golden-results/results/xemu-0.8.34-master-a143f66ce48ef37ccb15bbdd4daed3c6df2eaee9/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10"
+  "results/xemu-0.8.35-13-gd6a1b6d98b-feat_support_alpha_from_specular-d6a1b6d98b78fc17c9977064ba4b3a39a9e10a2a/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10": "xemu-golden-results/results/xemu-0.8.41-master-9e58abc95184320d830c3c11628b0d9605614abb/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10"
 }

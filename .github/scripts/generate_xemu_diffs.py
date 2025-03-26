@@ -9,6 +9,7 @@ import argparse
 import json
 import logging
 import os
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -296,6 +297,10 @@ def generate_diffs(results_dir: str, golden_dir: str, compare_script: str, cache
 
     with open(os.path.join(output_dir, "comparisons.json"), "w") as outfile:
         json.dump(registry, outfile, indent=2)
+
+    known_issues_file = os.path.join(golden_dir, "results", "known_issues.json")
+    if os.path.isfile(known_issues_file):
+        shutil.copy(known_issues_file, os.path.join(output_dir, "known_issues.json"))
 
 
 def main() -> int:
