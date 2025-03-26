@@ -145,7 +145,10 @@ jobs:
             "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.branch }}" \
-            --output-dir "site"
+            --output-dir "site" \
+            --results-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads" \
+            --site-resources-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/pages-branch"
+          ls site
       - name: Switch to pages-branch to restore existing content
         run: |
           set -x
@@ -171,7 +174,9 @@ jobs:
             "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.branch }}" \
             --top-index-only \
-            --output-dir "site"
+            --output-dir "site" \
+            --results-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads" \
+            --site-resources-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/pages-branch"
           ls site
       - name: Commit changes
         id: commit
