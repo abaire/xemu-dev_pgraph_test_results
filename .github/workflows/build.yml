@@ -161,6 +161,7 @@ jobs:
           # Delete again in case this branch was already present in the pages-branch
           rm -rf "${{ needs.GetOutputPaths.outputs.site_output_path }}"
           tar -xzf updated_site.tgz
+          rm updated_site.tgz
           ls site/
       - name: Regenerate the Pages top level index so it includes the previously generated content.
         run: |
@@ -180,6 +181,7 @@ jobs:
           git config --local user.name "$GITHUB_ACTOR via action"
           git status
           git add site
+          git add .github/
           git diff-index --quiet HEAD || git commit -m "Update from github action $GITHUB_RUN_NUMBER - $GITHUB_SHA"
           git push -f || git push --set-upstream origin pages-branch -f
 
