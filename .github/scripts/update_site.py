@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # ruff: noqa: S701 By default, jinja2 sets `autoescape` to `False`. Consider using `autoescape=True` or the `select_autoescape` function to mitigate XSS vulnerabilities.
+# ruff: noqa: SIM110 Use return all() instead of for loop
 
 from __future__ import annotations
 
@@ -42,6 +43,8 @@ class DiffLink:
     xemu_golden_url: str = ""
 
     known_issues: list[str] = dataclasses.field(default_factory=list)
+
+    run_info_file: str = ""
 
     @property
     def sort_key(self) -> str:
@@ -91,9 +94,13 @@ class DiffLink:
     def _matches_glsl(self, comparator: str) -> bool:
         return self._match(comparator, self.glsl)
 
-    def _should_apply(self, filter: dict[str, Any]) -> bool:
-        for comparator_key, match_func in {"platform": self._matches_platform, "gl": self._matches_gl, "glsl": self._matches_glsl}.items():
-            comparators = filter.get(comparator_key)
+    def _should_apply(self, filters: dict[str, Any]) -> bool:
+        for comparator_key, match_func in {
+            "platform": self._matches_platform,
+            "gl": self._matches_gl,
+            "glsl": self._matches_glsl,
+        }.items():
+            comparators = filters.get(comparator_key)
             if not comparators:
                 continue
 
@@ -105,11 +112,12 @@ class DiffLink:
             if not match:
                 return False
 
-        for subfilter in filter.get("subfilters", []):
+        for subfilter in filters.get("subfilters", []):
             if not self._should_apply(subfilter):
                 return False
 
         return True
+
 
 class Generator:
     def __init__(
@@ -185,6 +193,8 @@ class Generator:
         with open(os.path.join(self.xemu_golden_comparison, "comparisons.json")) as infile:
             comparison_registry = json.load(infile)
 
+        run_info_files: dict[str, str | None] = {}
+
         for xemu_diff in glob.glob("**/*.png", root_dir=self.xemu_golden_comparison, recursive=True):
             components = xemu_diff.split(os.path.sep)
             # The first 4 components of the path will be xemu_version/os_arch/gl_info/glsl_info
@@ -210,6 +220,11 @@ class Generator:
             if not diff_link.hw_golden_url:
                 diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
 
+            run_info_file = os.path.join(results_key, "run_info.json")
+            if run_info_file not in run_info_files:
+                run_info_files[run_info_file] = run_info_file if os.path.isfile(run_info_file) else None
+            diff_link.run_info_file = run_info_files[run_info_file]
+
     def _generate_comparison_page(self):
         output_dir = os.path.join(self.output_dir, self.branch.replace("/", "_"))
 
@@ -218,17 +233,21 @@ class Generator:
         # diffs_vs_hw = {diff.sort_key: diff for diff in self.results.values() if diff.hw_diff_url}
 
         known_issues_file = os.path.join(self.xemu_golden_comparison, "known_issues.json")
-        if os.path.isfile(known_issues_file):
-            known_issues_registry = _load_known_issues(known_issues_file)
-        else:
-            known_issues_registry = {}
+        known_issues_registry = _load_known_issues(known_issues_file) if os.path.isfile(known_issues_file) else {}
 
         diffs_by_xemu_version: dict[str, dict[str, list[DiffLink]]] = defaultdict(lambda: defaultdict(list))
+        run_infos: dict[str, dict[str, Any]] = defaultdict(dict)
+
         for diff in self.results.values():
             if not diff.xemu_diff_url:
                 continue
             diff.add_known_issues(known_issues_registry)
             diffs_by_xemu_version[diff.xemu_build_info][diff.suite].append(diff)
+
+            if diff.run_info_file and diff.run_info_file not in run_infos:
+                with open(diff.run_info_file) as infile:
+                    run_info = json.load(infile)
+                    run_infos[diff.run_info_file] = run_info
 
         with open(os.path.join(output_dir, "index.html"), "w") as outfile:
             comparison_template = self.env.get_template("comparison_result.html.j2")
