@@ -191,3 +191,9 @@
 .known-issues li:last-child {
     margin-bottom: 0;
 }
+
+.critical-warning-message {
+    align-items: center;
+    background-color: #ffe6e6;
+    padding: 10px;
+}

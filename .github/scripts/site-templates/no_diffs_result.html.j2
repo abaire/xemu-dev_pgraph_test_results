@@ -1,0 +1,15 @@
+{% extends "base.html.j2" %}
+
+{% block title -%}
+    {{ branch }} regression results
+{%- endblock %}
+
+{% block content -%}
+
+    <h1 id="{{ branch }}">{{ branch }} regression results</h1>
+
+    {%- include "warning_header.html.j2" -%}
+
+    <h1>No differences were found between the test branch and xemu golden.</h1>
+
+{%- endblock -%}
