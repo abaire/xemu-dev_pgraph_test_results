@@ -16,6 +16,9 @@
     </p>
     </div>
 
+    {% for info in run_information | dictsort %}
+        {{ info }}
+    {% endfor %}
 
     {% for xemu_release, suite_results in diffs_by_xemu_version | dictsort %}
 

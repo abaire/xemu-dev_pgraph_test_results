@@ -254,6 +254,7 @@ class Generator:
             outfile.write(
                 comparison_template.render(
                     diffs_by_xemu_version=diffs_by_xemu_version,
+                    run_information=run_infos,
                     branch=self.branch,
                     css_dir=os.path.relpath(self.css_output_dir, output_dir),
                     js_dir=os.path.relpath(self.js_output_dir, output_dir),
