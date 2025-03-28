@@ -30,3 +30,4 @@ You can then add a link to that results page to your xemu PR.
 
 [This generate_xemu_dev_pgraph_test_results_branch.sh script](https://github.com/abaire/xemu-util-scripts/blob/5c676ac2f1cfd7cb9420cb815919f8875fda067c/generate_xemu_dev_pgraph_test_results_branch.sh) automates some of this work and may be cloned or extended to support different workspace layouts.
 
+During active development, it may be useful to filter the set of tests being run to those expected to change. See `execute.py --help` for details.

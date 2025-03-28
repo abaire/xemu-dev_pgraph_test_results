@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # ruff: noqa: S701 By default, jinja2 sets `autoescape` to `False`. Consider using `autoescape=True` or the `select_autoescape` function to mitigate XSS vulnerabilities.
+# ruff: noqa: SIM110 Use return all() instead of for loop
 
 from __future__ import annotations
 
@@ -91,9 +92,13 @@ class DiffLink:
     def _matches_glsl(self, comparator: str) -> bool:
         return self._match(comparator, self.glsl)
 
-    def _should_apply(self, filter: dict[str, Any]) -> bool:
-        for comparator_key, match_func in {"platform": self._matches_platform, "gl": self._matches_gl, "glsl": self._matches_glsl}.items():
-            comparators = filter.get(comparator_key)
+    def _should_apply(self, filters: dict[str, Any]) -> bool:
+        for comparator_key, match_func in {
+            "platform": self._matches_platform,
+            "gl": self._matches_gl,
+            "glsl": self._matches_glsl,
+        }.items():
+            comparators = filters.get(comparator_key)
             if not comparators:
                 continue
 
@@ -105,11 +110,12 @@ class DiffLink:
             if not match:
                 return False
 
-        for subfilter in filter.get("subfilters", []):
+        for subfilter in filters.get("subfilters", []):
             if not self._should_apply(subfilter):
                 return False
 
         return True
+
 
 class Generator:
     def __init__(
@@ -140,11 +146,14 @@ class Generator:
         self.js_output_dir = output_dir.rstrip("/")
         self.env = jinja_env
         self.top_index_only = top_index_only
+        self.comparison_registry: dict[str, str] = {}
+        self.run_infos: dict[str, dict[str, Any]] = defaultdict(lambda: {})
 
         self.results: dict[str, DiffLink] = {}
         if not self.top_index_only:
             self._find_results()
             self._find_hw_diffs()
+            self._load_comparison_registry()
             self._find_xemu_diffs()
 
     def _find_results(self):
@@ -179,20 +188,31 @@ class Generator:
             diff_link.hw_diff_url = self._make_site_url(f"{hw_diff_relative_path}/{hw_diff}")
             diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
 
+    def _load_comparison_registry(self):
+        with open(os.path.join(self.xemu_golden_comparison, "comparisons.json")) as infile:
+            self.comparison_registry = json.load(infile)
+
+        for comparison in self.comparison_registry:
+            run_info_file = os.path.join(comparison, "run_info.json")
+            if run_info_file in self.run_infos:
+                continue
+
+            if os.path.isfile(run_info_file):
+                with open(run_info_file) as infile:
+                    run_info = json.load(infile)
+                    self.run_infos[run_info_file] = run_info
+
     def _find_xemu_diffs(self):
         xemu_diff_relative_path = self.xemu_golden_comparison.replace(self.output_dir, "")
-
-        with open(os.path.join(self.xemu_golden_comparison, "comparisons.json")) as infile:
-            comparison_registry = json.load(infile)
 
         for xemu_diff in glob.glob("**/*.png", root_dir=self.xemu_golden_comparison, recursive=True):
             components = xemu_diff.split(os.path.sep)
             # The first 4 components of the path will be xemu_version/os_arch/gl_info/glsl_info
             results_key = os.path.join("results", *components[:4])
 
-            xemu_golden_info = comparison_registry.get(results_key)
+            xemu_golden_info = self.comparison_registry.get(results_key)
             if not xemu_golden_info:
-                msg = f"Failed to lookup comparison database for xemu diff '{xemu_diff}' from {comparison_registry}"
+                msg = f"Failed to lookup comparison database for xemu diff '{xemu_diff}' from {self.comparison_registry}"
                 raise ValueError(msg)
             suite, filename = components[-2:]
             golden_filename = filename.replace("-diff.png", ".png")
@@ -218,12 +238,10 @@ class Generator:
         # diffs_vs_hw = {diff.sort_key: diff for diff in self.results.values() if diff.hw_diff_url}
 
         known_issues_file = os.path.join(self.xemu_golden_comparison, "known_issues.json")
-        if os.path.isfile(known_issues_file):
-            known_issues_registry = _load_known_issues(known_issues_file)
-        else:
-            known_issues_registry = {}
+        known_issues_registry = _load_known_issues(known_issues_file) if os.path.isfile(known_issues_file) else {}
 
         diffs_by_xemu_version: dict[str, dict[str, list[DiffLink]]] = defaultdict(lambda: defaultdict(list))
+
         for diff in self.results.values():
             if not diff.xemu_diff_url:
                 continue
@@ -231,10 +249,12 @@ class Generator:
             diffs_by_xemu_version[diff.xemu_build_info][diff.suite].append(diff)
 
         with open(os.path.join(output_dir, "index.html"), "w") as outfile:
-            comparison_template = self.env.get_template("comparison_result.html.j2")
+            template_file = "comparison_result.html.j2" if diffs_by_xemu_version else "no_diffs_result.html.j2"
+            comparison_template = self.env.get_template(template_file)
             outfile.write(
                 comparison_template.render(
                     diffs_by_xemu_version=diffs_by_xemu_version,
+                    run_information=self.run_infos,
                     branch=self.branch,
                     css_dir=os.path.relpath(self.css_output_dir, output_dir),
                     js_dir=os.path.relpath(self.js_output_dir, output_dir),

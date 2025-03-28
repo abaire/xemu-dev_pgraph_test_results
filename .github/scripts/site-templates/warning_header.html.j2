@@ -1,0 +1,29 @@
+<div class="warning_header">
+    <div class="warning-message">
+        <p>
+            <b>Note</b>: Only test results that differ from xemu goldens are
+            displayed.
+            There may be many additional differences
+            compared to Xbox hardware.
+        </p>
+    </div>
+
+    {% for run, run_info in run_information | dictsort %}
+
+        {% if run_info.suite_filter %}
+            <div class="critical-warning-message">
+                <p>
+                    ⚠️<b>WARNING</b>: This comparison was pre-filtered and may
+                    be missing differences!
+                </p>
+                <p>Only results from the following suites were examined:</p>
+                <ul>
+                    {% for suite_filter in run_info.suite_filter | sort %}
+                        <li>{{ suite_filter }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        {% endif %}
+    {% endfor %}
+</div>
