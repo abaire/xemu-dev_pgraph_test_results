@@ -1,5 +1,5 @@
 {
-  "golden_identifier": "Xbox_Hardware",
+  "golden_identifier": "xemu-0.8.45-master-672e9cd553df9fa4629ecdc49efacf310d9994b0:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
   "goldens_without_results": [
     "2D_Lines:2DLine-15-C000003E0-400_200-400_400",
     "2D_Lines:2DLine-16-C000007E0-400_200-400_400",
@@ -1921,7 +1921,6 @@
     "Color_key:ProgTex_Disabled",
     "Color_key:UnsampledTex",
     "Color_mask_blend:C00010101_O32774_S772_D0",
-    "Color_zeta_overlap:AdjacentWithAA",
     "Color_zeta_overlap:AdjacentWithClipOffset_l",
     "Color_zeta_overlap:AdjacentWithClipOffset_sz",
     "Color_zeta_overlap:ColorIntoZeta",
@@ -4052,24 +4051,20 @@
     "Zero_stride:DrawArrays",
     "Zero_stride:InlineElements"
   ],
-  "result_identifier": "xemu-0.8.45-10-ga13614a19b-feat_spec_params-a13614a19b84a06395057b37f678aa822a5cec8a:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "result_identifier": "xemu-0.8.45-10-gba99588291-feat_spec_params-ba99588291f8acf799d98391d32f1ffd215760ff:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
   "tests_with_differences": {
-    "Lighting_control:FF_0x000000": "13577",
-    "Lighting_control:FF_0x000000NoSpec": "3551",
-    "Lighting_control:FF_0x000001": "5286",
-    "Lighting_control:FF_0x000001NoSpec": "3553",
-    "Lighting_control:FF_0x010000": "13387",
-    "Lighting_control:FF_0x010000NoSpec": "5364",
-    "Lighting_control:FF_0x010001": "6412",
-    "Lighting_control:FF_0x010001NoSpec": "5366",
-    "Lighting_control:FF_0x020000": "1749",
-    "Lighting_control:FF_0x020000NoSpec": "3553",
-    "Lighting_control:FF_0x020001": "4178",
-    "Lighting_control:FF_0x020001NoSpec": "3555",
-    "Lighting_control:FF_0x030000": "2853",
-    "Lighting_control:FF_0x030000NoSpec": "5362",
-    "Lighting_control:FF_0x030001": "4528",
-    "Lighting_control:FF_0x030001NoSpec": "5364"
+    "Lighting_control:FF_0x000000": "25780",
+    "Lighting_control:FF_0x000001": "9404",
+    "Lighting_control:FF_0x010000": "25780",
+    "Lighting_control:FF_0x010001": "9404",
+    "Lighting_control:FF_0x020000": "15263",
+    "Lighting_control:FF_0x020001": "4158",
+    "Lighting_control:FF_0x030000": "15263",
+    "Lighting_control:FF_0x030001": "4158",
+    "Lighting_control:VS_0x000000_LightOff": "7176",
+    "Lighting_control:VS_0x000001_LightOff": "7176",
+    "Lighting_control:VS_0x010000_LightOff": "7176",
+    "Lighting_control:VS_0x010001_LightOff": "7176"
   },
   "tests_without_goldens": []
 }
