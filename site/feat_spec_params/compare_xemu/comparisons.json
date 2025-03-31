@@ -1,6 +1,3 @@
 {
-  "results/xemu-0.8.45-4-ge06a52fd47-feat_spec_params-e06a52fd470e3015e212f8f2d4864219039d5825/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10": "xemu-golden-results/results/xemu-0.8.45-master-672e9cd553df9fa4629ecdc49efacf310d9994b0/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10",
-  "results/xemu-0.8.45-12-g919c667446-feat_spec_params-919c667446a1568fd57fd1e49f574c2d2cf0541a/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10": "xemu-golden-results/results/xemu-0.8.45-master-672e9cd553df9fa4629ecdc49efacf310d9994b0/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10",
-  "results/xemu-0.8.45-12-geff95e2412-feat_spec_params-eff95e2412646bd53ac535be0e57fbd2eb43f302/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10": "xemu-golden-results/results/xemu-0.8.45-master-672e9cd553df9fa4629ecdc49efacf310d9994b0/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10",
-  "results/xemu-0.8.45-12-g0d7a045524-feat_spec_params-0d7a045524c0c21cf905bd4439e5ab96b34e92a8/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10": "xemu-golden-results/results/xemu-0.8.45-master-672e9cd553df9fa4629ecdc49efacf310d9994b0/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10"
+  "results/xemu-0.8.45-4-ge06a52fd47-feat_spec_params-e06a52fd470e3015e212f8f2d4864219039d5825/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10": "xemu-golden-results/results/xemu-0.8.45-master-672e9cd553df9fa4629ecdc49efacf310d9994b0/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10"
 }
