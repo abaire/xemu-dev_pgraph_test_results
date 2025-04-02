@@ -36,7 +36,9 @@ jobs:
           echo "wiki_xemu_diffs=wiki/${branch}/compare_xemu" >> $GITHUB_OUTPUT 
           echo "site_output_path=site/${branch}" >> $GITHUB_OUTPUT 
           echo "site_hw_diffs=site/${branch}/compare_hw" >> $GITHUB_OUTPUT 
-          echo "site_xemu_diffs=site/${branch}/compare_xemu" >> $GITHUB_OUTPUT 
+          echo "site_xemu_diffs=site/${branch}/compare_xemu" >> $GITHUB_OUTPUT
+      - name: Clean existing content
+        run: rm -rf "${{ steps.get_output_path.outputs.site_output_path }}/"
 
   GenerateHardwareDiffs:
     needs: [ GetOutputPaths ]
