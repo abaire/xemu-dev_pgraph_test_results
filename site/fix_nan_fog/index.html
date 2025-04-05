@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>fix_nan_fog regression results</title>
+    <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+
+    <div class="sidenav">
+    <a href="../index.html"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Home_%2885249%29_-_The_Noun_Project.svg" width="32" alt="Navigate to the top level" /></a>
+    </div>
+
+    <div class="page-content"><h1 id="fix_nan_fog">fix_nan_fog regression results</h1><div class="warning_header">
+    <div class="warning-message">
+        <p>
+            <b>Note</b>: Only test results that differ from xemu goldens are
+            displayed.
+            There may be many additional differences
+            compared to Xbox hardware.
+        </p>
+    </div>
+
+    
+
+        
+    
+</div>
+
+        <h2 id="xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler">vs xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler</h2>
+
+            <h3 id="Antialiasing_tests">🔗 Antialiasing_tests</h3>
+
+                <h4 id="AAOnThenOffCPUWrite">🔗 AAOnThenOffCPUWrite</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/AAOnThenOffCPUWrite-diff.png"
+                             alt="Diff result for Antialiasing_tests::AAOnThenOffCPUWrite vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/AAOnThenOffCPUWrite.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/AAOnThenOffCPUWrite.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/AAOnThenOffCPUWrite.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/AAOnThenOffCPUWrite.png"
+                             alt="Source image for Antialiasing_tests::AAOnThenOffCPUWrite"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/AAOnThenOffCPUWrite.png"
+                             alt="Golden image for Antialiasing_tests::AAOnThenOffCPUWrite in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/AAOnThenOffCPUWrite.png"
+                             alt="Golden image for Antialiasing_tests::AAOnThenOffCPUWrite on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    
+
+                </div>
+
+                <h4 id="CPUWriteIgnoresSurfaceConfig">🔗 CPUWriteIgnoresSurfaceConfig</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig-diff.png"
+                             alt="Diff result for Antialiasing_tests::CPUWriteIgnoresSurfaceConfig vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png"
+                             alt="Source image for Antialiasing_tests::CPUWriteIgnoresSurfaceConfig"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png"
+                             alt="Golden image for Antialiasing_tests::CPUWriteIgnoresSurfaceConfig in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png"
+                             alt="Golden image for Antialiasing_tests::CPUWriteIgnoresSurfaceConfig on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    
+
+                </div>
+
+                <h4 id="FramebufferNotModifiedBySurfaceState">🔗 FramebufferNotModifiedBySurfaceState</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/FramebufferNotModifiedBySurfaceState-diff.png"
+                             alt="Diff result for Antialiasing_tests::FramebufferNotModifiedBySurfaceState vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/FramebufferNotModifiedBySurfaceState.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/FramebufferNotModifiedBySurfaceState.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/FramebufferNotModifiedBySurfaceState.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/FramebufferNotModifiedBySurfaceState.png"
+                             alt="Source image for Antialiasing_tests::FramebufferNotModifiedBySurfaceState"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/FramebufferNotModifiedBySurfaceState.png"
+                             alt="Golden image for Antialiasing_tests::FramebufferNotModifiedBySurfaceState in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/FramebufferNotModifiedBySurfaceState.png"
+                             alt="Golden image for Antialiasing_tests::FramebufferNotModifiedBySurfaceState on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Antialiasing_tests/FramebufferNotModifiedBySurfaceState-diff.png"
+                                 alt="Diff result for Antialiasing_tests::FramebufferNotModifiedBySurfaceState vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="NonAACPURoundTrip">🔗 NonAACPURoundTrip</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/NonAACPURoundTrip-diff.png"
+                             alt="Diff result for Antialiasing_tests::NonAACPURoundTrip vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/NonAACPURoundTrip.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/NonAACPURoundTrip.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/NonAACPURoundTrip.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/NonAACPURoundTrip.png"
+                             alt="Source image for Antialiasing_tests::NonAACPURoundTrip"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Antialiasing_tests/NonAACPURoundTrip.png"
+                             alt="Golden image for Antialiasing_tests::NonAACPURoundTrip in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/NonAACPURoundTrip.png"
+                             alt="Golden image for Antialiasing_tests::NonAACPURoundTrip on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Antialiasing_tests/NonAACPURoundTrip-diff.png"
+                                 alt="Diff result for Antialiasing_tests::NonAACPURoundTrip vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+        
+
+            <h3 id="DMA_corruption_around_surfaces">🔗 DMA_corruption_around_surfaces</h3>
+
+                <h4 id="DMAOverlap">🔗 DMAOverlap</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/DMA_corruption_around_surfaces/DMAOverlap-diff.png"
+                             alt="Diff result for DMA_corruption_around_surfaces::DMAOverlap vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/DMA_corruption_around_surfaces/DMAOverlap.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/DMA_corruption_around_surfaces/DMAOverlap.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/DMA_corruption_around_surfaces/DMAOverlap.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/DMA_corruption_around_surfaces/DMAOverlap.png"
+                             alt="Source image for DMA_corruption_around_surfaces::DMAOverlap"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/DMA_corruption_around_surfaces/DMAOverlap.png"
+                             alt="Golden image for DMA_corruption_around_surfaces::DMAOverlap in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/DMA_corruption_around_surfaces/DMAOverlap.png"
+                             alt="Golden image for DMA_corruption_around_surfaces::DMAOverlap on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    
+
+                </div>
+
+        
+
+            <h3 id="Fog_exceptional_value">🔗 Fog_exceptional_value</h3>
+
+                <h4 id="FogExc-exp-abs_planar">🔗 FogExc-exp-abs_planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-abs_planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp-abs_planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-abs_planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-abs_planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-abs_planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-abs_planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp-abs_planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-abs_planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-abs_planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp-abs_planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp-abs_planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp-fog_x">🔗 FogExc-exp-fog_x</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-fog_x-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp-fog_x vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-fog_x.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-fog_x.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-fog_x.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-fog_x.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp-fog_x"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-fog_x in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-fog_x on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp-fog_x-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp-fog_x vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp-planar">🔗 FogExc-exp-planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp-planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp-planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp-planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp-planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp-radial">🔗 FogExc-exp-radial</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-radial-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp-radial vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-radial.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-radial.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-radial.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-radial.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp-radial"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-radial in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-radial on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp-radial-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp-radial vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp-spec_alpha">🔗 FogExc-exp-spec_alpha</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-spec_alpha-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp-spec_alpha vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-spec_alpha.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-spec_alpha.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-spec_alpha.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-spec_alpha.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp-spec_alpha"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-spec_alpha in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp-spec_alpha on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp-spec_alpha-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp-spec_alpha vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2-abs_planar">🔗 FogExc-exp2-abs_planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-abs_planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2-abs_planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-abs_planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-abs_planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-abs_planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-abs_planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2-abs_planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-abs_planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-abs_planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2-abs_planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2-abs_planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2-fog_x">🔗 FogExc-exp2-fog_x</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-fog_x-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2-fog_x vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-fog_x.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-fog_x.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-fog_x.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-fog_x.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2-fog_x"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-fog_x in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-fog_x on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2-fog_x-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2-fog_x vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2-planar">🔗 FogExc-exp2-planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2-planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2-planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2-planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2-planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2-radial">🔗 FogExc-exp2-radial</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-radial-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2-radial vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-radial.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-radial.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-radial.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-radial.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2-radial"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-radial in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-radial on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2-radial-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2-radial vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2-spec_alpha">🔗 FogExc-exp2-spec_alpha</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-spec_alpha-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2-spec_alpha vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-spec_alpha.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-spec_alpha.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-spec_alpha.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-spec_alpha.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2-spec_alpha"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-spec_alpha in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2-spec_alpha on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2-spec_alpha-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2-spec_alpha vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2_abs-abs_planar">🔗 FogExc-exp2_abs-abs_planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-abs_planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-abs_planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-abs_planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-abs_planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-abs_planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-abs_planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2_abs-abs_planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-abs_planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-abs_planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2_abs-abs_planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-abs_planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2_abs-fog_x">🔗 FogExc-exp2_abs-fog_x</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-fog_x-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-fog_x vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-fog_x.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-fog_x.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-fog_x.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-fog_x.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2_abs-fog_x"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-fog_x in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-fog_x on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2_abs-fog_x-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-fog_x vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2_abs-planar">🔗 FogExc-exp2_abs-planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2_abs-planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2_abs-planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2_abs-radial">🔗 FogExc-exp2_abs-radial</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-radial-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-radial vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-radial.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-radial.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-radial.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-radial.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2_abs-radial"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-radial in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-radial on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2_abs-radial-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-radial vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp2_abs-spec_alpha">🔗 FogExc-exp2_abs-spec_alpha</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-spec_alpha-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-spec_alpha vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-spec_alpha.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-spec_alpha.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-spec_alpha.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-spec_alpha.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp2_abs-spec_alpha"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp2_abs-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-spec_alpha in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp2_abs-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp2_abs-spec_alpha on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp2_abs-spec_alpha-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp2_abs-spec_alpha vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp_abs-abs_planar">🔗 FogExc-exp_abs-abs_planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-abs_planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-abs_planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-abs_planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-abs_planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-abs_planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-abs_planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp_abs-abs_planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-abs_planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-abs_planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp_abs-abs_planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-abs_planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp_abs-fog_x">🔗 FogExc-exp_abs-fog_x</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-fog_x-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-fog_x vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-fog_x.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-fog_x.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-fog_x.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-fog_x.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp_abs-fog_x"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-fog_x in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-fog_x on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp_abs-fog_x-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-fog_x vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp_abs-planar">🔗 FogExc-exp_abs-planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp_abs-planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp_abs-planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp_abs-radial">🔗 FogExc-exp_abs-radial</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-radial-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-radial vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-radial.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-radial.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-radial.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-radial.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp_abs-radial"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-radial in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-radial on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp_abs-radial-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-radial vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-exp_abs-spec_alpha">🔗 FogExc-exp_abs-spec_alpha</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-spec_alpha-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-spec_alpha vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-spec_alpha.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-spec_alpha.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-spec_alpha.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-spec_alpha.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-exp_abs-spec_alpha"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-exp_abs-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-spec_alpha in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-exp_abs-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-exp_abs-spec_alpha on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-exp_abs-spec_alpha-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-exp_abs-spec_alpha vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear-abs_planar">🔗 FogExc-linear-abs_planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-abs_planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear-abs_planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-abs_planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-abs_planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-abs_planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-abs_planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear-abs_planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-abs_planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-abs_planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear-abs_planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear-abs_planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear-fog_x">🔗 FogExc-linear-fog_x</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-fog_x-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear-fog_x vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-fog_x.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-fog_x.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-fog_x.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-fog_x.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear-fog_x"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-fog_x in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-fog_x on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear-fog_x-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear-fog_x vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear-planar">🔗 FogExc-linear-planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear-planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear-planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear-planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear-planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear-radial">🔗 FogExc-linear-radial</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-radial-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear-radial vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-radial.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-radial.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-radial.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-radial.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear-radial"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-radial in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-radial on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear-radial-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear-radial vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear-spec_alpha">🔗 FogExc-linear-spec_alpha</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-spec_alpha-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear-spec_alpha vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-spec_alpha.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-spec_alpha.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-spec_alpha.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-spec_alpha.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear-spec_alpha"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-spec_alpha in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear-spec_alpha on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear-spec_alpha-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear-spec_alpha vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear_abs-abs_planar">🔗 FogExc-linear_abs-abs_planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-abs_planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-abs_planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-abs_planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-abs_planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-abs_planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-abs_planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear_abs-abs_planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-abs_planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-abs_planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-abs_planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear_abs-abs_planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-abs_planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear_abs-fog_x">🔗 FogExc-linear_abs-fog_x</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-fog_x-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-fog_x vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-fog_x.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-fog_x.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-fog_x.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-fog_x.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear_abs-fog_x"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-fog_x in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-fog_x.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-fog_x on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear_abs-fog_x-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-fog_x vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear_abs-planar">🔗 FogExc-linear_abs-planar</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-planar-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-planar vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-planar.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-planar.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-planar.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-planar.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear_abs-planar"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-planar in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-planar.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-planar on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear_abs-planar-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-planar vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear_abs-radial">🔗 FogExc-linear_abs-radial</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-radial-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-radial vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-radial.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-radial.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-radial.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-radial.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear_abs-radial"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-radial in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-radial.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-radial on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear_abs-radial-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-radial vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="FogExc-linear_abs-spec_alpha">🔗 FogExc-linear_abs-spec_alpha</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-spec_alpha-diff.png"
+                             alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-spec_alpha vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-spec_alpha.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-spec_alpha.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-spec_alpha.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-spec_alpha.png"
+                             alt="Source image for Fog_exceptional_value::FogExc-linear_abs-spec_alpha"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Fog_exceptional_value/FogExc-linear_abs-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-spec_alpha in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Fog_exceptional_value/FogExc-linear_abs-spec_alpha.png"
+                             alt="Golden image for Fog_exceptional_value::FogExc-linear_abs-spec_alpha on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Fog_exceptional_value/FogExc-linear_abs-spec_alpha-diff.png"
+                                 alt="Diff result for Fog_exceptional_value::FogExc-linear_abs-spec_alpha vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+        
+
+            <h3 id="Surface_pitch">🔗 Surface_pitch</h3>
+
+                <h4 id="Swizzle">🔗 Swizzle</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Surface_pitch/Swizzle-diff.png"
+                             alt="Diff result for Surface_pitch::Swizzle vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Surface_pitch/Swizzle.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Surface_pitch/Swizzle.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Surface_pitch/Swizzle.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Surface_pitch/Swizzle.png"
+                             alt="Source image for Surface_pitch::Swizzle"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Surface_pitch/Swizzle.png"
+                             alt="Golden image for Surface_pitch::Swizzle in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Surface_pitch/Swizzle.png"
+                             alt="Golden image for Surface_pitch::Swizzle on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Surface_pitch/Swizzle-diff.png"
+                                 alt="Diff result for Surface_pitch::Swizzle vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+        
+
+            <h3 id="Texture_signed_component_tests">🔗 Texture_signed_component_tests</h3>
+
+                <h4 id="txt_A8R8G8B8_ADD">🔗 txt_A8R8G8B8_ADD</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Texture_signed_component_tests/txt_A8R8G8B8_ADD-diff.png"
+                             alt="Diff result for Texture_signed_component_tests::txt_A8R8G8B8_ADD vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Texture_signed_component_tests/txt_A8R8G8B8_ADD.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Texture_signed_component_tests/txt_A8R8G8B8_ADD.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Texture_signed_component_tests/txt_A8R8G8B8_ADD.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Texture_signed_component_tests/txt_A8R8G8B8_ADD.png"
+                             alt="Source image for Texture_signed_component_tests::txt_A8R8G8B8_ADD"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Texture_signed_component_tests/txt_A8R8G8B8_ADD.png"
+                             alt="Golden image for Texture_signed_component_tests::txt_A8R8G8B8_ADD in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Texture_signed_component_tests/txt_A8R8G8B8_ADD.png"
+                             alt="Golden image for Texture_signed_component_tests::txt_A8R8G8B8_ADD on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Texture_signed_component_tests/txt_A8R8G8B8_ADD-diff.png"
+                                 alt="Diff result for Texture_signed_component_tests::txt_A8R8G8B8_ADD vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+        
+
+            <h3 id="Vertex_shader_rounding_tests">🔗 Vertex_shader_rounding_tests</h3>
+
+                <h4 id="GeometrySubscreen_0.5626">🔗 GeometrySubscreen_0.5626</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_0.5626-diff.png"
+                             alt="Diff result for Vertex_shader_rounding_tests::GeometrySubscreen_0.5626 vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_0.5626.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_0.5626.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Vertex_shader_rounding_tests/GeometrySubscreen_0.5626.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_0.5626.png"
+                             alt="Source image for Vertex_shader_rounding_tests::GeometrySubscreen_0.5626"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_0.5626.png"
+                             alt="Golden image for Vertex_shader_rounding_tests::GeometrySubscreen_0.5626 in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Vertex_shader_rounding_tests/GeometrySubscreen_0.5626.png"
+                             alt="Golden image for Vertex_shader_rounding_tests::GeometrySubscreen_0.5626 on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Vertex_shader_rounding_tests/GeometrySubscreen_0.5626-diff.png"
+                                 alt="Diff result for Vertex_shader_rounding_tests::GeometrySubscreen_0.5626 vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+                <h4 id="GeometrySubscreen_1.0000">🔗 GeometrySubscreen_1.0000</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_xemu/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2__Linux_x86_64__gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2__gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_1.0000-diff.png"
+                             alt="Diff result for Vertex_shader_rounding_tests::GeometrySubscreen_1.0000 vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_1.0000.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_1.0000.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Vertex_shader_rounding_tests/GeometrySubscreen_1.0000.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/fix_nan_fog/results/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_1.0000.png"
+                             alt="Source image for Vertex_shader_rounding_tests::GeometrySubscreen_1.0000"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.47-master-f82c6865fc27a07f52470e0a1da30151b130b4a2/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Vertex_shader_rounding_tests/GeometrySubscreen_1.0000.png"
+                             alt="Golden image for Vertex_shader_rounding_tests::GeometrySubscreen_1.0000 in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Vertex_shader_rounding_tests/GeometrySubscreen_1.0000.png"
+                             alt="Golden image for Vertex_shader_rounding_tests::GeometrySubscreen_1.0000 on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//fix_nan_fog/compare_hw/xemu-0.8.47-1-gfed094277d-fix_nan_fog-fed094277d1db35a1dd33bb0ed5c7586c9e057ba/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler/Xbox__Xbox__DirectX__nv2a/Vertex_shader_rounding_tests/GeometrySubscreen_1.0000-diff.png"
+                                 alt="Diff result for Vertex_shader_rounding_tests::GeometrySubscreen_1.0000 vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+        </div>
+
+    <script src="../script.js"></script>
+</body>
+</html>
