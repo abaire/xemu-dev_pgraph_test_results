@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>pushbuffer_change regression results</title>
+    <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+
+    <div class="sidenav">
+    <a href="../index.html"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Home_%2885249%29_-_The_Noun_Project.svg" width="32" alt="Navigate to the top level" /></a>
+    </div>
+
+    <div class="page-content"><h1 id="pushbuffer_change">pushbuffer_change regression results</h1><div class="warning_header">
+    <div class="warning-message">
+        <p>
+            <b>Note</b>: Only test results that differ from xemu goldens are
+            displayed.
+            There may be many additional differences
+            compared to Xbox hardware.
+        </p>
+    </div>
+
+    
+</div>
+
+        <h2 id="xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10">vs xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10</h2>
+
+            <h3 id="Antialiasing_tests">🔗 Antialiasing_tests</h3>
+
+                <h4 id="CPUWriteIgnoresSurfaceConfig">🔗 CPUWriteIgnoresSurfaceConfig</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//pushbuffer_change/compare_xemu/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899__Darwin_arm64__gl_Apple_Apple_M3_Max__gslv_4.10/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig-diff.png"
+                             alt="Diff result for Antialiasing_tests::CPUWriteIgnoresSurfaceConfig vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/pushbuffer_change/results/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/pushbuffer_change/results/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png"
+                             alt="Source image for Antialiasing_tests::CPUWriteIgnoresSurfaceConfig"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png"
+                             alt="Golden image for Antialiasing_tests::CPUWriteIgnoresSurfaceConfig in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig.png"
+                             alt="Golden image for Antialiasing_tests::CPUWriteIgnoresSurfaceConfig on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//pushbuffer_change/compare_hw/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Xbox__Xbox__DirectX__nv2a/Antialiasing_tests/CPUWriteIgnoresSurfaceConfig-diff.png"
+                                 alt="Diff result for Antialiasing_tests::CPUWriteIgnoresSurfaceConfig vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+        
+
+            <h3 id="Stencil">🔗 Stencil</h3>
+
+                <h4 id="Stencil_REPLACE">🔗 Stencil_REPLACE</h4>
+                    <div class="known-issues">
+                    <ul>
+                        <li>
+                        <div class="known-issue">Known flaky on Apple-silicon macOS. See xemu#2006</div>
+                        </li>
+                    
+                    </ul>
+                    </div>
+                <div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//pushbuffer_change/compare_xemu/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899__Darwin_arm64__gl_Apple_Apple_M3_Max__gslv_4.10/Stencil/Stencil_REPLACE-diff.png"
+                             alt="Diff result for Stencil::Stencil_REPLACE vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/pushbuffer_change/results/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Stencil/Stencil_REPLACE.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Stencil/Stencil_REPLACE.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Stencil/Stencil_REPLACE.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/pushbuffer_change/results/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Stencil/Stencil_REPLACE.png"
+                             alt="Source image for Stencil::Stencil_REPLACE"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Stencil/Stencil_REPLACE.png"
+                             alt="Golden image for Stencil::Stencil_REPLACE in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Stencil/Stencil_REPLACE.png"
+                             alt="Golden image for Stencil::Stencil_REPLACE on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//pushbuffer_change/compare_hw/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Xbox__Xbox__DirectX__nv2a/Stencil/Stencil_REPLACE-diff.png"
+                                 alt="Diff result for Stencil::Stencil_REPLACE vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+        
+
+            <h3 id="Vertex_shader_rounding_tests">🔗 Vertex_shader_rounding_tests</h3>
+
+                <h4 id="GeometrySubscreen_0.5625">🔗 GeometrySubscreen_0.5625</h4><div class="comparison-image-set">
+
+                    <div class="titled-image-container">
+                        <div class="image-title">vs Xemu</div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//pushbuffer_change/compare_xemu/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899__Darwin_arm64__gl_Apple_Apple_M3_Max__gslv_4.10/Vertex_shader_rounding_tests/GeometrySubscreen_0.5625-diff.png"
+                             alt="Diff result for Vertex_shader_rounding_tests::GeometrySubscreen_0.5625 vs old xemu"
+                             class="inline-image">
+                    </div>
+
+                    <div class="image-group">
+                        <div class="image-group-title-bar">
+                            <div class="image-title"
+                                 data-state="source"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/pushbuffer_change/results/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Vertex_shader_rounding_tests/GeometrySubscreen_0.5625.png">Source</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-xemu"><a
+                                    href="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Vertex_shader_rounding_tests/GeometrySubscreen_0.5625.png">xemu
+                                Golden</a>
+                            </div>
+                            <div class="image-title"
+                                 data-state="golden-hw"><a
+                                    href="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Vertex_shader_rounding_tests/GeometrySubscreen_0.5625.png">Xbox
+                                Golden</a>
+                            </div>
+                        </div>
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads/pushbuffer_change/results/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Vertex_shader_rounding_tests/GeometrySubscreen_0.5625.png"
+                             alt="Source image for Vertex_shader_rounding_tests::GeometrySubscreen_0.5625"
+                             class="image-comparison"
+                             data-state="source">
+                        <img src="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main/results/xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Vertex_shader_rounding_tests/GeometrySubscreen_0.5625.png"
+                             alt="Golden image for Vertex_shader_rounding_tests::GeometrySubscreen_0.5625 in xemu"
+                             class="image-comparison"
+                             data-state="golden-xemu" style="display: none;">
+                        <img src="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main/results/Vertex_shader_rounding_tests/GeometrySubscreen_0.5625.png"
+                             alt="Golden image for Vertex_shader_rounding_tests::GeometrySubscreen_0.5625 on Xbox"
+                             class="image-comparison"
+                             data-state="golden-hw" style="display: none;">
+                    </div>
+
+                    <div class="titled-image-container">
+                            <div class="image-title">vs Xbox</div>
+                            <img src="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch/site//pushbuffer_change/compare_hw/xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10/Xbox__Xbox__DirectX__nv2a/Vertex_shader_rounding_tests/GeometrySubscreen_0.5625-diff.png"
+                                 alt="Diff result for Vertex_shader_rounding_tests::GeometrySubscreen_0.5625 vs Xbox"
+                                 class="inline-image">
+                        </div>
+                    
+
+                </div>
+
+        </div>
+
+    <script src="../script.js"></script>
+</body>
+</html>

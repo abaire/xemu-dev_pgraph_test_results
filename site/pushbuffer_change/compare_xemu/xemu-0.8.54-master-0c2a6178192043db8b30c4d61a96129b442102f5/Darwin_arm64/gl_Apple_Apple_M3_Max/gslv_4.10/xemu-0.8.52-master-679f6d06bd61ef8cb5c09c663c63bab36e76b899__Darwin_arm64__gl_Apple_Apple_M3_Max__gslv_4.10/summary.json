@@ -1,0 +1,22 @@
+{
+  "golden_identifier": "xemu-0.8.52-master-679f6d06bd61ef8cb5c09c663c63bab36e76b899:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [],
+  "result_identifier": "xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": "3703",
+    "Stencil:Stencil_REPLACE": "40000",
+    "Vertex_shader_rounding_tests:GeometrySubscreen_0.5625": "112"
+  },
+  "tests_without_goldens": [
+    "Lighting_accumulation:All",
+    "Lighting_accumulation:Directional-2",
+    "Lighting_accumulation:Directional-4",
+    "Lighting_accumulation:Directional-5",
+    "Lighting_accumulation:Point-2",
+    "Lighting_accumulation:Point-4",
+    "Lighting_accumulation:Point-5",
+    "Lighting_accumulation:Spot-2",
+    "Lighting_accumulation:Spot-4",
+    "Lighting_accumulation:Spot-5"
+  ]
+}
