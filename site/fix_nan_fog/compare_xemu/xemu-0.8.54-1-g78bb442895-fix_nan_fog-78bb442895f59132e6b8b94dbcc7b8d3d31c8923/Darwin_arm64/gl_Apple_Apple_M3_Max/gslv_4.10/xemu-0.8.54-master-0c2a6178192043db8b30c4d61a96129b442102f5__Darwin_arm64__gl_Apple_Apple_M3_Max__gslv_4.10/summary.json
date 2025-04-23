@@ -1,0 +1,19 @@
+{
+  "golden_identifier": "xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.54-1-g78bb442895-fix_nan_fog-78bb442895f59132e6b8b94dbcc7b8d3d31c8923:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Antialiasing_tests:AAOnThenOffCPUWrite": "130992",
+    "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": "17718",
+    "DMA_corruption_around_surfaces:DMAOverlap": "43166",
+    "Stencil:Stencil_REPLACE_ST_DT": "40000",
+    "Stencil:Stencil_ZERO_ST": "30000",
+    "Stencil:Stencil_ZERO_ST_DT": "19900",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "4854",
+    "Texture_signed_component_tests:txt_A8R8G8B8_SREVSUB": "878"
+  },
+  "tests_without_goldens": []
+}
