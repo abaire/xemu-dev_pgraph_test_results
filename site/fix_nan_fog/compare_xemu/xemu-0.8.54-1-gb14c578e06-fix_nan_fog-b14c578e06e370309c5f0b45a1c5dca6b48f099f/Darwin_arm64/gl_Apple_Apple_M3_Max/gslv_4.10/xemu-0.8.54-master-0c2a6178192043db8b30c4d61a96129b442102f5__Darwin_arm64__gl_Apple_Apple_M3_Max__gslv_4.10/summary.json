@@ -1,0 +1,30 @@
+{
+  "golden_identifier": "xemu-0.8.54-master-0c2a6178192043db8b30c4d61a96129b442102f5:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.54-1-gb14c578e06-fix_nan_fog-b14c578e06e370309c5f0b45a1c5dca6b48f099f:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": "17718",
+    "Attrib_float:-1_1": "29376",
+    "Attrib_float:-8_1": "29376",
+    "Attrib_float:-INF_INF": "29376",
+    "Attrib_float:-Max_Max": "29376",
+    "Attrib_float:-MinN_MinN": "29376",
+    "Attrib_float:-NaNq_NaNq": "88128",
+    "Attrib_float:-NaNs_NaNs": "88128",
+    "Attrib_float:0_1": "25866",
+    "Attrib_float:0_8": "25866",
+    "DMA_corruption_around_surfaces:DMAOverlap": "43166",
+    "Lighting_range:Point": "1061",
+    "Lighting_range:Spot": "28987",
+    "Lighting_spotlight:AtFixed_0.000000_0.000000_0.000000": "77575",
+    "Lighting_spotlight:PTFixed_-10.000000_-10.000000": "109561",
+    "Lighting_spotlight:PTFixed_0.000000_0.000000": "109561",
+    "Lighting_spotlight:PTFixed_10.000000_10.000000": "109561",
+    "Surface_pitch:Swizzle": "2048",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "102"
+  },
+  "tests_without_goldens": []
+}
