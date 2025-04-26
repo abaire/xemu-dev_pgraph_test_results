@@ -1,0 +1,37 @@
+{
+  "golden_identifier": "xemu-0.8.55-master-89185e6937c7d597ba353bc4d4800dde0015ea39:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.54-3-gd6b00e952f-fix_nan_fog-d6b00e952f01a340be61081947cb326e4666c707:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Antialiasing_tests:AAOnThenOffCPUWrite": "123968",
+    "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": "12562",
+    "Attrib_float:-1_1": "29376",
+    "Attrib_float:-8_1": "29376",
+    "Attrib_float:-INF_INF": "29376",
+    "Attrib_float:-Max_Max": "29376",
+    "Attrib_float:-MinN_MinN": "29376",
+    "Attrib_float:-NaNq_NaNq": "88128",
+    "Attrib_float:-NaNs_NaNs": "88128",
+    "Attrib_float:0_1": "25866",
+    "Attrib_float:0_8": "25866",
+    "Attrib_float:Colors": "32768",
+    "DMA_corruption_around_surfaces:DMAOverlap": "43166",
+    "Lighting_spotlight:AtFixed_0.000000_0.000000_0.000000": "77575",
+    "Lighting_spotlight:PTFixed_-10.000000_-10.000000": "109561",
+    "Lighting_spotlight:PTFixed_0.000000_0.000000": "109561",
+    "Lighting_spotlight:PTFixed_10.000000_10.000000": "109561",
+    "Stencil:Stencil_REPLACE_ST": "20100",
+    "Stencil:Stencil_ZERO_ST": "40000",
+    "Stencil:Stencil_ZERO_ST_DT": "30000",
+    "Surface_pitch:Swizzle": "8192",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "3638",
+    "Vertex_shader_rounding_tests:GeometrySubscreen_0.5624": "115",
+    "Vertex_shader_rounding_tests:GeometrySubscreen_0.5626": "251",
+    "Vertex_shader_rounding_tests:GeometrySubscreen_1.0000": "145",
+    "Vertex_shader_rounding_tests:RenderTarget": "61560"
+  },
+  "tests_without_goldens": []
+}
