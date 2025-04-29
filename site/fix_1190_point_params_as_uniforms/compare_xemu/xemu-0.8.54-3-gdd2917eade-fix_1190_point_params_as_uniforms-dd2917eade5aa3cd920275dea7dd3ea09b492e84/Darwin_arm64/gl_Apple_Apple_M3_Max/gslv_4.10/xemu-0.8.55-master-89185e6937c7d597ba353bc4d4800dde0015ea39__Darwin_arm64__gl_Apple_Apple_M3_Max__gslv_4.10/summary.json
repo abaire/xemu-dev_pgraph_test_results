@@ -1,0 +1,24 @@
+{
+  "golden_identifier": "xemu-0.8.55-master-89185e6937c7d597ba353bc4d4800dde0015ea39:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.54-3-gdd2917eade-fix_1190_point_params_as_uniforms-dd2917eade5aa3cd920275dea7dd3ea09b492e84:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Antialiasing_tests:AAOnThenOffCPUWrite": "131071",
+    "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": "12562",
+    "DMA_corruption_around_surfaces:DMAOverlap": "43166",
+    "Point_params:Detailed_FF": "64660",
+    "Point_params:PointParamsOn_SmoothOff_128_FF": "111769",
+    "Point_params:PointParamsOn_SmoothOn_001_FF": "111769",
+    "Point_params:PointParamsOn_SmoothOn_128_FF": "111769",
+    "Stencil:Stencil_REPLACE_ST": "20100",
+    "Stencil:Stencil_ZERO_ST": "30000",
+    "Stencil:Stencil_ZERO_ST_DT": "40000",
+    "Surface_pitch:Swizzle": "8192",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "3638",
+    "Vertex_shader_rounding_tests:GeometrySubscreen_1.0000": "132"
+  },
+  "tests_without_goldens": []
+}
