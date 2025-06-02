@@ -1,4 +1,3 @@
 {
-  "results/xemu-0.8.67-16-g4c1e535ffa-fix_713_color_key-4c1e535ffae80e3a300dd59251d96a1dadb64016/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10": "xemu-golden-results/results/xemu-0.8.67-master-38d33367eaf3425c6160ecb81ee8233f53304613/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10",
-  "results/xemu-0.8.66-3-g74d7211463-fix_713_color_key-74d7211463f4339dec3b2325ca80b822c5ebfd59/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler": "xemu-golden-results/results/xemu-0.8.67-master-38d33367eaf3425c6160ecb81ee8233f53304613/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10"
+  "results/xemu-0.8.66-4-gffcd341cd4-fix_713_color_key-ffcd341cd4bddfee520cb124abd1b8a5a8da189a/Linux_x86_64/gl_NVIDIA_Corporation_NVIDIA_GeForce_GTX_1070-PCIe-SSE2/gslv_4.00_NVIDIA_via_Cg_compiler": "xemu-golden-results/results/xemu-0.8.67-master-38d33367eaf3425c6160ecb81ee8233f53304613/Darwin_arm64/gl_Apple_Apple_M3_Max/gslv_4.10"
 }
