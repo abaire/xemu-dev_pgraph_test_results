@@ -1,0 +1,23 @@
+{
+  "golden_identifier": "xemu-0.8.68-master-344f7da1323ef22d9d131181b21762b149e345d3:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.67-6-ga394185ea6-fix_950_clear_overlapped_dirty_draw_during_2d_blit-a394185ea63cd49d179fda06d9d868cb6835edfb:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": "11206",
+    "Antialiasing_tests:NonAACPURoundTrip": "23872",
+    "DMA_corruption_around_surfaces:DMAOverlap": "43245",
+    "Image_blit:DirtyOverlappedDestSurf": "16097",
+    "Stencil:Stencil_REPLACE_ST": "19900",
+    "Surface_pitch:Swizzle": "8192",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "1277",
+    "Vertex_shader_rounding_tests:GeometrySubscreen_0.0010": "217",
+    "Vertex_shader_rounding_tests:RenderTarget": "60969"
+  },
+  "tests_without_goldens": [
+    "Depth_function:DepthFunc",
+    "Depth_function:DepthFunc_ZB"
+  ]
+}
