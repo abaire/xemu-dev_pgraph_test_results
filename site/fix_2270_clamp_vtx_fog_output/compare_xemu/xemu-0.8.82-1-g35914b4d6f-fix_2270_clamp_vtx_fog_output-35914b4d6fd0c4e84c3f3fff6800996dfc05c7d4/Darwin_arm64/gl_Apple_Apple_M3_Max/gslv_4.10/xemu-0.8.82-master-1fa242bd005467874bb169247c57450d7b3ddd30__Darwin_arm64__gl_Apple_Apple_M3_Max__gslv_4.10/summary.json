@@ -6,19 +6,14 @@
   ],
   "result_identifier": "xemu-0.8.82-1-g35914b4d6f-fix_2270_clamp_vtx_fog_output-35914b4d6fd0c4e84c3f3fff6800996dfc05c7d4:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
   "tests_with_differences": {
-    "Antialiasing_tests:AAOnThenOffCPUWrite": "42258",
+    "Antialiasing_tests:AAOnThenOffCPUWrite": "42381",
     "Antialiasing_tests:CPUWriteIgnoresSurfaceConfig": "12565",
-    "Antialiasing_tests:NonAACPURoundTrip": "24827",
+    "Antialiasing_tests:NonAACPURoundTrip": "23872",
     "DMA_corruption_around_surfaces:DMAOverlap": "5350",
-    "Fog:AFF-linear-planar": "336",
-    "Fog_gen:FogGen_FF-linear-spec_alpha": "12060",
-    "Fog_vsh:AFF-linear-planar": "302",
-    "Stencil:Stencil_REPLACE_ST": "19900",
     "Surface_pitch:Swizzle": "8192",
-    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "146",
-    "Vertex_shader_rounding_tests:GeometrySubscreen_0.4999": "482",
-    "Vertex_shader_rounding_tests:GeometrySubscreen_0.9990": "109",
-    "Vertex_shader_rounding_tests:RenderTarget": "63270"
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "630",
+    "Vertex_shader_rounding_tests:GeometrySubscreen_0.9990": "107",
+    "Vertex_shader_rounding_tests:RenderTarget": "59850"
   },
   "tests_without_goldens": []
 }
