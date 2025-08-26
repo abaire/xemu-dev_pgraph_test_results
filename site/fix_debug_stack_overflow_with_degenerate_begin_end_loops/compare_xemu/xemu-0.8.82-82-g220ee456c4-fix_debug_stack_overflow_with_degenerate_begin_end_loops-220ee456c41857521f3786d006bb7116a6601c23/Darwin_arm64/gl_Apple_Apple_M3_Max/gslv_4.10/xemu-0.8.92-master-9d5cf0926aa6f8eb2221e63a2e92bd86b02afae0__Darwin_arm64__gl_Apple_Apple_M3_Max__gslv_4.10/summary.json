@@ -1,0 +1,39 @@
+{
+  "golden_identifier": "xemu-0.8.92-master-9d5cf0926aa6f8eb2221e63a2e92bd86b02afae0:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.82-82-g220ee456c4-fix_debug_stack_overflow_with_degenerate_begin_end_loops-220ee456c41857521f3786d006bb7116a6601c23:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Lighting_control:VS_0x000000NoSpec_LightOff": "170",
+    "Lighting_control:VS_0x000000_LightOff": "3438",
+    "Lighting_control:VS_0x000001NoSpec_LightOff": "170",
+    "Lighting_control:VS_0x000001_LightOff": "3438",
+    "Lighting_control:VS_0x010000NoSpec_LightOff": "170",
+    "Lighting_control:VS_0x010000_LightOff": "3438",
+    "Lighting_control:VS_0x010001NoSpec_LightOff": "170",
+    "Lighting_control:VS_0x010001_LightOff": "3438",
+    "Lighting_control:VS_0x020000NoSpec_LightOff": "170",
+    "Lighting_control:VS_0x020000_LightOff": "902",
+    "Lighting_control:VS_0x020001NoSpec_LightOff": "170",
+    "Lighting_control:VS_0x020001_LightOff": "902",
+    "Lighting_control:VS_0x030000NoSpec_LightOff": "170",
+    "Lighting_control:VS_0x030000_LightOff": "902",
+    "Lighting_control:VS_0x030001NoSpec_LightOff": "170",
+    "Lighting_control:VS_0x030001_LightOff": "902",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "6815",
+    "Texture_signed_component_tests:txt_A8R8G8B8_SREVSUB": "1451"
+  },
+  "tests_without_goldens": [
+    "Context_switch:GRZero",
+    "Degenerate_begin_end:BeginWithoutEnd",
+    "Image_blit:ImgBlt_Clip_0_0_640_480",
+    "Image_blit:ImgBlt_Clip_300_200_16_24",
+    "Image_blit:ImgBlt_Clip_320_240_0_0",
+    "Image_blit:ImgBlt_Clip_320_240_0_10",
+    "Image_blit:ImgBlt_Clip_320_240_1_1",
+    "Image_blit:ImgBlt_Clip_320_240_640_480",
+    "Image_blit:ImgBlt_Clip_320_240_64_40"
+  ]
+}
