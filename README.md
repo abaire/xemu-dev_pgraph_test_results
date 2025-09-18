@@ -22,8 +22,8 @@ If you are doing xemu development:
 
 ### For each xemu PR
 1. Create a new branch in your repository, ideally matching the branch name of your xemu work, for clarity.
+3. Examine the results and commit them to your new branch if they look correct. For readability, you may want to reference a xemu issue in your commit name; e.g., "Results of fix for xemu#1234".
 2. Use `execute.py` to run the [nxdk_pgraph_tests](https://github.com/abaire/nxdk_pgraph_tests) against your development xemu build.
-3. Examine the results and commit them to your new branch if they look correct.
 4. Push the new results branch to your repository and create a PR. The associated GitHub action will compare the results to [hardware golden results](https://github.com/abaire/nxdk_pgraph_tests_golden_results) and the best known [xemu results](https://github.com/abaire/xemu-nxdk_pgraph_tests_results). Then will add the diffs to the GitHub Pages page for your repo as a new page matching the branch name.
 
 You can then add a link to that results page to your xemu PR.
