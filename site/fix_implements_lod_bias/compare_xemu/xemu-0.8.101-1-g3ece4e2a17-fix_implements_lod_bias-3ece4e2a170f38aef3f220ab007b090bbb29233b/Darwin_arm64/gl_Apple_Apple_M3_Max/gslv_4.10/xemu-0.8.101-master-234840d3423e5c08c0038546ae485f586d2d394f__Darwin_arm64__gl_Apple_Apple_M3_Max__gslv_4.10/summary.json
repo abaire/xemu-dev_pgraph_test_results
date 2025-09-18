@@ -1,0 +1,21 @@
+{
+  "golden_identifier": "xemu-0.8.101-master-234840d3423e5c08c0038546ae485f586d2d394f:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.101-1-g3ece4e2a17-fix_implements_lod_bias-3ece4e2a170f38aef3f220ab007b090bbb29233b:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Stencil:Stencil_REPLACE": "40000",
+    "Stencil:Stencil_REPLACE_ST_DT": "30000",
+    "Stencil:Stencil_ZERO_ST_DT": "30000",
+    "Surface_pitch:Swizzle": "8192",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "78283",
+    "Texture_signed_component_tests:txt_A8R8G8B8_SREVSUB": "848",
+    "W_param:ff_w_zero__bitri": "1594",
+    "W_param:ff_w_zero__bitri_tex_persp": "1594"
+  },
+  "tests_without_goldens": [
+    "Texture_LOD_Bias:LODBias"
+  ]
+}
