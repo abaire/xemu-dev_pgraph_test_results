@@ -6,14 +6,15 @@
   ],
   "result_identifier": "xemu-0.8.104-5-g1973482781-fix_2473_prevent_alpha_updates_for_forced_value_surfaces-1973482781c120ceae88e2e0d89fa522b35b9639:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
   "tests_with_differences": {
-    "Blend_surface:X_Z1RGB5_Add_SrcA_DstA": "11413",
-    "Blend_surface:X_ZRGB8_Add_SrcA_DstA": "25759",
-    "Stencil:Stencil_ZERO_ST_DT": "19900",
-    "Surface_format:Fmt_X1R5G5B5_Z1R5G5B5": "21971",
-    "Surface_format:Fmt_X8R8G8B8_Z8R8G8B8": "20909",
+    "Blend_surface:1-DstAlpha_X_Z1RGB5": "32768",
+    "Blend_surface:1-DstAlpha_X_ZRGB8": "59052",
+    "Blend_surface:DstAlpha_X_Z1RGB5": "32768",
+    "Blend_surface:DstAlpha_X_ZRGB8": "79536",
+    "Blend_surface:X_Z1RGB5_Add_SrcA_DstA": "275",
+    "Blend_surface:X_ZRGB8_Add_SrcA_DstA": "20257",
+    "Stencil:Stencil_REPLACE_ST": "19900",
     "Surface_pitch:Swizzle": "8192",
-    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "78102",
-    "Texture_signed_component_tests:txt_A8R8G8B8_SREVSUB": "1391"
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "251"
   },
   "tests_without_goldens": []
 }
