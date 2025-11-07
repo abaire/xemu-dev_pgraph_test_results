@@ -1,0 +1,38 @@
+{
+  "golden_identifier": "xemu-0.8.111-master-db8d27b9f4a5f04352aa240e1cb223c7d1f126ea:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.104-55-ge025f6c04a-work-e025f6c04ad00102680452a582e39c027c635024:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Attrib_carryover:L-ps0.8_0.0_0.0_1.0-ib": "384",
+    "Attrib_carryover:T-ps0.8_0.0_0.0_1.0-ib": "30720",
+    "Point_size:PointSmoothOff_01_VS": "17951",
+    "Point_size:PointSmoothOff_08_VS": "69901",
+    "Point_size:PointSmoothOff_16_FF": "78547",
+    "Point_size:PointSmoothOff_16_VS": "147273",
+    "Point_size:PointSmoothOn_01_VS": "46700",
+    "Point_size:PointSmoothOn_04_VS": "17951",
+    "Point_size:PointSmoothOn_08_VS": "69901",
+    "Point_size:PointSmoothOn_16_FF": "78547",
+    "Point_size:PointSmoothOn_16_VS": "147273",
+    "Stencil:Stencil_REPLACE_ST": "30000",
+    "Stencil:Stencil_REPLACE_ST_DT": "30000",
+    "Stencil:Stencil_ZERO_ST": "30000",
+    "Stencil:Stencil_ZERO_ST_DT": "30000",
+    "Texture_signed_component_tests:txt_A8R8G8B8_SREVSUB": "556",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x00FF": "1023",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x00FF_ZB": "1023",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x0100": "1023",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x0100_ZB": "1023",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x01F8": "3968",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x01F8_ZB": "3968",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x01FF": "4095",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x01FF_ZB": "4095"
+  },
+  "tests_without_goldens": [
+    "Point_size:LargestPointSize_FF",
+    "Point_size:LargestPointSize_VS"
+  ]
+}
