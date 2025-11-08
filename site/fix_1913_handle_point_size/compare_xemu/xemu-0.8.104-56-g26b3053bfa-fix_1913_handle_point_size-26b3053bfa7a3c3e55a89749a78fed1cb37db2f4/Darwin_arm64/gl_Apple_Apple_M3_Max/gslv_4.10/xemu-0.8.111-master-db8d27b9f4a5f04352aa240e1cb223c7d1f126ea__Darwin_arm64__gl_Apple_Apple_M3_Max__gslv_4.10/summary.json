@@ -1,0 +1,51 @@
+{
+  "golden_identifier": "xemu-0.8.111-master-db8d27b9f4a5f04352aa240e1cb223c7d1f126ea:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.104-56-g26b3053bfa-fix_1913_handle_point_size-26b3053bfa7a3c3e55a89749a78fed1cb37db2f4:Darwin_arm64:gl_Apple_Apple_M3_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Point_params:Detailed_VS": "15774",
+    "Point_params:PointParamsOn_SmoothOff_128_VS": "23205",
+    "Point_params:PointParamsOn_SmoothOn_128_VS": "15758",
+    "Point_params:Scale_0_0_0_VS": "48960",
+    "Point_params:Scale_0_0_1_VS": "48960",
+    "Point_params:Scale_0_1_0_VS": "48960",
+    "Point_params:Scale_0_1_1_VS": "48960",
+    "Point_params:Scale_4_0_0_VS": "48960",
+    "Point_params:Scale_4_0_1_VS": "48960",
+    "Point_params:Scale_4_1_0_VS": "48960",
+    "Point_params:Scale_4_1_1_VS": "48960",
+    "Point_size:PointSmoothOff_01_VS": "46959",
+    "Point_size:PointSmoothOff_08_VS": "69901",
+    "Point_size:PointSmoothOff_16_FF": "78547",
+    "Point_size:PointSmoothOff_16_VS": "147273",
+    "Point_size:PointSmoothOn_01_VS": "46700",
+    "Point_size:PointSmoothOn_04_VS": "17951",
+    "Point_size:PointSmoothOn_08_VS": "69901",
+    "Point_size:PointSmoothOn_16_FF": "78547",
+    "Point_size:PointSmoothOn_16_VS": "147273",
+    "Stencil:Stencil_REPLACE_ST": "30000",
+    "Stencil:Stencil_REPLACE_ST_DT": "30000",
+    "Stencil:Stencil_ZERO_ST": "30000",
+    "Stencil:Stencil_ZERO_ST_DT": "30000",
+    "Surface_pitch:Swizzle": "8192",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "6815",
+    "Texture_signed_component_tests:txt_A8R8G8B8_SREVSUB": "2959",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x00FF": "1023",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x00FF_ZB": "1023",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x0100": "1023",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x0100_ZB": "1023",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x01F8": "3968",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x01F8_ZB": "3968",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x01FF": "4095",
+    "ZPass_pixel_count:ZPassPointSizeVS-0x01FF_ZB": "4095"
+  },
+  "tests_without_goldens": [
+    "Point_size:LargestPointSize_FF",
+    "Point_size:LargestPointSize_VS",
+    "Point_size:PointSmoothOff_04_VS",
+    "Point_size:VSPointSize"
+  ]
+}
