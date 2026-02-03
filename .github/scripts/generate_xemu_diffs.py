@@ -257,6 +257,9 @@ def find_result_dirs_without_golden_diffs(
 ) -> list[tuple[str, str]]:
     result_paths = _find_results_paths(results_dir)
     golden_configurations = _build_golden_configurations(golden_dir)
+    if not golden_configurations:
+        msg = f"Failed to determine golden configurations for '{golden_dir}'"
+        raise ValueError(msg)
 
     ret: list[tuple[str, str]] = []
 
