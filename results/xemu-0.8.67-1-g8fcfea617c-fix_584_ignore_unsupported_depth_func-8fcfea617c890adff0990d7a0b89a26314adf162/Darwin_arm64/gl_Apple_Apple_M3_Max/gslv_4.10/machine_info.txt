@@ -1,0 +1,12 @@
+xemu_version: 0.8.67-1-g8fcfea617c
+xemu_branch: fix_584_ignore_unsupported_depth_func
+xemu_commit: 8fcfea617c890adff0990d7a0b89a26314adf162
+xemu_date: Tue Jun  3 02:30:26 UTC 2025
+xemu_settings_get_base_path: base path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/
+xemu_settings_get_path: config path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/xemu.toml
+CPU: 
+OS_Version: Version 15.5 (Build 24F74)
+GL_VENDOR: Apple
+GL_RENDERER: Apple M3 Max
+GL_VERSION: 4.1 Metal - 89.4
+GL_SHADING_LANGUAGE_VERSION: 4.10
