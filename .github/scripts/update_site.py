@@ -357,7 +357,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--xemu-golden-base-url",
-        default="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main",
+        default="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/github_pages",
         help="Base URL at which the contents of the xemu golden results repository may be publicly accessed",
     )
     parser.add_argument(
