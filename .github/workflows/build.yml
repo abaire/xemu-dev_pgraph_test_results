@@ -47,7 +47,7 @@ jobs:
       hw_diff_artifact: ${{ steps.archive_results.outputs.archive_artifact }}
     steps:
       - name: Clone tree
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: '1'
       - uses: actions/setup-python@v5
@@ -83,7 +83,7 @@ jobs:
       xemu_diff_artifact: ${{ steps.archive_results.outputs.archive_artifact }}
     steps:
       - name: Clone tree
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: '1'
       - uses: actions/setup-python@v5
@@ -121,7 +121,7 @@ jobs:
       site_sha: ${{ steps.commit.outputs.new_head_commit }}
     steps:
       - name: Clone tree
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -209,7 +209,7 @@ jobs:
       - name: Print site sha
         run: echo "Site SHA is ${{ needs.UpdateSite.outputs.site_sha }}"
       - name: Clone tree
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ needs.UpdateSite.outputs.site_sha }}
           fetch-depth: 1
