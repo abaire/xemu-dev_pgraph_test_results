@@ -93,7 +93,7 @@ def generate_missing_hw_diffs(
         }
 
         for future in as_completed(futures):
-            result_path, success, stdout, stderr = future.result()
+            _result_path, success, _stdout, _stderr = future.result()
             if success:
                 successful_comparisons += 1
             else:
