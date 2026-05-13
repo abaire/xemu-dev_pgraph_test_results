@@ -67,7 +67,7 @@ jobs:
         run: |
           set -x
           python3 .github/scripts/generate_missing_hw_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: hardware_diffs
           path: "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}/"
@@ -105,7 +105,7 @@ jobs:
             --baseline-dir "$XEMU_BASELINE_DIR" \
             --output-dir "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: xemu_diffs
           path: "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}/"
