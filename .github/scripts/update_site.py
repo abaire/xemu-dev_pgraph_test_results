@@ -147,7 +147,7 @@ class Generator:
         self.env = jinja_env
         self.top_index_only = top_index_only
         self.comparison_registry: dict[str, str] = {}
-        self.run_infos: dict[str, dict[str, Any]] = defaultdict(lambda: {})
+        self.run_infos: dict[str, dict[str, Any]] = defaultdict(dict)
 
         self.results: dict[str, DiffLink] = {}
         if not self.top_index_only:
@@ -212,7 +212,9 @@ class Generator:
 
             xemu_golden_info = self.comparison_registry.get(results_key)
             if not xemu_golden_info:
-                msg = f"Failed to lookup comparison database for xemu diff '{xemu_diff}' from {self.comparison_registry}"
+                msg = (
+                    f"Failed to lookup comparison database for xemu diff '{xemu_diff}' from {self.comparison_registry}"
+                )
                 raise ValueError(msg)
             suite, filename = components[-2:]
             golden_filename = filename.replace("-diff.png", ".png")
@@ -355,7 +357,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--xemu-golden-base-url",
-        default="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/main",
+        default="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/github_pages",
         help="Base URL at which the contents of the xemu golden results repository may be publicly accessed",
     )
     parser.add_argument(
