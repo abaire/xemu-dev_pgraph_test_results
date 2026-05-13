@@ -47,10 +47,10 @@ jobs:
       hw_diff_artifact: ${{ steps.archive_results.outputs.archive_artifact }}
     steps:
       - name: Clone tree
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: '1'
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: 'pip'
@@ -67,7 +67,7 @@ jobs:
         run: |
           set -x
           python3 .github/scripts/generate_missing_hw_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: hardware_diffs
           path: "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}/"
@@ -76,35 +76,35 @@ jobs:
 
   GenerateXemuDiffs:
     needs: [ GetOutputPaths ]
-    name: Generate diffs between the dev results and the latest xemu results
+    name: Generate diffs against baseline xemu release
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    outputs:
-      xemu_diff_artifact: ${{ steps.archive_results.outputs.archive_artifact }}
     steps:
       - name: Clone tree
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: '1'
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: 'pip'
+
       - name: Install requirements
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            perceptualdiff
-
+          sudo apt-get update && sudo apt-get install -y perceptualdiff
           export PIP_BREAK_SYSTEM_PACKAGES=1
-          pip3 install -r requirements.txt
-          pip3 install -r .github/scripts/requirements.txt
+          pip3 install -r requirements.txt -r .github/scripts/requirements.txt
+
+      - name: Fetch and Match Baseline
+        run: python3 .github/scripts/fetch_baseline_artifact.py
+
       - name: Generate new diffs
-        id: generate_diffs
         run: |
-          set -x
-          python3 .github/scripts/generate_xemu_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}"
-      - uses: actions/upload-artifact@v4
+          python3 .github/scripts/generate_xemu_diffs.py \
+            --baseline-dir "$XEMU_BASELINE_DIR" \
+            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}"
+
+      - uses: actions/upload-artifact@v7
         with:
           name: xemu_diffs
           path: "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}/"
@@ -121,8 +121,8 @@ jobs:
       site_sha: ${{ steps.commit.outputs.new_head_commit }}
     steps:
       - name: Clone tree
-        uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+        uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: 'pip'
@@ -209,14 +209,14 @@ jobs:
       - name: Print site sha
         run: echo "Site SHA is ${{ needs.UpdateSite.outputs.site_sha }}"
       - name: Clone tree
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ needs.UpdateSite.outputs.site_sha }}
           fetch-depth: 1
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: 'site'
       - name: Deploy to GitHub Pages

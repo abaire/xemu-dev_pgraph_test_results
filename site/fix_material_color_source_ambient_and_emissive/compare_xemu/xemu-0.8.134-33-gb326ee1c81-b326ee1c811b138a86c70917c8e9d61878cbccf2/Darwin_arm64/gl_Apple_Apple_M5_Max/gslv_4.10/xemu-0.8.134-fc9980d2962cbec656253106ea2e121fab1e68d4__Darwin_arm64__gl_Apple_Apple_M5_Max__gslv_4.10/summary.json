@@ -1,0 +1,40 @@
+{
+  "golden_identifier": "xemu-0.8.134-fc9980d2962cbec656253106ea2e121fab1e68d4:Darwin_arm64:gl_Apple_Apple_M5_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.134-33-gb326ee1c81-b326ee1c811b138a86c70917c8e9d61878cbccf2:Darwin_arm64:gl_Apple_Apple_M5_Max:gslv_4.10",
+  "tests_with_differences": {
+    "Material_color_source:Emissive_me0": "56507",
+    "Material_color_source:Emissive_me0_15": "62741",
+    "Material_color_source:Emissive_me0_5": "68202",
+    "Material_color_source:Emissive_me1_0": "56114",
+    "Material_color_source:FromMaterial_me0_15": "73696",
+    "Material_color_source:FromMaterial_me0_15_2light": "31895",
+    "Material_color_source:FromMaterial_me0_5": "73715",
+    "Material_color_source:FromMaterial_me0_5_2light": "36864",
+    "Material_color_source:FromMaterial_me1_0": "73728",
+    "Material_color_source:FromMaterial_me1_0_2light": "36864",
+    "Material_color_source:FromVertexDiffuse": "42855",
+    "Material_color_source:FromVertexDiffuse_2light": "42073",
+    "Material_color_source:FromVertexDiffuse_me0_15": "61882",
+    "Material_color_source:FromVertexDiffuse_me0_15_2light": "48938",
+    "Material_color_source:FromVertexDiffuse_me0_5": "65020",
+    "Material_color_source:FromVertexDiffuse_me0_5_2light": "51055",
+    "Material_color_source:FromVertexDiffuse_me1_0": "51007",
+    "Material_color_source:FromVertexDiffuse_me1_0_2light": "45977",
+    "Material_color_source:FromVertexSpecular": "34298",
+    "Material_color_source:FromVertexSpecular_2light": "42158",
+    "Material_color_source:FromVertexSpecular_me0_15": "53467",
+    "Material_color_source:FromVertexSpecular_me0_15_2light": "45589",
+    "Material_color_source:FromVertexSpecular_me0_5": "56872",
+    "Material_color_source:FromVertexSpecular_me0_5_2light": "51344",
+    "Material_color_source:FromVertexSpecular_me1_0": "47665",
+    "Material_color_source:FromVertexSpecular_me1_0_2light": "33152",
+    "Stencil:Stencil_REPLACE_ST_DT": "30000",
+    "Stencil:Stencil_ZERO_ST_DT": "30000",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "1612"
+  },
+  "tests_without_goldens": []
+}
