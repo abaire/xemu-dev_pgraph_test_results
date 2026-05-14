@@ -40,11 +40,13 @@ jobs:
 
   GenerateHardwareDiffs:
     needs: [ GetOutputPaths ]
-    name: Generate diffs between the dev results and Xbox hardware results
+    name: Generate hardware diffs (shard ${{ matrix.shard }})
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    outputs:
-      hw_diff_artifact: ${{ steps.archive_results.outputs.archive_artifact }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
     steps:
       - name: Clone tree
         uses: actions/checkout@v6
@@ -66,7 +68,27 @@ jobs:
       - name: Generate new diffs
         run: |
           set -x
-          python3 .github/scripts/generate_missing_hw_diffs.py --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
+          python3 .github/scripts/generate_missing_hw_diffs.py \
+            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}" \
+            --shard-index ${{ matrix.shard }} \
+            --shard-count 4
+      - uses: actions/upload-artifact@v7
+        with:
+          name: hardware_diffs_shard_${{ matrix.shard }}
+          path: "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}/"
+          if-no-files-found: warn
+          compression-level: 1
+
+  MergeHardwareDiffs:
+    needs: [ GetOutputPaths, GenerateHardwareDiffs ]
+    name: Merge hardware diff shards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hardware_diffs_shard_*
+          path: "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
+          merge-multiple: true
       - uses: actions/upload-artifact@v7
         with:
           name: hardware_diffs
@@ -113,7 +135,7 @@ jobs:
 
   UpdateSite:
     name: Generate a comparison page in GitHub Pages for the current branch
-    needs: [ GetOutputPaths, GenerateHardwareDiffs, GenerateXemuDiffs ]
+    needs: [ GetOutputPaths, MergeHardwareDiffs, GenerateXemuDiffs ]
     runs-on: ubuntu-latest
     permissions:
       contents: write

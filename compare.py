@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # ruff: noqa: T201 `print` found
+# ruff: noqa: PLC0415 `import` should be at the top-level of a file
 
 from __future__ import annotations
 
@@ -50,7 +51,7 @@ class ResultsInfo(NamedTuple):
                 ret.add(f"{suite_dir_name}:{test_case}")
         return ret
 
-    def find_result_images(self) -> ResultsInfo:
+    def find_result_images(self, include_suites: set[str] | None = None) -> ResultsInfo:
         """Walks the result_path to find all png images."""
         for root, dirnames, filenames in os.walk(self.result_path):
             if os.path.basename(root).startswith("."):
@@ -64,13 +65,16 @@ class ResultsInfo(NamedTuple):
             if test_suite in {"perceptualdiff", "scripts"}:
                 continue
 
+            if include_suites and test_suite not in include_suites:
+                continue
+
             for filename in filenames:
                 test_case = os.path.splitext(filename)[0]
                 self.test_suites[test_suite][test_case] = os.path.join(root, filename)
         return self
 
     @classmethod
-    def parse(cls, result_path: str) -> ResultsInfo:
+    def parse(cls, result_path: str, include_suites: set[str] | None = None) -> ResultsInfo:
         # results/Linux_foo/gl_version/glsl_version/xemu_version
         components = result_path.split("/")
         return cls(
@@ -79,7 +83,7 @@ class ResultsInfo(NamedTuple):
             platform_info=components[-3],
             gl_info=f"{components[-2]}:{components[-1]}",
             test_suites=defaultdict(dict),
-        ).find_result_images()
+        ).find_result_images(include_suites)
 
 
 class Difference(NamedTuple):
@@ -180,7 +184,7 @@ def _compare_lpips(results_info: ResultsInfo, golden_info: ResultsInfo) -> tuple
             )
 
             differences.append(Difference(test_suite, test_case, artifact, golden_artifact, distance_value))
-        print("")
+        print()
 
     return only_results, only_goldens, differences
 
@@ -207,7 +211,7 @@ def _compare_perceptualdiff(
                 continue
 
             diff = Difference(test_suite, test_case, artifact, golden_artifact, -1)
-            result, stdout, stderr = diff.generate_difference_image(perceptualdiff, comparison_output_directory)
+            result, stdout, _stderr = diff.generate_difference_image(perceptualdiff, comparison_output_directory)
             if not result:
                 continue
 
@@ -218,7 +222,7 @@ def _compare_perceptualdiff(
                     diff_score = match.group(1)
             diff = Difference(test_suite, test_case, artifact, golden_artifact, diff_score)
             differences.append(diff)
-        print("")
+        print()
 
     return only_results, only_goldens, differences
 
@@ -231,8 +235,9 @@ def perform_comparison(
     diff_threshold: float,
     *,
     use_lpips: bool = True,
+    include_suites: set[str] | None = None,
 ) -> None:
-    results_info = ResultsInfo.parse(results_path)
+    results_info = ResultsInfo.parse(results_path, include_suites)
 
     if "nxdk_pgraph_tests_golden_results" in golden_path:
         golden_info = ResultsInfo(
@@ -241,10 +246,10 @@ def perform_comparison(
             gl_info="DirectX:nv2a",
             result_path=golden_path,
             test_suites=defaultdict(dict),
-        ).find_result_images()
+        ).find_result_images(include_suites)
         against_name = "Xbox_Hardware"
     else:
-        golden_info = ResultsInfo.parse(golden_path)
+        golden_info = ResultsInfo.parse(golden_path, include_suites)
         against_name = golden_info.run_identifier
 
     logger.debug("Comparing %s to %s", results_info.run_identifier, against_name)
@@ -342,6 +347,10 @@ def _process_arguments_and_run():
         action="store_true",
         help="Use LPIPS to pre-filter diffs before perceptualdiff.",
     )
+    parser.add_argument(
+        "--include-suites-file",
+        help="Path to a file containing test suite names to process (one per line). If omitted, all suites are processed.",
+    )
 
     args = parser.parse_args()
 
@@ -377,8 +386,20 @@ def _process_arguments_and_run():
 
     os.makedirs(args.output_dir, exist_ok=True)
 
+    include_suites = None
+    if args.include_suites_file:
+        with open(args.include_suites_file) as f:
+            include_suites = {line.strip() for line in f if line.strip()}
+        logger.info("Filtering to %d suite(s) from %s", len(include_suites), args.include_suites_file)
+
     perform_comparison(
-        args.results, golden_dir, args.output_dir, args.perceptualdiff, args.diff_threshold, use_lpips=args.use_lpips
+        args.results,
+        golden_dir,
+        args.output_dir,
+        args.perceptualdiff,
+        args.diff_threshold,
+        use_lpips=args.use_lpips,
+        include_suites=include_suites,
     )
 
     return 0
