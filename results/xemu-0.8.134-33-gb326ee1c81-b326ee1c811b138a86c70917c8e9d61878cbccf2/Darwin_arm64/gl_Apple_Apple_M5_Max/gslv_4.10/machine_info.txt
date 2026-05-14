@@ -1,6 +1,6 @@
 xemu_version: 0.8.134-33-gb326ee1c81
 xemu_commit: b326ee1c811b138a86c70917c8e9d61878cbccf2
-xemu_date: Wed May 13 00:17:28 UTC 2026
+xemu_date: Thu May 14 14:19:51 UTC 2026
 CPU: 
 OS_Version: Version 26.3.1 (Build 25D2128)
 GL_VENDOR: Apple
