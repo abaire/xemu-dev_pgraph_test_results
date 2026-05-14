@@ -6,7 +6,6 @@ import argparse
 import os
 import subprocess
 import sys
-from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
 def _find_results_paths(results_dir: str) -> set[str]:
@@ -66,20 +65,10 @@ def find_result_dirs_without_hw_diffs(results_dir: str, output_dir: str) -> set[
     return result_paths - source_paths
 
 
-def perform_comparison(result: str, output_dir: str, compare_script: str) -> tuple[str, bool, str, str]:
-    process = subprocess.run(
-        [compare_script, result, "--output-dir", output_dir, "--verbose"], capture_output=True, text=True, check=False
-    )
-    if process.returncode == 0:
-        return result, True, process.stdout, process.stderr
-    return result, False, process.stdout, process.stderr
-
-
 def generate_missing_hw_diffs(
     results_dir: str,
     output_dir: str,
     compare_script: str,
-    max_workers: int | None = None,
     shard_index: int | None = None,
     shard_count: int | None = None,
 ) -> None:
@@ -95,22 +84,6 @@ def generate_missing_hw_diffs(
         all_results = [r for i, r in enumerate(all_results) if i % shard_count == shard_index]
         if not all_results:
             return
-
-    successful_comparisons = 0
-    failed_comparisons = 0
-
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        futures = {
-            executor.submit(perform_comparison, result, output_dir, compare_script): result
-            for result in all_results
-        }
-
-        for future in as_completed(futures):
-            _result_path, success, _stdout, _stderr = future.result()
-            if success:
-                successful_comparisons += 1
-            else:
-                failed_comparisons += 1
 
     for result in all_results:
         subprocess.run([compare_script, result, "--output-dir", output_dir, "--verbose"], check=False)
