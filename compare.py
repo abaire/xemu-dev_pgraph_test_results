@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # ruff: noqa: T201 `print` found
+# ruff: noqa: PLC0415 `import` should be at the top-level of a file
 
 from __future__ import annotations
 
@@ -180,7 +181,7 @@ def _compare_lpips(results_info: ResultsInfo, golden_info: ResultsInfo) -> tuple
             )
 
             differences.append(Difference(test_suite, test_case, artifact, golden_artifact, distance_value))
-        print("")
+        print()
 
     return only_results, only_goldens, differences
 
@@ -207,7 +208,7 @@ def _compare_perceptualdiff(
                 continue
 
             diff = Difference(test_suite, test_case, artifact, golden_artifact, -1)
-            result, stdout, stderr = diff.generate_difference_image(perceptualdiff, comparison_output_directory)
+            result, stdout, _stderr = diff.generate_difference_image(perceptualdiff, comparison_output_directory)
             if not result:
                 continue
 
@@ -218,7 +219,7 @@ def _compare_perceptualdiff(
                     diff_score = match.group(1)
             diff = Difference(test_suite, test_case, artifact, golden_artifact, diff_score)
             differences.append(diff)
-        print("")
+        print()
 
     return only_results, only_goldens, differences
 
