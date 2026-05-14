@@ -1,0 +1,26 @@
+{
+  "golden_identifier": "xemu-0.8.134-fc9980d2962cbec656253106ea2e121fab1e68d4:Darwin_arm64:gl_Apple_Apple_M5_Max:gslv_4.10",
+  "goldens_without_results": [
+    "Color_zeta_overlap:ZetaIntoColor",
+    "Color_zeta_overlap:ZetaIntoColor_ZB"
+  ],
+  "result_identifier": "xemu-0.8.134-35-g787c269eaf-787c269eaf1e513d90d88b35c7f24367a3b06805:Darwin_arm64:gl_Apple_Apple_M5_Max:gslv_4.10",
+  "tests_with_differences": {
+    "3D_primitive:LineLoop-inlinearrays-ls": "1297",
+    "Image_blit:DirtyOverlappedDestSurf": "46464",
+    "Stencil:Stencil_ZERO_ST": "39172",
+    "Texture_signed_component_tests:txt_A8R8G8B8_ADD": "54130",
+    "W_param:ff_w_zero__bitri": "1594",
+    "W_param:ff_w_zero__bitri_tex_persp": "1594"
+  },
+  "tests_without_goldens": [
+    "Image_blit:Overlap_BL_Inside",
+    "Image_blit:Overlap_BL_Outside",
+    "Image_blit:Overlap_BR_Inside",
+    "Image_blit:Overlap_BR_Outside",
+    "Image_blit:Overlap_TL_Inside",
+    "Image_blit:Overlap_TL_Outside",
+    "Image_blit:Overlap_TR_Inside",
+    "Image_blit:Overlap_TR_Outside"
+  ]
+}
