@@ -76,12 +76,25 @@ def perform_comparison(result: str, output_dir: str, compare_script: str) -> tup
 
 
 def generate_missing_hw_diffs(
-    results_dir: str, output_dir: str, compare_script: str, max_workers: int | None = None
+    results_dir: str,
+    output_dir: str,
+    compare_script: str,
+    max_workers: int | None = None,
+    shard_index: int | None = None,
+    shard_count: int | None = None,
 ) -> None:
     results_missing_comparisons = find_result_dirs_without_hw_diffs(results_dir, output_dir)
 
     if not results_missing_comparisons:
         return
+
+    # Sort for deterministic sharding across runners.
+    all_results = sorted(results_missing_comparisons)
+
+    if shard_index is not None and shard_count is not None:
+        all_results = [r for i, r in enumerate(all_results) if i % shard_count == shard_index]
+        if not all_results:
+            return
 
     successful_comparisons = 0
     failed_comparisons = 0
@@ -89,7 +102,7 @@ def generate_missing_hw_diffs(
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         futures = {
             executor.submit(perform_comparison, result, output_dir, compare_script): result
-            for result in results_missing_comparisons
+            for result in all_results
         }
 
         for future in as_completed(futures):
@@ -99,7 +112,7 @@ def generate_missing_hw_diffs(
             else:
                 failed_comparisons += 1
 
-    for result in results_missing_comparisons:
+    for result in all_results:
         subprocess.run([compare_script, result, "--output-dir", output_dir, "--verbose"], check=False)
 
 
@@ -120,11 +133,28 @@ def main() -> int:
         default="compare.py",
         help="The compare.py script used to generate results",
     )
+    parser.add_argument(
+        "--shard-index",
+        type=int,
+        default=None,
+        help="Index of this shard (0-based). Must be used with --shard-count.",
+    )
+    parser.add_argument(
+        "--shard-count",
+        type=int,
+        default=None,
+        help="Total number of shards. Must be used with --shard-index.",
+    )
 
     args = parser.parse_args()
 
+    if (args.shard_index is None) != (args.shard_count is None):
+        parser.error("--shard-index and --shard-count must be used together")
+
     compare_script = os.path.abspath(os.path.expanduser(args.compare_script))
-    generate_missing_hw_diffs(args.results_dir, args.output_dir, compare_script)
+    generate_missing_hw_diffs(
+        args.results_dir, args.output_dir, compare_script, shard_index=args.shard_index, shard_count=args.shard_count
+    )
 
     return 0
 
