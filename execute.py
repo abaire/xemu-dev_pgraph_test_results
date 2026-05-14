@@ -386,6 +386,9 @@ def _determine_output_directory(results_path: str, emulator_command: str, *, is_
         logger.exception(err)  # noqa: TRY401 Redundant exception object included in `logging.exception` call
         raise
 
+    if stderr is None:
+        stderr = ""
+
     emulator_output = EmulatorOutput.parse(stdout=[], stderr=stderr.split("\n"))
     output_directory = get_output_directory(emulator_output.emulator_version, HostProfile(), is_vulkan=is_vulkan)
 
