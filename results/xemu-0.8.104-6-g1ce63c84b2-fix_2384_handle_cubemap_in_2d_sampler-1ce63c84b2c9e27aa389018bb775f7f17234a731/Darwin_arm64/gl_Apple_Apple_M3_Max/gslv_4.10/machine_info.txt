@@ -1,0 +1,12 @@
+xemu_version: 0.8.104-6-g1ce63c84b2
+xemu_branch: fix_2384_handle_cubemap_in_2d_sampler
+xemu_commit: 1ce63c84b2c9e27aa389018bb775f7f17234a731
+xemu_date: Mon Oct 13 00:02:04 UTC 2025
+xemu_settings_get_base_path: base path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/
+xemu_settings_get_path: config path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/xemu.toml
+CPU: 
+OS_Version: Version 15.7.1 (Build 24G231)
+GL_VENDOR: Apple
+GL_RENDERER: Apple M3 Max
+GL_VERSION: 4.1 Metal - 89.4
+GL_SHADING_LANGUAGE_VERSION: 4.10
