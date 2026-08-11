@@ -1,0 +1,9 @@
+xemu_version: 0.8.104-126-g8d2f5158ef
+xemu_commit: 8d2f5158ef73cddb3e1bc23620d8a682f9ab3c8d
+xemu_date: Tue Jan 13 23:28:37 UTC 2026
+CPU: 
+OS_Version: Version 26.2 (Build 25C56)
+GL_VENDOR: Apple
+GL_RENDERER: Apple M3 Max
+GL_VERSION: 4.1 Metal - 90.5
+GL_SHADING_LANGUAGE_VERSION: 4.10
