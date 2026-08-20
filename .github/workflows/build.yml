@@ -49,10 +49,10 @@ jobs:
         shard: [0, 1, 2, 3]
     steps:
       - name: Clone tree
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: '1'
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: 'pip'
@@ -84,7 +84,7 @@ jobs:
     name: Merge hardware diff shards
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: hardware_diffs_shard_*
           path: "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
@@ -103,10 +103,10 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Clone tree
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: '1'
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: 'pip'
@@ -143,8 +143,8 @@ jobs:
       site_sha: ${{ steps.commit.outputs.new_head_commit }}
     steps:
       - name: Clone tree
-        uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+        uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: 'pip'
@@ -152,11 +152,11 @@ jobs:
         run: |
           export PIP_BREAK_SYSTEM_PACKAGES=1
           pip3 install -r .github/scripts/requirements.txt
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: hardware_diffs
           path: "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: xemu_diffs
           path: "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}"
@@ -231,7 +231,7 @@ jobs:
       - name: Print site sha
         run: echo "Site SHA is ${{ needs.UpdateSite.outputs.site_sha }}"
       - name: Clone tree
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ needs.UpdateSite.outputs.site_sha }}
           fetch-depth: 1
@@ -243,4 +243,4 @@ jobs:
           path: 'site'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
