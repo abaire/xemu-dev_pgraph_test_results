@@ -63,12 +63,11 @@ jobs:
             perceptualdiff
 
           export PIP_BREAK_SYSTEM_PACKAGES=1
-          pip3 install -r requirements.txt
-          pip3 install -r .github/scripts/requirements.txt
+          pip3 install .
       - name: Generate new diffs
         run: |
           set -x
-          python3 .github/scripts/generate_missing_hw_diffs.py \
+          python3 -m xemu_dev_pgraph.hw_diffs \
             --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}" \
             --shard-index ${{ matrix.shard }} \
             --shard-count 4
@@ -115,14 +114,14 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y perceptualdiff
           export PIP_BREAK_SYSTEM_PACKAGES=1
-          pip3 install -r requirements.txt -r .github/scripts/requirements.txt
+          pip3 install .
 
       - name: Fetch and Match Baseline
         run: python3 .github/scripts/fetch_baseline_artifact.py
 
       - name: Generate new diffs
         run: |
-          python3 .github/scripts/generate_xemu_diffs.py \
+          python3 -m xemu_dev_pgraph.xemu_diffs \
             --baseline-dir "$XEMU_BASELINE_DIR" \
             --output-dir "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}"
 
@@ -151,7 +150,7 @@ jobs:
       - name: Install requirements
         run: |
           export PIP_BREAK_SYSTEM_PACKAGES=1
-          pip3 install -r .github/scripts/requirements.txt
+          pip3 install .
       - uses: actions/download-artifact@v8
         with:
           name: hardware_diffs
@@ -163,7 +162,7 @@ jobs:
       - name: Generate Pages site
         run: |
           set -x
-          python3 .github/scripts/update_site.py \
+          python3 -m xemu_dev_pgraph.site_generator \
             "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.branch }}" \
@@ -176,7 +175,7 @@ jobs:
           set -x
           git fetch
           git status
-          tar -czf updated_site.tgz "${{ needs.GetOutputPaths.outputs.site_output_path }}" .github/
+          tar -czf updated_site.tgz "${{ needs.GetOutputPaths.outputs.site_output_path }}"
           # Delete in case files that exist in the pages branch were modified.
           rm -rf "${{ needs.GetOutputPaths.outputs.site_output_path }}"
           rm -f site/*.* 
@@ -191,7 +190,7 @@ jobs:
       - name: Regenerate the Pages top level index so it includes the previously generated content.
         run: |
           set -x
-          python3 .github/scripts/update_site.py \
+          python3 -m xemu_dev_pgraph.site_generator \
             "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.branch }}" \
@@ -208,7 +207,6 @@ jobs:
           git config --local user.name "$GITHUB_ACTOR via action"
           git status
           git add site
-          git add .github/
           git diff-index --quiet HEAD || git commit -m "Update from github action $GITHUB_RUN_NUMBER - $GITHUB_SHA"
           git push -f || git push --set-upstream origin pages-branch -f
 

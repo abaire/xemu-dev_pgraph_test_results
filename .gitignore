@@ -14,3 +14,6 @@ compare-results/
 local/
 xemu-golden-results/
 wiki/
+*.egg-info/
+build/
+dist/

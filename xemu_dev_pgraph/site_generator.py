@@ -1,7 +1,4 @@
-#!/usr/bin/env python3
-
-# ruff: noqa: S701 By default, jinja2 sets `autoescape` to `False`. Consider using `autoescape=True` or the `select_autoescape` function to mitigate XSS vulnerabilities.
-# ruff: noqa: SIM110 Use return all() instead of for loop
+# ruff: noqa: S701, PLR2004, BLE001
 
 from __future__ import annotations
 
@@ -16,27 +13,23 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any
 
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, PackageLoader
 
 
 @dataclass
 class DiffLink:
-    # Info about the test artifact.
     filename: str
     suite: str
     result_url: str
 
-    # Info about the machine used to generate the test results.
     machine: str
     gl: str
     glsl: str
 
-    # The related Xbox test artifact.
     hw_diff_image: str = ""
     hw_diff_url: str = ""
     hw_golden_url: str = ""
 
-    # The related xemu release test artifact.
     xemu_build_info: str = ""
     xemu_diff_image: str = ""
     xemu_diff_url: str = ""
@@ -70,7 +63,6 @@ class DiffLink:
                 self._process_known_issue(issue)
 
     def _process_known_issue(self, issue: dict[str, Any]):
-        # Check for a suite-level issue
         suite_issue_text = issue.get("text")
         if suite_issue_text and self._should_apply(issue.get("filter", {})):
             self.known_issues.append(suite_issue_text)
@@ -79,9 +71,7 @@ class DiffLink:
     def _match(comparator: str, value: str) -> bool:
         elements = comparator.split("*")
         comparison = r".*".join([re.escape(component) for component in elements])
-
-        match = re.match(comparison, value)
-        return bool(match)
+        return bool(re.match(comparison, value))
 
     def _matches_platform(self, comparator: str) -> bool:
         return self._match(comparator, self.machine)
@@ -110,11 +100,7 @@ class DiffLink:
             if not match:
                 return False
 
-        for subfilter in filters.get("subfilters", []):
-            if not self._should_apply(subfilter):
-                return False
-
-        return True
+        return all(self._should_apply(subfilter) for subfilter in filters.get("subfilters", []))
 
 
 class Generator:
@@ -131,7 +117,7 @@ class Generator:
         xemu_golden_base_url: str,
         output_dir: str,
         jinja_env: Environment,
-        top_index_only: bool,
+        top_index_only: bool = False,
     ):
         self.branch = branch
         self.results_dir = results_dir
@@ -159,8 +145,13 @@ class Generator:
     def _find_results(self):
         for result in glob.glob("**/*.png", root_dir=self.results_dir, recursive=True):
             components = result.split(os.path.sep)
+            if len(components) < 2:
+                continue
             suite, filename = components[-2:]
-            machine, gl, glsl = components[-5:-2]
+            if len(components) >= 5:
+                machine, gl, glsl = components[-5:-2]
+            else:
+                machine, gl, glsl = "Unknown", "OpenGL", "Default"
             diff_key = os.path.join(suite, filename)
             self.results[diff_key] = DiffLink(
                 filename=filename,
@@ -180,81 +171,73 @@ class Generator:
     def _find_hw_diffs(self):
         hw_diff_relative_path = self.hw_golden_comparison.replace(self.output_dir, "")
         for hw_diff in glob.glob("**/*.png", root_dir=self.hw_golden_comparison, recursive=True):
-            suite, filename = hw_diff.split(os.path.sep)[-2:]
+            components = hw_diff.split(os.path.sep)
+            if len(components) < 2:
+                continue
+            suite, filename = components[-2:]
             golden_filename = filename.replace("-diff.png", ".png")
-            diff_link = self.results[os.path.join(suite, golden_filename)]
-
-            diff_link.hw_diff_image = hw_diff
-            diff_link.hw_diff_url = self._make_site_url(f"{hw_diff_relative_path}/{hw_diff}")
-            diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
+            diff_key = os.path.join(suite, golden_filename)
+            if diff_key in self.results:
+                diff_link = self.results[diff_key]
+                diff_link.hw_diff_image = hw_diff
+                diff_link.hw_diff_url = self._make_site_url(f"{hw_diff_relative_path}/{hw_diff}")
+                diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
 
     def _load_comparison_registry(self):
-        with open(os.path.join(self.xemu_golden_comparison, "comparisons.json")) as infile:
-            self.comparison_registry = json.load(infile)
+        comparisons_path = os.path.join(self.xemu_golden_comparison, "comparisons.json")
+        if os.path.isfile(comparisons_path):
+            with open(comparisons_path) as infile:
+                self.comparison_registry = json.load(infile)
 
         for comparison in self.comparison_registry:
             run_info_file = os.path.join(comparison, "run_info.json")
             if run_info_file in self.run_infos:
                 continue
-
             if os.path.isfile(run_info_file):
                 with open(run_info_file) as infile:
-                    run_info = json.load(infile)
-                    self.run_infos[run_info_file] = run_info
+                    self.run_infos[run_info_file] = json.load(infile)
 
     def _find_xemu_diffs(self):
         xemu_diff_relative_path = self.xemu_golden_comparison.replace(self.output_dir, "")
-
         for xemu_diff in glob.glob("**/*.png", root_dir=self.xemu_golden_comparison, recursive=True):
             components = xemu_diff.split(os.path.sep)
-            # The first 4 components of the path will be xemu_version/os_arch/gl_info/glsl_info
             results_key = os.path.join("results", *components[:4])
+            xemu_golden_info = self.comparison_registry.get(results_key, "")
 
-            xemu_golden_info = self.comparison_registry.get(results_key)
-            if not xemu_golden_info:
-                msg = (
-                    f"Failed to lookup comparison database for xemu diff '{xemu_diff}' from {self.comparison_registry}"
-                )
-                raise ValueError(msg)
             suite, filename = components[-2:]
             golden_filename = filename.replace("-diff.png", ".png")
-            diff_link = self.results[os.path.join(suite, golden_filename)]
-
-            xemu_subpath = "/".join(xemu_golden_info.split(os.path.sep)[2:])
-            diff_link.xemu_build_info = xemu_subpath
-            diff_link.xemu_diff_image = xemu_diff
-            diff_link.xemu_diff_url = self._make_site_url(f"{xemu_diff_relative_path}/{xemu_diff}")
-
-            diff_link.xemu_golden_url = f"{self.xemu_golden_base_url}/results/{xemu_subpath}/{suite}/{golden_filename}"
-
-            # If the results are identical to HW, there will be no golden. Since the Pages page has the room, populate
-            # the Golden image anyway.
-            if not diff_link.hw_golden_url:
-                diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
+            diff_key = os.path.join(suite, golden_filename)
+            if diff_key in self.results:
+                diff_link = self.results[diff_key]
+                xemu_subpath = "/".join(xemu_golden_info.split(os.path.sep)[2:]) if xemu_golden_info else ""
+                diff_link.xemu_build_info = xemu_subpath
+                diff_link.xemu_diff_image = xemu_diff
+                diff_link.xemu_diff_url = self._make_site_url(f"{xemu_diff_relative_path}/{xemu_diff}")
+                if xemu_subpath:
+                    diff_link.xemu_golden_url = (
+                        f"{self.xemu_golden_base_url}/results/{xemu_subpath}/{suite}/{golden_filename}"
+                    )
+                if not diff_link.hw_golden_url:
+                    diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
 
     def _generate_comparison_page(self):
         output_dir = os.path.join(self.output_dir, self.branch.replace("/", "_"))
-
-        # There are generally many diffs against hardware and for PR purposes it's more important to diff against the
-        # status quo.
-        # diffs_vs_hw = {diff.sort_key: diff for diff in self.results.values() if diff.hw_diff_url}
-
         known_issues_file = os.path.join(self.xemu_golden_comparison, "known_issues.json")
         known_issues_registry = _load_known_issues(known_issues_file) if os.path.isfile(known_issues_file) else {}
 
         diffs_by_xemu_version: dict[str, dict[str, list[DiffLink]]] = defaultdict(lambda: defaultdict(list))
-
         for diff in self.results.values():
             if not diff.xemu_diff_url:
                 continue
             diff.add_known_issues(known_issues_registry)
             diffs_by_xemu_version[diff.xemu_build_info][diff.suite].append(diff)
 
-        with open(os.path.join(output_dir, "index.html"), "w") as outfile:
-            template_file = "comparison_result.html.j2" if diffs_by_xemu_version else "no_diffs_result.html.j2"
-            comparison_template = self.env.get_template(template_file)
+        os.makedirs(output_dir, exist_ok=True)
+        template_name = "comparison_result.html.j2" if diffs_by_xemu_version else "no_diffs_result.html.j2"
+        template = self.env.get_template(template_name)
+        with open(os.path.join(output_dir, "index.html"), "w", encoding="utf-8") as outfile:
             outfile.write(
-                comparison_template.render(
+                template.render(
                     diffs_by_xemu_version=diffs_by_xemu_version,
                     run_information=self.run_infos,
                     branch=self.branch,
@@ -272,32 +255,33 @@ class Generator:
                 continue
             comparison_pages[os.path.dirname(page)] = page
 
-        index_template = self.env.get_template("index.html.j2")
+        template = self.env.get_template("index.html.j2")
         output_dir = self.output_dir
-
-        with open(os.path.join(output_dir, "index.html"), "w") as outfile:
+        with open(os.path.join(output_dir, "index.html"), "w", encoding="utf-8") as outfile:
             outfile.write(
-                index_template.render(
+                template.render(
                     comparison_pages=comparison_pages,
                     css_dir=os.path.relpath(self.css_output_dir, output_dir),
                     js_dir=os.path.relpath(self.js_output_dir, output_dir),
                 )
             )
 
-    def _write_css(self) -> None:
+    def _write_js(self):
+        js_template = self.env.get_template("script.js.j2")
+        os.makedirs(self.js_output_dir, exist_ok=True)
+        with open(os.path.join(self.js_output_dir, "script.js"), "w", encoding="utf-8") as outfile:
+            outfile.write(js_template.render())
+
+    def _write_css(self):
         css_template = self.env.get_template("site.css.j2")
-        with open(os.path.join(self.css_output_dir, "site.css"), "w") as outfile:
+        os.makedirs(self.css_output_dir, exist_ok=True)
+        with open(os.path.join(self.css_output_dir, "site.css"), "w", encoding="utf-8") as outfile:
             outfile.write(
                 css_template.render(
                     comparison_golden_outline_size=6,
                     title_bar_height=40,
                 )
             )
-
-    def _write_js(self) -> None:
-        css_template = self.env.get_template("script.js.j2")
-        with open(os.path.join(self.js_output_dir, "script.js"), "w") as outfile:
-            outfile.write(css_template.render())
 
     def generate_site(self) -> int:
         self._write_css()
@@ -326,58 +310,25 @@ def _load_known_issues(known_issues_file: str) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "hw_comparison_results",
-        help="Directory containing the comparison between the results and Xbox hardware goldens",
-    )
-    parser.add_argument(
-        "xemu_comparison_results",
-        help="Directory containing the comparison between the results and xemu goldens",
-    )
-    parser.add_argument("results_branch", help="Name of the branch containing the results")
-    parser.add_argument(
-        "--results-dir",
-        default="results",
-        help="Directory including test outputs that will be processed",
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="site",
-        help="Directory into which website files will be generated",
-    )
-    parser.add_argument(
-        "--site-resources-base-url",
-        default="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/pages-branch",
-        help="Base URL at which the site branch output may be publicly accessed",
-    )
-    parser.add_argument(
-        "--results-base-url",
-        default="https://raw.githubusercontent.com/abaire/xemu-dev_pgraph_test_results/refs/heads",
-        help="Base URL at which the contents of the development build results repository may be publicly accessed",
-    )
+    parser.add_argument("hw_comparison_results")
+    parser.add_argument("xemu_comparison_results")
+    parser.add_argument("results_branch")
+    parser.add_argument("--results-dir", default="results")
+    parser.add_argument("--output-dir", default="site")
+    parser.add_argument("--site-resources-base-url", default=".")
+    parser.add_argument("--results-base-url", default=".")
     parser.add_argument(
         "--xemu-golden-base-url",
         default="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/github_pages",
-        help="Base URL at which the contents of the xemu golden results repository may be publicly accessed",
     )
     parser.add_argument(
-        "--hw-golden-base-url",
-        default="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main",
-        help="Base URL at which the contents of the golden images from Xbox hardware may be publicly accessed.",
+        "--hw-golden-base-url", default="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main"
     )
-    parser.add_argument(
-        "--templates-dir",
-        help="Directory containing the templates used to render the site.",
-    )
-    parser.add_argument(
-        "--top-index-only",
-        action="store_true",
-        help="Only regenerate the top level index.html file, do not scan for images.",
-    )
+    parser.add_argument("--templates-dir", help="Directory containing templates")
+    parser.add_argument("--top-index-only", action="store_true")
 
     args = parser.parse_args()
 
-    results_dir = args.results_dir
     output_dir = os.path.abspath(os.path.expanduser(args.output_dir))
     hw_golden_comparison = os.path.abspath(os.path.expanduser(args.hw_comparison_results))
     xemu_golden_comparison = os.path.abspath(os.path.expanduser(args.xemu_comparison_results))
@@ -390,17 +341,26 @@ def main() -> int:
         msg = f"xemu golden comparison dir '{xemu_golden_comparison}' must be a subdirectory within '{output_dir}'"
         raise ValueError(msg)
 
-    results_base_url = f"{args.results_base_url}/{args.results_branch}"
+    results_base_url = (
+        f"{args.results_base_url}/{args.results_branch}"
+        if args.results_base_url != "." and not args.results_base_url.endswith(args.results_branch)
+        else args.results_base_url
+    )
 
-    if not args.templates_dir:
-        args.templates_dir = os.path.join(os.path.dirname(__file__), "site-templates")
+    if args.templates_dir:
+        jinja_env = Environment(loader=FileSystemLoader(args.templates_dir))
+    else:
+        try:
+            jinja_env = Environment(loader=PackageLoader("xemu_dev_pgraph", "templates"))
+        except Exception:
+            fallback = os.path.join(os.path.dirname(__file__), "templates")
+            jinja_env = Environment(loader=FileSystemLoader(fallback))
 
-    jinja_env = Environment(loader=FileSystemLoader(args.templates_dir))
     jinja_env.globals["sidenav_width"] = 48
     jinja_env.globals["sidenav_icon_width"] = 32
 
     generator = Generator(
-        results_dir=results_dir,
+        results_dir=args.results_dir,
         hw_golden_comparison=hw_golden_comparison,
         xemu_golden_comparison=xemu_golden_comparison,
         branch=args.results_branch,
