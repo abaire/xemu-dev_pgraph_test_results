@@ -212,11 +212,11 @@ def _compare_perceptualdiff(
             if not result:
                 continue
 
-            diff_score = -1
+            diff_score = -1.0
             for line in stdout.split("\n"):
                 match = PERCEPTUALDIFF_DIFFERENCE_RE.match(line)
                 if match:
-                    diff_score = match.group(1)
+                    diff_score = float(match.group(1))
             diff = Difference(test_suite, test_case, artifact, golden_artifact, diff_score)
             differences.append(diff)
         print()

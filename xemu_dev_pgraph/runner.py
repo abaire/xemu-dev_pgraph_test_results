@@ -3,15 +3,19 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import contextlib
+import glob
 import json
 import logging
 import os
+import platform
 import shutil
 import subprocess
 import sys
 import tempfile
+import tomllib
 import zipfile
 from shutil import SameFileError
+from subprocess import CalledProcessError
 from time import sleep
 from typing import TYPE_CHECKING, Any
 from urllib.request import urlcleanup, urlretrieve
@@ -70,6 +74,14 @@ if sys.platform == "win32":
 
         def stop(self):
             self.stop_event.set()
+else:
+
+    class AbortDialogHandler:
+        def start(self) -> None:
+            pass
+
+        def stop(self) -> None:
+            pass
 
 
 def _fetch_github_release_info(api_url: str, tag: str = "latest") -> dict[str, Any] | None:
@@ -226,13 +238,18 @@ def _ensure_results_path(results_path: str) -> str:
 
 def _generate_xemu_toml(
     file_path: str,
-    bootrom_path: str | None = None,
-    flashrom_path: str | None = None,
-    eeprom_path: str | None = None,
-    hdd_path: str | None = None,
+    bootrom_path: str,
+    flashrom_path: str,
+    eeprom_path: str,
+    hdd_path: str,
     *,
+    memory: int = 64,
     use_vulkan: bool = False,
-):
+) -> None:
+    if not isinstance(memory, int) or memory <= 0:
+        msg = f"Invalid memory configuration: {memory}. Must be an integer > 0."
+        raise ValueError(msg)
+
     content = [
         "[general]",
         "show_welcome = false",
@@ -245,19 +262,14 @@ def _generate_xemu_toml(
         "enable = true",
         "",
         "[sys]",
-        "mem_limit = '64'",
+        f"mem_limit = '{memory}'",
         "",
         "[sys.files]",
+        f"bootrom_path = '{bootrom_path}'",
+        f"flashrom_path = '{flashrom_path}'",
+        f"eeprom_path = '{eeprom_path}'",
+        f"hdd_path = '{hdd_path}'",
     ]
-
-    if bootrom_path and os.path.exists(bootrom_path):
-        content.append(f"bootrom_path = '{bootrom_path}'")
-    if flashrom_path and os.path.exists(flashrom_path):
-        content.append(f"flashrom_path = '{flashrom_path}'")
-    if eeprom_path and os.path.exists(eeprom_path):
-        content.append(f"eeprom_path = '{eeprom_path}'")
-    if hdd_path and os.path.exists(hdd_path):
-        content.append(f"hdd_path = '{hdd_path}'")
 
     if use_vulkan:
         content.extend(["", "[display]", "renderer = 'VULKAN'"])
@@ -272,10 +284,13 @@ def _build_emulator_command(
     *,
     no_bundle: bool = False,  # noqa: ARG001
     custom_toml_path: str | None = None,
+    enable_serial: bool = False,
 ) -> tuple[str, str]:
     portable_mode_config_path = os.path.dirname(xemu_path)
 
     cmd = xemu_path + " -dvd_path {ISO}"
+    if enable_serial:
+        cmd += " -device lpc47m157 -serial stdio"
     if custom_toml_path:
         cmd += f' -config_path "{custom_toml_path}"'
         toml_path = custom_toml_path
@@ -289,24 +304,59 @@ def _determine_output_directory(results_path: str, emulator_command: str, *, is_
     command = Config(emulator_command=emulator_command + " -display none").build_emulator_command(
         "__this_file_does_not_exist"
     )
+    stderr = ""
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True, timeout=1)
-        stderr = result.stderr
+        stderr = result.stderr or ""
     except subprocess.TimeoutExpired as err:
-        stderr = err.stderr.decode() if isinstance(err.stderr, bytes) else err.stderr
+        stderr = err.stderr.decode() if isinstance(err.stderr, bytes) else (err.stderr or "")
         sleep(0.5)
     except subprocess.CalledProcessError as err:
-        stderr = err.stderr.decode() if isinstance(err.stderr, bytes) else err.stderr
+        stderr = err.stderr.decode() if isinstance(err.stderr, bytes) else (err.stderr or "")
         logger.exception(stderr)
         raise
-
-    if stderr is None:
-        stderr = ""
 
     emulator_output = EmulatorOutput.parse(stdout=[], stderr=stderr.split("\n"))
     output_directory = get_output_directory(emulator_output.emulator_version, HostProfile(), is_vulkan=is_vulkan)
 
     return os.path.join(results_path, output_directory)
+
+
+def _get_macos_bundle_identifier(xemu_path: str, *, no_bundle: bool) -> str | None:
+    if no_bundle or platform.system() != "Darwin":
+        return None
+
+    command = ["mdls", "-name", "kMDItemCFBundleIdentifier", "-r", xemu_path]
+    result = subprocess.run(command, capture_output=True, text=True, check=True)
+    return result.stdout
+
+
+def _set_apple_persistence_ignore_state(macos_bundle_identifier: str, *, ignore: bool | None) -> bool | None:
+    command = [
+        "defaults",
+        "read",
+        macos_bundle_identifier,
+        "ApplePersistenceIgnoreState",
+    ]
+
+    current_value = None
+    with contextlib.suppress(CalledProcessError):
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        current_value = result.stdout.startswith("1")
+
+    if current_value != ignore:
+        command = [
+            "defaults",
+            "write",
+            macos_bundle_identifier,
+            "ApplePersistenceIgnoreState",
+            "-bool",
+            "true" if ignore else "false",
+        ]
+        with contextlib.suppress(CalledProcessError):
+            subprocess.run(command, capture_output=True, text=True, check=True)
+
+    return current_value
 
 
 def run(
@@ -317,35 +367,48 @@ def run(
     xemu_path: str,
     hdd_path: str,
     *,
+    bootrom_path: str | None = None,
+    flashrom_path: str | None = None,
+    eeprom_path: str | None = None,
+    memory: int = 64,
+    enable_serial: bool = False,
     overwrite_existing_outputs: bool,
     no_bundle: bool = False,
     use_vulkan: bool = False,
     just_suites: Collection[str] | None = None,
     custom_toml_path: str | None = None,
 ):
+    if not isinstance(memory, int) or memory <= 0:
+        msg = f"Invalid memory configuration: {memory}. Must be an integer > 0."
+        raise ValueError(msg)
+
     emulator_command, toml_path = _build_emulator_command(
-        xemu_path, no_bundle=no_bundle, custom_toml_path=custom_toml_path
+        xemu_path,
+        no_bundle=no_bundle,
+        custom_toml_path=custom_toml_path,
+        enable_serial=enable_serial,
     )
     if not emulator_command:
         return 1
 
-    bootrom_file = os.path.join(inputs_path, "mcpx.bin")
-    flashrom_file = os.path.join(inputs_path, "bios.bin")
-    eeprom_file = os.path.join(inputs_path, "eeprom.bin")
+    bootrom_file = os.path.join(inputs_path, "mcpx.bin") if bootrom_path is None else bootrom_path
+    flashrom_file = os.path.join(inputs_path, "bios.bin") if flashrom_path is None else flashrom_path
+    eeprom_file = os.path.join(inputs_path, "eeprom.bin") if eeprom_path is None else eeprom_path
 
     _generate_xemu_toml(
         toml_path,
-        bootrom_path=bootrom_file if os.path.exists(bootrom_file) else None,
-        flashrom_path=flashrom_file if os.path.exists(flashrom_file) else None,
-        eeprom_path=eeprom_file if os.path.exists(eeprom_file) else None,
+        bootrom_path=bootrom_file,
+        flashrom_path=flashrom_file,
+        eeprom_path=eeprom_file,
         hdd_path=hdd_path,
+        memory=memory,
         use_vulkan=use_vulkan,
     )
 
     output_directory = _determine_output_directory(
         results_path, emulator_command=emulator_command, is_vulkan=use_vulkan
     )
-    if not overwrite_existing_outputs and os.path.isdir(output_directory):
+    if output_directory and not overwrite_existing_outputs and os.path.isdir(output_directory):
         logger.error("Output directory %s already exists, exiting", output_directory)
         return 200
 
@@ -364,6 +427,11 @@ def run(
         suite_allowlist=just_suites,
     )
 
+    macos_bundle_identifier = _get_macos_bundle_identifier(xemu_path, no_bundle=no_bundle)
+    original_ignore_value: bool | None = None
+    if macos_bundle_identifier:
+        original_ignore_value = _set_apple_persistence_ignore_state(macos_bundle_identifier, ignore=True)
+
     handler: AbortDialogHandler | None = None
     if sys.platform == "win32":
         handler = AbortDialogHandler()
@@ -374,7 +442,7 @@ def run(
     if handler:
         handler.stop()
 
-    if os.path.isdir(output_directory):
+    if output_directory and os.path.isdir(output_directory):
         with open(os.path.join(output_directory, "renderer.json"), "w") as outfile:
             json.dump({"vulkan": use_vulkan}, outfile)
         with open(os.path.join(output_directory, "runner.json"), "w") as outfile:
@@ -386,6 +454,20 @@ def run(
                 },
                 outfile,
             )
+
+        manifest_path = os.path.join(output_directory, "results.json")
+        if os.path.isfile(manifest_path):
+            with open(manifest_path) as f:
+                manifest = json.load(f)
+            for state in ("passed", "failed", "flaky"):
+                for test_info in manifest.get(state, {}).values():
+                    if "artifacts" in test_info:
+                        test_info["artifacts"] = [os.path.basename(p) for p in test_info["artifacts"]]
+            with open(manifest_path, "w") as f:
+                json.dump(manifest, f, indent=2, sort_keys=True)
+
+    if macos_bundle_identifier:
+        _set_apple_persistence_ignore_state(macos_bundle_identifier, ignore=original_ignore_value)
 
     return ret
 
@@ -423,10 +505,13 @@ def _run_shard(
     iso_path: str,
     hdd_path: str,
     mcpx_path: str | None,
-    bios_path: str,
+    bios_path: str | None,
+    eeprom_path: str | None,
     xemu_path: str,
     results_path: str,
     *,
+    memory: int = 64,
+    enable_serial: bool = False,
     overwrite_existing_outputs: bool,
     no_bundle: bool,
     use_vulkan: bool,
@@ -442,12 +527,32 @@ def _run_shard(
     else:
         effective_iso_path = iso_path
 
-    if mcpx_path and os.path.exists(mcpx_path):
+    bootrom_target: str | None = mcpx_path
+    if mcpx_path:
+        if not os.path.isfile(mcpx_path):
+            logger.error("Invalid MCPX path '%s'", mcpx_path)
+            return 1
+        bootrom_target = os.path.join(inputs_path, "mcpx.bin")
         with contextlib.suppress(SameFileError):
-            shutil.copy(mcpx_path, os.path.join(inputs_path, "mcpx.bin"))
-    if bios_path and os.path.exists(bios_path):
+            shutil.copy(mcpx_path, bootrom_target)
+
+    flashrom_target: str | None = bios_path
+    if bios_path:
+        if not os.path.isfile(bios_path):
+            logger.error("Invalid BIOS path '%s'", bios_path)
+            return 1
+        flashrom_target = os.path.join(inputs_path, "bios.bin")
         with contextlib.suppress(SameFileError):
-            shutil.copy(bios_path, os.path.join(inputs_path, "bios.bin"))
+            shutil.copy(bios_path, flashrom_target)
+
+    eeprom_target: str | None = eeprom_path
+    if eeprom_path:
+        if not os.path.isfile(eeprom_path):
+            logger.error("Invalid EEPROM path '%s'", eeprom_path)
+            return 1
+        eeprom_target = os.path.join(inputs_path, "eeprom.bin")
+        with contextlib.suppress(SameFileError):
+            shutil.copy(eeprom_path, eeprom_target)
 
     hdd_copy = os.path.join(inputs_path, "test_runner_hdd.qcow2")
     with contextlib.suppress(SameFileError):
@@ -460,6 +565,11 @@ def _run_shard(
         results_path=results_path,
         xemu_path=xemu_path,
         hdd_path=hdd_copy,
+        bootrom_path=bootrom_target,
+        flashrom_path=flashrom_target,
+        eeprom_path=eeprom_target,
+        memory=memory,
+        enable_serial=enable_serial,
         overwrite_existing_outputs=overwrite_existing_outputs,
         no_bundle=no_bundle,
         use_vulkan=use_vulkan,
@@ -515,12 +625,27 @@ def _merge_shard_results(shard_results_paths: list[str], final_results_path: str
 
     if output_dir_rel:
         final_manifest_path = os.path.join(final_results_path, output_dir_rel, "results.json")
-        merged_manifest = {"passed": merged_passed, "failed": merged_failed, "flaky": merged_flaky}
+        merged_manifest: dict[str, Any] = {"passed": merged_passed, "failed": merged_failed, "flaky": merged_flaky}
         if merged_missing:
             merged_manifest["missing_artifacts"] = merged_missing
 
         with open(final_manifest_path, "w") as f:
             json.dump(merged_manifest, f, indent=2, sort_keys=True)
+
+
+def _extract_info_from_xemu_toml(toml_path: str) -> tuple[str, str] | None:
+    toml_path = os.path.abspath(os.path.expanduser(toml_path))
+    if os.path.isdir(toml_path):
+        toml_path = os.path.join(toml_path, "xemu.toml")
+    if not os.path.isfile(toml_path):
+        logger.error("No xemu toml file found at '%s'", toml_path)
+        return None
+
+    with open(toml_path, "rb") as infile:
+        data = tomllib.load(infile)
+
+    files = data.get("sys", {}).get("files", {})
+    return files.get("bootrom_path"), files.get("flashrom_path")
 
 
 def _process_arguments_and_run() -> int:
@@ -531,7 +656,14 @@ def _process_arguments_and_run() -> int:
     parser.add_argument("--xemu", "-X", help="Path to the xemu executable.")
     parser.add_argument("--hdd", "-H", help="Path to xemu hard disk image to use.")
     parser.add_argument("--bios", "-B", default="inputs/bios.bin", help="Path to Xbox BIOS image to use.")
-    parser.add_argument("--mcpx", "-M", default=None, help="Path to Xbox MCPX boot ROM image to use.")
+    parser.add_argument(
+        "--mcpx", "-M", default="inputs/mcpx.bin", help="Path to Xbox MCPX boot ROM image to use. Pass '' for no MCPX."
+    )
+    parser.add_argument("--eeprom", "-E", default="", help="Path to Xbox EEPROM image to use.")
+    parser.add_argument("--memory", "--mem", type=int, default=64, help="Xbox RAM size in MB (e.g. 64, 128).")
+    parser.add_argument(
+        "--enable-serial", "--serial-output", action="store_true", help="Attach LPC debug UART and debugcon to stdio."
+    )
     parser.add_argument("--cache-path", "-C", default="cache", help="Path to persistent cache area.")
     parser.add_argument("--temp-path", help="Temporary path used during execution of tests")
     parser.add_argument("--results-path", "-R", default="results", help="Path to store results.")
@@ -539,6 +671,12 @@ def _process_arguments_and_run() -> int:
     parser.add_argument("--no-bundle", action="store_true")
     parser.add_argument("--use-vulkan", action="store_true")
     parser.add_argument("--just-suites", nargs="+")
+    parser.add_argument(
+        "--toml",
+        "-T",
+        help="Import bios and mcpx from an existing xemu install",
+        metavar="xemu_toml_path",
+    )
     parser.add_argument("--shard-index", type=int, default=None, help="Index of this shard to run (0-based).")
     parser.add_argument("--shard-count", "-S", type=int, default=0, help="Total number of shards.")
 
@@ -546,6 +684,25 @@ def _process_arguments_and_run() -> int:
 
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=log_level)
+
+    if args.memory <= 0:
+        logger.error("Memory size must be greater than 0")
+        return 1
+
+    if args.shard_index is not None:
+        if args.shard_index < 0:
+            logger.error("shard-index must be >= 0")
+            return 1
+        if args.shard_count <= args.shard_index:
+            logger.error(
+                "shard-count (%d) must be greater than shard-index (%d)",
+                args.shard_count,
+                args.shard_index,
+            )
+            return 1
+    elif args.shard_count < 0:
+        logger.error("shard-count must be >= 0")
+        return 1
 
     cache_path = _ensure_cache_path(args.cache_path)
     results_path = _ensure_results_path(args.results_path)
@@ -558,6 +715,28 @@ def _process_arguments_and_run() -> int:
     if not os.path.exists(xemu):
         logger.error("Invalid xemu path '%s'", xemu)
         return 1
+
+    if not args.overwrite_existing_outputs and not args.just_suites:
+        try:
+            emulator_command, _ = _build_emulator_command(
+                xemu, no_bundle=args.no_bundle, enable_serial=args.enable_serial
+            )
+            if emulator_command:
+                output_directory = _determine_output_directory(
+                    results_path, emulator_command=emulator_command, is_vulkan=args.use_vulkan
+                )
+
+                if output_directory:
+                    existing_summaries = glob.glob(os.path.join(output_directory, "*", "summary.json"))
+                    if existing_summaries:
+                        logger.warning(
+                            "Found %d existing summary.json files in %s. Skipping execution. Use --overwrite-existing-outputs to force run.",
+                            len(existing_summaries),
+                            output_directory,
+                        )
+                        return 0
+        except Exception:
+            logger.exception("Failed to check for existing results, assuming none exist")
 
     if args.iso:
         iso = os.path.abspath(os.path.expanduser(args.iso))
@@ -572,36 +751,30 @@ def _process_arguments_and_run() -> int:
         logger.error("Invalid xemu_hdd path")
         return 1
 
-    def _copy_inputs_and_run(temp_path: str, *, overwrite_existing_outputs: bool) -> int:
-        if args.shard_index is not None:
-            total_shards = args.shard_count if args.shard_count > 0 else 1
-            return _run_shard(
-                args.shard_index,
-                total_shards,
-                temp_path,
-                iso,
-                hdd,
-                args.mcpx,
-                args.bios,
-                xemu,
-                results_path,
-                overwrite_existing_outputs=overwrite_existing_outputs,
-                no_bundle=args.no_bundle,
-                use_vulkan=args.use_vulkan,
-                just_suites=args.just_suites,
-            )
+    if args.toml:
+        result = _extract_info_from_xemu_toml(args.toml)
+        if not result:
+            logger.error("Failed to extract mcpx and bios from xemu toml at '%s'", args.toml)
+            return 1
+        args.mcpx, args.bios = result
 
-        if args.shard_count <= 1:
+    def _copy_inputs_and_run(temp_path: str, *, overwrite_existing_outputs: bool) -> int:
+        if args.shard_index is not None or args.shard_count <= 1:
+            shard_index = 0 if args.shard_index is None else args.shard_index
+            shard_count = 1 if args.shard_index is None else args.shard_count
             return _run_shard(
-                0,
-                1,
+                shard_index,
+                shard_count,
                 temp_path,
                 iso,
                 hdd,
                 args.mcpx,
                 args.bios,
+                args.eeprom,
                 xemu,
                 results_path,
+                memory=args.memory,
+                enable_serial=args.enable_serial,
                 overwrite_existing_outputs=overwrite_existing_outputs,
                 no_bundle=args.no_bundle,
                 use_vulkan=args.use_vulkan,
@@ -627,8 +800,11 @@ def _process_arguments_and_run() -> int:
                         hdd,
                         args.mcpx,
                         args.bios,
+                        args.eeprom,
                         xemu,
                         shard_results_path,
+                        memory=args.memory,
+                        enable_serial=args.enable_serial,
                         overwrite_existing_outputs=True,
                         no_bundle=args.no_bundle,
                         use_vulkan=args.use_vulkan,

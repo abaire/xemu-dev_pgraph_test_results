@@ -34,3 +34,16 @@ include = ["xemu_dev_pgraph*"]
 
 [tool.setuptools.package-data]
 "xemu_dev_pgraph" = ["templates/*", "templates/**/*"]
+
+[tool.hatch.envs.types]
+type = "virtual"
+path = ".venv-mypy"
+extra-dependencies = [
+  "pip",
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:xemu_dev_pgraph}"
+
+[tool.mypy]
+disable_error_code = ["import-untyped", "import-not-found"]

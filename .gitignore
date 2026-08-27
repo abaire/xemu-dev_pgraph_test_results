@@ -3,6 +3,9 @@
 __pycache__/
 
 .venv/
+.venv-mypy/
+venv/
+user_scripts/venv/
 .work/
 
 /cache/*

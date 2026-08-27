@@ -90,7 +90,7 @@ class ResultsConfiguration:
 
 def _find_best_comparator(
     results: ResultsConfiguration, golden_paths: dict[str, ResultsConfiguration]
-) -> tuple[str, ResultsConfiguration]:
+) -> tuple[str, ResultsConfiguration] | None:
     best_config = None
     best_score = -1
 
