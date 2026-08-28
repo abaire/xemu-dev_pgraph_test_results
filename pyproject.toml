@@ -23,11 +23,19 @@ dependencies = [
 
 [project.scripts]
 xemu-pgraph-run = "xemu_dev_pgraph.runner:main"
+xemu-pgraph-compare = "xemu_dev_pgraph.comparator:main"
 xemu-pgraph-diff = "xemu_dev_pgraph.pipeline:main"
 xemu-pgraph-merge = "xemu_dev_pgraph.runner:merge_main"
 xemu-pgraph-hw-diff = "xemu_dev_pgraph.hw_diffs:main"
 xemu-pgraph-xemu-diff = "xemu_dev_pgraph.xemu_diffs:main"
 xemu-pgraph-site = "xemu_dev_pgraph.site_generator:main"
+
+[project.optional-dependencies]
+lpips = [
+    "lpips~=0.1.4",
+    "opencv-python~=4.11.0.86",
+]
+
 
 [tool.setuptools.packages.find]
 include = ["xemu_dev_pgraph*"]

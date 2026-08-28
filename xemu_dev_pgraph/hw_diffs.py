@@ -8,7 +8,11 @@ import subprocess
 import sys
 import tempfile
 
-from xemu_dev_pgraph.comparator import _ensure_cache_path, _fetch_hw_goldens, perform_comparison
+from xemu_dev_pgraph.comparator import (
+    _ensure_cache_path,
+    _fetch_hw_goldens,
+    perform_comparison,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +45,9 @@ def _find_hw_comparison_paths(output_dir: str) -> set[str]:
 
     logger.info("Searching for existing HW comparisons in '%s'", output_dir)
     if not os.path.isdir(output_dir):
-        logger.info("  Output directory '%s' does not exist (no prior comparisons)", output_dir)
+        logger.info(
+            "  Output directory '%s' does not exist (no prior comparisons)", output_dir
+        )
         return ret
 
     for root, dirnames, filenames in os.walk(output_dir):
@@ -72,10 +78,15 @@ def _comparison_path_to_source_path(comparison_path: str) -> str:
 def find_result_dirs_without_hw_diffs(results_dir: str, output_dir: str) -> set[str]:
     result_paths = _find_results_paths(results_dir)
     hw_comparison_paths = _find_hw_comparison_paths(output_dir)
-    source_paths = {os.path.join(results_dir, _comparison_path_to_source_path(path)) for path in hw_comparison_paths}
+    source_paths = {
+        os.path.join(results_dir, _comparison_path_to_source_path(path))
+        for path in hw_comparison_paths
+    }
 
     if source_paths:
-        logger.info("Mapped %d existing comparison(s) back to source paths:", len(source_paths))
+        logger.info(
+            "Mapped %d existing comparison(s) back to source paths:", len(source_paths)
+        )
         for sp in sorted(source_paths):
             logger.info("  %s", sp)
 
@@ -89,7 +100,11 @@ def find_result_dirs_without_hw_diffs(results_dir: str, output_dir: str) -> set[
 
 def _discover_test_suites(result_dir: str) -> list[str]:
     try:
-        suites = [entry.name for entry in os.scandir(result_dir) if entry.is_dir() and not entry.name.startswith(".")]
+        suites = [
+            entry.name
+            for entry in os.scandir(result_dir)
+            if entry.is_dir() and not entry.name.startswith(".")
+        ]
     except OSError:
         logger.warning("Could not scan result directory: %s", result_dir)
         suites = []
@@ -106,7 +121,9 @@ def generate_missing_hw_diffs(
     shard_index: int | None = None,
     shard_count: int | None = None,
 ) -> None:
-    results_missing_comparisons = find_result_dirs_without_hw_diffs(results_dir, output_dir)
+    results_missing_comparisons = find_result_dirs_without_hw_diffs(
+        results_dir, output_dir
+    )
 
     if not results_missing_comparisons:
         logger.warning("No result directories need HW comparisons. Nothing to do.")
@@ -131,14 +148,19 @@ def generate_missing_hw_diffs(
         logger.info("Found %d test suite(s) in %s", len(suites), result_dir)
         flat_items.extend((result_dir, suite) for suite in suites)
 
-    logger.info("Total (result_dir, suite) pairs to process (before sharding): %d", len(flat_items))
+    logger.info(
+        "Total (result_dir, suite) pairs to process (before sharding): %d",
+        len(flat_items),
+    )
     if not flat_items:
         logger.warning("No test suites found. Nothing to do.")
         return
 
     if shard_index is not None and shard_count is not None:
         logger.info("Sharding: index=%d, count=%d", shard_index, shard_count)
-        flat_items = [item for i, item in enumerate(flat_items) if i % shard_count == shard_index]
+        flat_items = [
+            item for i, item in enumerate(flat_items) if i % shard_count == shard_index
+        ]
         logger.info("This shard will process %d pair(s)", len(flat_items))
         if not flat_items:
             logger.warning("Shard %d has no work to process.", shard_index)
@@ -150,14 +172,25 @@ def generate_missing_hw_diffs(
 
     for result_dir, suites in sorted(suites_by_result_dir.items()):
         sorted_suites = sorted(suites)
-        logger.info("Running comparison for %s with %d suite(s): %s", result_dir, len(suites), ", ".join(sorted_suites))
+        logger.info(
+            "Running comparison for %s with %d suite(s): %s",
+            result_dir,
+            len(suites),
+            ", ".join(sorted_suites),
+        )
 
         if compare_script:
-            with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
+            with tempfile.NamedTemporaryFile(
+                mode="w", suffix=".txt", delete=False
+            ) as f:
                 f.write("\n".join(sorted_suites))
                 suites_file = f.name
             try:
-                cmd = shlex.split(compare_script) if isinstance(compare_script, str) else list(compare_script)
+                cmd = (
+                    shlex.split(compare_script)
+                    if isinstance(compare_script, str)
+                    else list(compare_script)
+                )
                 cmd.extend(
                     [
                         result_dir,
@@ -189,13 +222,27 @@ def generate_missing_hw_diffs(
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--results-dir", default="results", help="Directory including test outputs")
-    parser.add_argument("--output-dir", default="compare-results", help="Directory for diff results")
+    parser.add_argument(
+        "--results-dir", default="results", help="Directory including test outputs"
+    )
+    parser.add_argument(
+        "--output-dir", default="compare-results", help="Directory for diff results"
+    )
     parser.add_argument("--golden-dir", help="Directory containing golden HW results")
-    parser.add_argument("--compare-script", default=None, help="Optional compare script")
-    parser.add_argument("--perceptualdiff", default="perceptualdiff", help="Path to perceptualdiff binary")
-    parser.add_argument("--shard-index", type=int, default=None, help="Shard index (0-based)")
-    parser.add_argument("--shard-count", type=int, default=None, help="Total number of shards")
+    parser.add_argument(
+        "--compare-script", default=None, help="Optional compare script"
+    )
+    parser.add_argument(
+        "--perceptualdiff",
+        default="perceptualdiff",
+        help="Path to perceptualdiff binary",
+    )
+    parser.add_argument(
+        "--shard-index", type=int, default=None, help="Shard index (0-based)"
+    )
+    parser.add_argument(
+        "--shard-count", type=int, default=None, help="Total number of shards"
+    )
 
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
