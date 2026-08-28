@@ -13,7 +13,7 @@ authors = [
     { name = "Erik Abair" }
 ]
 dependencies = [
-    "nxdk-pgraph-test-runner>=0.1.26",
+    "nxdk-pgraph-test-runner>=0.1.27",
     "nxdk-pgraph-test-repacker>=0.1.0",
     "requests~=2.33.1",
     "GitPython~=3.1.44",
