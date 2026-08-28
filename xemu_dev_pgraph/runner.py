@@ -378,6 +378,7 @@ def run(
     just_suites: Collection[str] | None = None,
     custom_toml_path: str | None = None,
     timeout: int = 0,
+    stall_timeout: int = 0,
 ):
     if not isinstance(memory, int) or memory <= 0:
         msg = f"Invalid memory configuration: {memory}. Must be an integer > 0."
@@ -425,6 +426,7 @@ def run(
         xbox_artifact_path=r"c:\nxdk_pgraph_tests",
         test_failure_retries=test_failure_retries,
         timeout_seconds=timeout,
+        stall_timeout_seconds=stall_timeout,
         network_config={"config_automatic": True},
         suite_allowlist=just_suites,
     )
@@ -519,6 +521,7 @@ def _run_shard(
     use_vulkan: bool,
     just_suites: Collection[str] | None,
     timeout: int = 0,
+    stall_timeout: int = 0,
 ) -> int:
     inputs_path = os.path.join(temp_path, "inputs")
     os.makedirs(inputs_path, exist_ok=True)
@@ -579,6 +582,7 @@ def _run_shard(
         just_suites=just_suites,
         custom_toml_path=os.path.join(inputs_path, "xemu.toml"),
         timeout=timeout,
+        stall_timeout=stall_timeout,
     )
 
 
@@ -683,7 +687,13 @@ def _process_arguments_and_run() -> int:
     )
     parser.add_argument("--shard-index", type=int, default=None, help="Index of this shard to run (0-based).")
     parser.add_argument("--shard-count", "-S", type=int, default=0, help="Total number of shards.")
-    parser.add_argument("--timeout", type=int, default=0, help="Timeout in seconds for each emulator run.")
+    parser.add_argument("--timeout", type=int, default=0, help="Total timeout in seconds for each emulator run.")
+    parser.add_argument(
+        "--stall-timeout",
+        type=int,
+        default=0,
+        help="Inactivity timeout in seconds without FTP updates before killing emulator.",
+    )
 
     args = parser.parse_args()
 
@@ -786,6 +796,7 @@ def _process_arguments_and_run() -> int:
                 use_vulkan=args.use_vulkan,
                 just_suites=args.just_suites,
                 timeout=args.timeout,
+                stall_timeout=args.stall_timeout,
             )
 
         futures = []
@@ -817,6 +828,7 @@ def _process_arguments_and_run() -> int:
                         use_vulkan=args.use_vulkan,
                         just_suites=args.just_suites,
                         timeout=args.timeout,
+                        stall_timeout=args.stall_timeout,
                     )
                 )
 
