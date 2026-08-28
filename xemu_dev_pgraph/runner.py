@@ -285,10 +285,13 @@ def _build_emulator_command(
     no_bundle: bool = False,  # noqa: ARG001
     custom_toml_path: str | None = None,
     enable_serial: bool = False,
+    snapshot: bool = False,
 ) -> tuple[str, str]:
     portable_mode_config_path = os.path.dirname(xemu_path)
 
     cmd = xemu_path + " -dvd_path {ISO}"
+    if snapshot:
+        cmd += " -snapshot"
     if enable_serial:
         cmd += " -device lpc47m157 -serial stdio"
     if custom_toml_path:
@@ -379,6 +382,7 @@ def run(
     custom_toml_path: str | None = None,
     timeout: int = 0,
     stall_timeout: int = 0,
+    snapshot: bool = False,
 ):
     if not isinstance(memory, int) or memory <= 0:
         msg = f"Invalid memory configuration: {memory}. Must be an integer > 0."
@@ -389,6 +393,7 @@ def run(
         no_bundle=no_bundle,
         custom_toml_path=custom_toml_path,
         enable_serial=enable_serial,
+        snapshot=snapshot,
     )
     if not emulator_command:
         return 1
@@ -522,6 +527,7 @@ def _run_shard(
     just_suites: Collection[str] | None,
     timeout: int = 0,
     stall_timeout: int = 0,
+    snapshot: bool = False,
 ) -> int:
     inputs_path = os.path.join(temp_path, "inputs")
     os.makedirs(inputs_path, exist_ok=True)
@@ -583,6 +589,7 @@ def _run_shard(
         custom_toml_path=os.path.join(inputs_path, "xemu.toml"),
         timeout=timeout,
         stall_timeout=stall_timeout,
+        snapshot=snapshot,
     )
 
 
@@ -694,6 +701,11 @@ def _process_arguments_and_run() -> int:
         default=0,
         help="Inactivity timeout in seconds without FTP updates before killing emulator.",
     )
+    parser.add_argument(
+        "--snapshot",
+        action="store_true",
+        help="Run emulator in snapshot mode (discards HDD changes on exit).",
+    )
 
     args = parser.parse_args()
 
@@ -797,6 +809,7 @@ def _process_arguments_and_run() -> int:
                 just_suites=args.just_suites,
                 timeout=args.timeout,
                 stall_timeout=args.stall_timeout,
+                snapshot=args.snapshot,
             )
 
         futures = []
@@ -829,6 +842,7 @@ def _process_arguments_and_run() -> int:
                         just_suites=args.just_suites,
                         timeout=args.timeout,
                         stall_timeout=args.stall_timeout,
+                        snapshot=args.snapshot,
                     )
                 )
 
