@@ -33,7 +33,9 @@ class ResultsInfo(NamedTuple):
 
     @property
     def output_subdirectory(self) -> str:
-        return os.path.join(self.xemu_version, self.platform_info, self.gl_info.replace(":", "/"))
+        return os.path.join(
+            self.xemu_version, self.platform_info, self.gl_info.replace(":", "/")
+        )
 
     @property
     def run_identifier_subdirectory(self) -> str:
@@ -71,7 +73,9 @@ class ResultsInfo(NamedTuple):
         return self
 
     @classmethod
-    def parse(cls, result_path: str, include_suites: set[str] | None = None) -> ResultsInfo:
+    def parse(
+        cls, result_path: str, include_suites: set[str] | None = None
+    ) -> ResultsInfo:
         # results/Linux_foo/gl_version/glsl_version/xemu_version
         components = result_path.split("/")
         return cls(
@@ -100,7 +104,9 @@ class Difference(NamedTuple):
     def difference_filename(self) -> str:
         return f"{os.path.join(self.test_suite, self.test_case)}-diff.png"
 
-    def generate_difference_image(self, perceptualdiff: str, output_path: str) -> tuple[int, str, str]:
+    def generate_difference_image(
+        self, perceptualdiff: str, output_path: str
+    ) -> tuple[int, str, str]:
         """Generates a diff image in the given output_path using perceptualdiff.
 
         Returns tuple[ExitCode, STDOUT, STDERR]
@@ -143,7 +149,9 @@ def _fetch_hw_goldens(output_dir: str):
     Repo.clone_from(_HW_GOLDEN_GIT_URL, output_dir, depth=1)
 
 
-def _compare_lpips(results_info: ResultsInfo, golden_info: ResultsInfo) -> tuple[set[str], set[str], list[Difference]]:
+def _compare_lpips(
+    results_info: ResultsInfo, golden_info: ResultsInfo
+) -> tuple[set[str], set[str], list[Difference]]:
     import lpips
 
     loss_fn = lpips.LPIPS(net="alex")
@@ -180,14 +188,21 @@ def _compare_lpips(results_info: ResultsInfo, golden_info: ResultsInfo) -> tuple
                 distance_value,
             )
 
-            differences.append(Difference(test_suite, test_case, artifact, golden_artifact, distance_value))
+            differences.append(
+                Difference(
+                    test_suite, test_case, artifact, golden_artifact, distance_value
+                )
+            )
         print()
 
     return only_results, only_goldens, differences
 
 
 def _compare_perceptualdiff(
-    results_info: ResultsInfo, golden_info: ResultsInfo, perceptualdiff: str, comparison_output_directory: str
+    results_info: ResultsInfo,
+    golden_info: ResultsInfo,
+    perceptualdiff: str,
+    comparison_output_directory: str,
 ) -> tuple[set[str], set[str], list[Difference]]:
     results_tests = results_info.get_flattened_tests()
     golden_tests = golden_info.get_flattened_tests()
@@ -208,7 +223,9 @@ def _compare_perceptualdiff(
                 continue
 
             diff = Difference(test_suite, test_case, artifact, golden_artifact, -1)
-            result, stdout, _stderr = diff.generate_difference_image(perceptualdiff, comparison_output_directory)
+            result, stdout, _stderr = diff.generate_difference_image(
+                perceptualdiff, comparison_output_directory
+            )
             if not result:
                 continue
 
@@ -217,7 +234,9 @@ def _compare_perceptualdiff(
                 match = PERCEPTUALDIFF_DIFFERENCE_RE.match(line)
                 if match:
                     diff_score = float(match.group(1))
-            diff = Difference(test_suite, test_case, artifact, golden_artifact, diff_score)
+            diff = Difference(
+                test_suite, test_case, artifact, golden_artifact, diff_score
+            )
             differences.append(diff)
         print()
 
@@ -289,9 +308,13 @@ def perform_comparison(
         "golden_identifier": against_name,
         "tests_without_goldens": sorted(only_results),
         "goldens_without_results": sorted(only_golden),
-        "tests_with_differences": {diff.fully_qualified_test_name: diff.distance for diff in diffs},
+        "tests_with_differences": {
+            diff.fully_qualified_test_name: diff.distance for diff in diffs
+        },
     }
-    with open(os.path.join(comparison_output_directory, "summary.json"), "w", encoding="utf-8") as outfile:
+    with open(
+        os.path.join(comparison_output_directory, "summary.json"), "w", encoding="utf-8"
+    ) as outfile:
         json.dump(summary, outfile, ensure_ascii=True, indent=2, sort_keys=True)
 
 
@@ -313,7 +336,11 @@ def _process_arguments_and_run():
         "results",
         help="Path to the root of the results to compare against the golden results.",
     )
-    parser.add_argument("--list", action="store_true", help="List likely test result sets in the <results> directory.")
+    parser.add_argument(
+        "--list",
+        action="store_true",
+        help="List likely test result sets in the <results> directory.",
+    )
     parser.add_argument(
         "--output-dir",
         "-o",
@@ -326,7 +353,9 @@ def _process_arguments_and_run():
         "-a",
         help="Path to the root of the results to consider golden. Omit to test against the HW results repo.",
     )
-    parser.add_argument("--cache-path", "-C", default="cache", help="Path to persistent cache area.")
+    parser.add_argument(
+        "--cache-path", "-C", default="cache", help="Path to persistent cache area."
+    )
     parser.add_argument(
         "--perceptualdiff",
         default="perceptualdiff",
@@ -391,7 +420,11 @@ def _process_arguments_and_run():
     if args.include_suites_file:
         with open(args.include_suites_file) as f:
             include_suites = {line.strip() for line in f if line.strip()}
-        logger.info("Filtering to %d suite(s) from %s", len(include_suites), args.include_suites_file)
+        logger.info(
+            "Filtering to %d suite(s) from %s",
+            len(include_suites),
+            args.include_suites_file,
+        )
 
     perform_comparison(
         args.results,
@@ -406,5 +439,9 @@ def _process_arguments_and_run():
     return 0
 
 
+def main() -> int:
+    return _process_arguments_and_run()
+
+
 if __name__ == "__main__":
-    sys.exit(_process_arguments_and_run())
+    sys.exit(main())

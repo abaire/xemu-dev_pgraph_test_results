@@ -61,7 +61,9 @@ def run_pipeline(
             perceptualdiff=perceptualdiff,
         )
     else:
-        logger.warning("No valid xemu baseline directory provided; creating dummy comparisons.json")
+        logger.warning(
+            "No valid xemu baseline directory provided; creating dummy comparisons.json"
+        )
         with open(os.path.join(xemu_comparison_dir, "comparisons.json"), "w") as f:
             f.write("{}")
 
@@ -93,17 +95,46 @@ def run_pipeline(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Generate PGraph regression visual diff report & HTML site.")
-    parser.add_argument("--results-dir", "-r", default="results", help="Directory containing actual test results.")
-    parser.add_argument("--golden-dir", "-g", required=True, help="Directory containing Xbox hardware golden baseline.")
-    parser.add_argument("--xemu-baseline-dir", "-x", help="Directory containing baseline xemu release results.")
-    parser.add_argument(
-        "--output-dir", "-o", default="site_preview", help="Output directory for generated preview site."
+    parser = argparse.ArgumentParser(
+        description="Generate PGraph regression visual diff report & HTML site."
     )
-    parser.add_argument("--branch", default="pr-preview", help="Branch or PR identifier.")
-    parser.add_argument("--perceptualdiff", default="perceptualdiff", help="Path to perceptualdiff binary.")
-    parser.add_argument("--site-resources-base-url", default=".", help="Base URL for site resources.")
-    parser.add_argument("--results-base-url", default=".", help="Base URL for test results.")
+    parser.add_argument(
+        "--results-dir",
+        "-r",
+        default="results",
+        help="Directory containing actual test results.",
+    )
+    parser.add_argument(
+        "--golden-dir",
+        "-g",
+        required=True,
+        help="Directory containing Xbox hardware golden baseline.",
+    )
+    parser.add_argument(
+        "--xemu-baseline-dir",
+        "-x",
+        help="Directory containing baseline xemu release results.",
+    )
+    parser.add_argument(
+        "--output-dir",
+        "-o",
+        default="site_preview",
+        help="Output directory for generated preview site.",
+    )
+    parser.add_argument(
+        "--branch", default="pr-preview", help="Branch or PR identifier."
+    )
+    parser.add_argument(
+        "--perceptualdiff",
+        default="perceptualdiff",
+        help="Path to perceptualdiff binary.",
+    )
+    parser.add_argument(
+        "--site-resources-base-url", default=".", help="Base URL for site resources."
+    )
+    parser.add_argument(
+        "--results-base-url", default=".", help="Base URL for test results."
+    )
     parser.add_argument(
         "--hw-golden-base-url",
         default="https://raw.githubusercontent.com/abaire/nxdk_pgraph_tests_golden_results/main",
@@ -114,7 +145,9 @@ def main() -> int:
         default="https://raw.githubusercontent.com/abaire/xemu-nxdk_pgraph_tests_results/github_pages",
         help="Base URL for xemu baseline images.",
     )
-    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging.")
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Enable verbose logging."
+    )
 
     args = parser.parse_args()
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)

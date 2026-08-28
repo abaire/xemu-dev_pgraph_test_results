@@ -82,7 +82,9 @@ class ResultsConfiguration:
         ret = 0
         if self.renderer == other.renderer:
             ret += 500000
-        ret += prefix_match(self.sanitized_os_arch, other.sanitized_os_arch, 100, 100000)
+        ret += prefix_match(
+            self.sanitized_os_arch, other.sanitized_os_arch, 100, 100000
+        )
         ret += prefix_match(self.glsl_version, other.glsl_version, 50, 500)
         ret += prefix_match(self.gl_version, other.gl_version, 50, 500)
         return ret
@@ -133,7 +135,11 @@ def generate_diffs(
         registry[path] = golden_path
 
         if compare_script:
-            cmd = shlex.split(compare_script) if isinstance(compare_script, str) else list(compare_script)
+            cmd = (
+                shlex.split(compare_script)
+                if isinstance(compare_script, str)
+                else list(compare_script)
+            )
             cmd.extend(
                 [
                     path,
@@ -172,7 +178,9 @@ def main() -> int:
     parser.add_argument("--results-dir", default="results")
     parser.add_argument("--output-dir", default="compare-results")
     parser.add_argument("--compare-script", default=None)
-    parser.add_argument("--baseline-dir", required=True, help="Path to baseline directory")
+    parser.add_argument(
+        "--baseline-dir", required=True, help="Path to baseline directory"
+    )
     parser.add_argument("--cache-dir", default="cache")
     parser.add_argument("--perceptualdiff", default="perceptualdiff")
 

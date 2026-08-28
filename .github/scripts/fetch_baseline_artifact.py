@@ -96,7 +96,18 @@ if __name__ == "__main__":
 
         # 1. Fetch manifest from main
         logger.info("Fetching manifest from %s/%s@main...", owner, repo)
-        subprocess.check_call(["git", "clone", "--depth", "1", "--branch", "main", repo_url, "manifest-repo"])
+        subprocess.check_call(
+            [
+                "git",
+                "clone",
+                "--depth",
+                "1",
+                "--branch",
+                "main",
+                repo_url,
+                "manifest-repo",
+            ]
+        )
 
         # 2. Score candidates
         manifest_root = Path("manifest-repo/results")
@@ -122,13 +133,26 @@ if __name__ == "__main__":
         logger.info("Best Match: %s", best_match_path)
         logger.info("Targeting Branch: %s", archive_branch)
 
-        subprocess.check_call(["git", "clone", "--depth", "1", "--branch", archive_branch, repo_url, "baseline-repo"])
+        subprocess.check_call(
+            [
+                "git",
+                "clone",
+                "--depth",
+                "1",
+                "--branch",
+                archive_branch,
+                repo_url,
+                "baseline-repo",
+            ]
+        )
 
         # The archive branches contain the 'results' folder at the root
         final_baseline_dir = (Path("baseline-repo") / best_match_path).resolve()
 
         if not final_baseline_dir.is_dir():
-            logger.error("Resolved baseline directory %s does not exist.", final_baseline_dir)
+            logger.error(
+                "Resolved baseline directory %s does not exist.", final_baseline_dir
+            )
             sys.exit(1)
 
         logger.info("FINAL_SELECTION=%s", final_baseline_dir)

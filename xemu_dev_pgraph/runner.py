@@ -69,7 +69,9 @@ if sys.platform == "win32":
 
         def start(self):
             self.stop_event.clear()
-            self.thread = threading.Thread(target=self.find_and_click_abort, daemon=True)
+            self.thread = threading.Thread(
+                target=self.find_and_click_abort, daemon=True
+            )
             self.thread.start()
 
         def stop(self):
@@ -84,8 +86,14 @@ else:
             pass
 
 
-def _fetch_github_release_info(api_url: str, tag: str = "latest") -> dict[str, Any] | None:
-    full_url = f"{api_url}/releases/latest" if not tag or tag == "latest" else f"{api_url}/releases?per_page=60"
+def _fetch_github_release_info(
+    api_url: str, tag: str = "latest"
+) -> dict[str, Any] | None:
+    full_url = (
+        f"{api_url}/releases/latest"
+        if not tag or tag == "latest"
+        else f"{api_url}/releases?per_page=60"
+    )
 
     def fetch_and_filter(url: str):
         try:
@@ -122,12 +130,20 @@ def _fetch_github_release_info(api_url: str, tag: str = "latest") -> dict[str, A
 
 
 def _download_artifact(
-    target_path: str, download_url: str, artifact_path_override: str | None = None, *, force_download: bool = False
+    target_path: str,
+    download_url: str,
+    artifact_path_override: str | None = None,
+    *,
+    force_download: bool = False,
 ) -> bool:
     if os.path.exists(target_path) and not force_download:
         return False
 
-    if artifact_path_override and os.path.exists(artifact_path_override) and not force_download:
+    if (
+        artifact_path_override
+        and os.path.exists(artifact_path_override)
+        and not force_download
+    ):
         return True
 
     if not download_url.startswith("https://"):
@@ -144,7 +160,9 @@ def _download_artifact(
     return True
 
 
-def _filter_release_info_by_tag(release_infos: list[dict[str, Any]], tag: str) -> dict[str, Any] | None:
+def _filter_release_info_by_tag(
+    release_infos: list[dict[str, Any]], tag: str
+) -> dict[str, Any] | None:
     for info in release_infos:
         if info.get("tag_name") == tag:
             return info
@@ -153,7 +171,9 @@ def _filter_release_info_by_tag(release_infos: list[dict[str, Any]], tag: str) -
 
 def _download_tester_iso(output_dir: str, tag: str = "latest") -> str | None:
     logger.info("Fetching info on nxdk_pgraph_tests ISO at release tag %s...", tag)
-    release_info = _fetch_github_release_info("https://api.github.com/repos/abaire/nxdk_pgraph_tests", tag)
+    release_info = _fetch_github_release_info(
+        "https://api.github.com/repos/abaire/nxdk_pgraph_tests", tag
+    )
     if not release_info:
         return None
 
@@ -170,7 +190,9 @@ def _download_tester_iso(output_dir: str, tag: str = "latest") -> str | None:
         break
 
     if not download_url:
-        logger.error("Failed to fetch download URL for latest nxdk_pgraph_tests release")
+        logger.error(
+            "Failed to fetch download URL for latest nxdk_pgraph_tests release"
+        )
         return None
 
     target_file = os.path.join(output_dir, f"nxdk_pgraph_tests-{release_tag}.iso")
@@ -180,7 +202,9 @@ def _download_tester_iso(output_dir: str, tag: str = "latest") -> str | None:
 
 def _download_xemu_hdd(output_dir: str, tag: str = "latest") -> str | None:
     logger.info("Fetching info on xemu_hdd at release tag %s...", tag)
-    release_info = _fetch_github_release_info("https://api.github.com/repos/xemu-project/xemu-hdd-image", tag)
+    release_info = _fetch_github_release_info(
+        "https://api.github.com/repos/xemu-project/xemu-hdd-image", tag
+    )
     if not release_info:
         return None
 
@@ -303,24 +327,34 @@ def _build_emulator_command(
     return cmd, toml_path
 
 
-def _determine_output_directory(results_path: str, emulator_command: str, *, is_vulkan: bool) -> str | None:
-    command = Config(emulator_command=emulator_command + " -display none").build_emulator_command(
-        "__this_file_does_not_exist"
-    )
+def _determine_output_directory(
+    results_path: str, emulator_command: str, *, is_vulkan: bool
+) -> str | None:
+    command = Config(
+        emulator_command=emulator_command + " -display none"
+    ).build_emulator_command("__this_file_does_not_exist")
     stderr = ""
     try:
-        result = subprocess.run(command, capture_output=True, text=True, check=True, timeout=1)
+        result = subprocess.run(
+            command, capture_output=True, text=True, check=True, timeout=1
+        )
         stderr = result.stderr or ""
     except subprocess.TimeoutExpired as err:
-        stderr = err.stderr.decode() if isinstance(err.stderr, bytes) else (err.stderr or "")
+        stderr = (
+            err.stderr.decode() if isinstance(err.stderr, bytes) else (err.stderr or "")
+        )
         sleep(0.5)
     except subprocess.CalledProcessError as err:
-        stderr = err.stderr.decode() if isinstance(err.stderr, bytes) else (err.stderr or "")
+        stderr = (
+            err.stderr.decode() if isinstance(err.stderr, bytes) else (err.stderr or "")
+        )
         logger.exception(stderr)
         raise
 
     emulator_output = EmulatorOutput.parse(stdout=[], stderr=stderr.split("\n"))
-    output_directory = get_output_directory(emulator_output.emulator_version, HostProfile(), is_vulkan=is_vulkan)
+    output_directory = get_output_directory(
+        emulator_output.emulator_version, HostProfile(), is_vulkan=is_vulkan
+    )
 
     return os.path.join(results_path, output_directory)
 
@@ -334,7 +368,9 @@ def _get_macos_bundle_identifier(xemu_path: str, *, no_bundle: bool) -> str | No
     return result.stdout
 
 
-def _set_apple_persistence_ignore_state(macos_bundle_identifier: str, *, ignore: bool | None) -> bool | None:
+def _set_apple_persistence_ignore_state(
+    macos_bundle_identifier: str, *, ignore: bool | None
+) -> bool | None:
     command = [
         "defaults",
         "read",
@@ -398,9 +434,17 @@ def run(
     if not emulator_command:
         return 1
 
-    bootrom_file = os.path.join(inputs_path, "mcpx.bin") if bootrom_path is None else bootrom_path
-    flashrom_file = os.path.join(inputs_path, "bios.bin") if flashrom_path is None else flashrom_path
-    eeprom_file = os.path.join(inputs_path, "eeprom.bin") if eeprom_path is None else eeprom_path
+    bootrom_file = (
+        os.path.join(inputs_path, "mcpx.bin") if bootrom_path is None else bootrom_path
+    )
+    flashrom_file = (
+        os.path.join(inputs_path, "bios.bin")
+        if flashrom_path is None
+        else flashrom_path
+    )
+    eeprom_file = (
+        os.path.join(inputs_path, "eeprom.bin") if eeprom_path is None else eeprom_path
+    )
 
     _generate_xemu_toml(
         toml_path,
@@ -415,7 +459,11 @@ def run(
     output_directory = _determine_output_directory(
         results_path, emulator_command=emulator_command, is_vulkan=use_vulkan
     )
-    if output_directory and not overwrite_existing_outputs and os.path.isdir(output_directory):
+    if (
+        output_directory
+        and not overwrite_existing_outputs
+        and os.path.isdir(output_directory)
+    ):
         logger.error("Output directory %s already exists, exiting", output_directory)
         return 200
 
@@ -436,10 +484,14 @@ def run(
         suite_allowlist=just_suites,
     )
 
-    macos_bundle_identifier = _get_macos_bundle_identifier(xemu_path, no_bundle=no_bundle)
+    macos_bundle_identifier = _get_macos_bundle_identifier(
+        xemu_path, no_bundle=no_bundle
+    )
     original_ignore_value: bool | None = None
     if macos_bundle_identifier:
-        original_ignore_value = _set_apple_persistence_ignore_state(macos_bundle_identifier, ignore=True)
+        original_ignore_value = _set_apple_persistence_ignore_state(
+            macos_bundle_identifier, ignore=True
+        )
 
     handler: AbortDialogHandler | None = None
     if sys.platform == "win32":
@@ -471,17 +523,23 @@ def run(
             for state in ("passed", "failed", "flaky"):
                 for test_info in manifest.get(state, {}).values():
                     if "artifacts" in test_info:
-                        test_info["artifacts"] = [os.path.basename(p) for p in test_info["artifacts"]]
+                        test_info["artifacts"] = [
+                            os.path.basename(p) for p in test_info["artifacts"]
+                        ]
             with open(manifest_path, "w") as f:
                 json.dump(manifest, f, indent=2, sort_keys=True)
 
     if macos_bundle_identifier:
-        _set_apple_persistence_ignore_state(macos_bundle_identifier, ignore=original_ignore_value)
+        _set_apple_persistence_ignore_state(
+            macos_bundle_identifier, ignore=original_ignore_value
+        )
 
     return ret
 
 
-def _prepare_sharded_iso(iso_path: str, shard_index: int, shard_count: int, output_iso_path: str) -> bool:
+def _prepare_sharded_iso(
+    iso_path: str, shard_index: int, shard_count: int, output_iso_path: str
+) -> bool:
     extract_xiso = ensure_extract_xiso()
     with tempfile.TemporaryDirectory() as tmpdir:
         config_path = os.path.join(tmpdir, "config.json")
@@ -494,13 +552,18 @@ def _prepare_sharded_iso(iso_path: str, shard_index: int, shard_count: int, outp
 
         if "settings" not in config_data:
             config_data["settings"] = {}
-        config_data["settings"]["sharding"] = {"index": shard_index, "count": shard_count}
+        config_data["settings"]["sharding"] = {
+            "index": shard_index,
+            "count": shard_count,
+        }
 
         updated_config_path = os.path.join(tmpdir, "updated_config.json")
         with open(updated_config_path, "w") as f:
             json.dump(config_data, f)
 
-        if not repack_config(iso_path, output_iso_path, updated_config_path, extract_xiso):
+        if not repack_config(
+            iso_path, output_iso_path, updated_config_path, extract_xiso
+        ):
             logger.error("Failed to repack ISO for shard %d", shard_index)
             return False
 
@@ -533,8 +596,12 @@ def _run_shard(
     os.makedirs(inputs_path, exist_ok=True)
 
     if shard_count > 1:
-        effective_iso_path = os.path.join(inputs_path, f"test_runner_shard_{shard_index}.iso")
-        if not _prepare_sharded_iso(iso_path, shard_index, shard_count, effective_iso_path):
+        effective_iso_path = os.path.join(
+            inputs_path, f"test_runner_shard_{shard_index}.iso"
+        )
+        if not _prepare_sharded_iso(
+            iso_path, shard_index, shard_count, effective_iso_path
+        ):
             return 1
     else:
         effective_iso_path = iso_path
@@ -593,7 +660,9 @@ def _run_shard(
     )
 
 
-def _merge_shard_results(shard_results_paths: list[str], final_results_path: str) -> None:
+def _merge_shard_results(
+    shard_results_paths: list[str], final_results_path: str
+) -> None:
     merged_passed = {}
     merged_failed = {}
     merged_flaky = {}
@@ -634,13 +703,26 @@ def _merge_shard_results(shard_results_paths: list[str], final_results_path: str
                     shutil.copytree(src_item, dest_item)
                 else:
                     for suite_item in os.listdir(src_item):
-                        shutil.copy2(os.path.join(src_item, suite_item), os.path.join(dest_item, suite_item))
-            elif item in ("machine_info.txt", "renderer.json", "runner.json") and not os.path.exists(dest_item):
+                        shutil.copy2(
+                            os.path.join(src_item, suite_item),
+                            os.path.join(dest_item, suite_item),
+                        )
+            elif item in (
+                "machine_info.txt",
+                "renderer.json",
+                "runner.json",
+            ) and not os.path.exists(dest_item):
                 shutil.copy2(src_item, dest_item)
 
     if output_dir_rel:
-        final_manifest_path = os.path.join(final_results_path, output_dir_rel, "results.json")
-        merged_manifest: dict[str, Any] = {"passed": merged_passed, "failed": merged_failed, "flaky": merged_flaky}
+        final_manifest_path = os.path.join(
+            final_results_path, output_dir_rel, "results.json"
+        )
+        merged_manifest: dict[str, Any] = {
+            "passed": merged_passed,
+            "failed": merged_failed,
+            "flaky": merged_flaky,
+        }
         if merged_missing:
             merged_manifest["missing_artifacts"] = merged_missing
 
@@ -664,24 +746,62 @@ def _extract_info_from_xemu_toml(toml_path: str) -> tuple[str, str] | None:
 
 
 def _process_arguments_and_run() -> int:
-    parser = argparse.ArgumentParser(description="Headless PGraph test runner for xemu.")
-    parser.add_argument("--verbose", "-v", help="Enables verbose logging information", action="store_true")
-    parser.add_argument("--iso", "-I", help="Path to the nxdk_pgraph_tests.iso xiso file.")
-    parser.add_argument("--pgraph-tag", default="latest", help="Release tag to use when downloading ISO.")
+    parser = argparse.ArgumentParser(
+        description="Headless PGraph test runner for xemu."
+    )
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        help="Enables verbose logging information",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--iso", "-I", help="Path to the nxdk_pgraph_tests.iso xiso file."
+    )
+    parser.add_argument(
+        "--pgraph-tag",
+        default="latest",
+        help="Release tag to use when downloading ISO.",
+    )
     parser.add_argument("--xemu", "-X", help="Path to the xemu executable.")
     parser.add_argument("--hdd", "-H", help="Path to xemu hard disk image to use.")
-    parser.add_argument("--bios", "-B", default="inputs/bios.bin", help="Path to Xbox BIOS image to use.")
     parser.add_argument(
-        "--mcpx", "-M", default="inputs/mcpx.bin", help="Path to Xbox MCPX boot ROM image to use. Pass '' for no MCPX."
+        "--bios",
+        "-B",
+        default="inputs/bios.bin",
+        help="Path to Xbox BIOS image to use.",
     )
-    parser.add_argument("--eeprom", "-E", default="", help="Path to Xbox EEPROM image to use.")
-    parser.add_argument("--memory", "--mem", type=int, default=64, help="Xbox RAM size in MB (e.g. 64, 128).")
     parser.add_argument(
-        "--enable-serial", "--serial-output", action="store_true", help="Attach LPC debug UART and debugcon to stdio."
+        "--mcpx",
+        "-M",
+        default="inputs/mcpx.bin",
+        help="Path to Xbox MCPX boot ROM image to use. Pass '' for no MCPX.",
     )
-    parser.add_argument("--cache-path", "-C", default="cache", help="Path to persistent cache area.")
-    parser.add_argument("--temp-path", help="Temporary path used during execution of tests")
-    parser.add_argument("--results-path", "-R", default="results", help="Path to store results.")
+    parser.add_argument(
+        "--eeprom", "-E", default="", help="Path to Xbox EEPROM image to use."
+    )
+    parser.add_argument(
+        "--memory",
+        "--mem",
+        type=int,
+        default=64,
+        help="Xbox RAM size in MB (e.g. 64, 128).",
+    )
+    parser.add_argument(
+        "--enable-serial",
+        "--serial-output",
+        action="store_true",
+        help="Attach LPC debug UART and debugcon to stdio.",
+    )
+    parser.add_argument(
+        "--cache-path", "-C", default="cache", help="Path to persistent cache area."
+    )
+    parser.add_argument(
+        "--temp-path", help="Temporary path used during execution of tests"
+    )
+    parser.add_argument(
+        "--results-path", "-R", default="results", help="Path to store results."
+    )
     parser.add_argument("--overwrite-existing-outputs", "-f", action="store_true")
     parser.add_argument("--no-bundle", action="store_true")
     parser.add_argument("--use-vulkan", action="store_true")
@@ -692,9 +812,21 @@ def _process_arguments_and_run() -> int:
         help="Import bios and mcpx from an existing xemu install",
         metavar="xemu_toml_path",
     )
-    parser.add_argument("--shard-index", type=int, default=None, help="Index of this shard to run (0-based).")
-    parser.add_argument("--shard-count", "-S", type=int, default=0, help="Total number of shards.")
-    parser.add_argument("--timeout", type=int, default=0, help="Total timeout in seconds for each emulator run.")
+    parser.add_argument(
+        "--shard-index",
+        type=int,
+        default=None,
+        help="Index of this shard to run (0-based).",
+    )
+    parser.add_argument(
+        "--shard-count", "-S", type=int, default=0, help="Total number of shards."
+    )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=0,
+        help="Total timeout in seconds for each emulator run.",
+    )
     parser.add_argument(
         "--stall-timeout",
         type=int,
@@ -710,7 +842,11 @@ def _process_arguments_and_run() -> int:
     args = parser.parse_args()
 
     log_level = logging.DEBUG if args.verbose else logging.INFO
-    logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s", force=True)
+    logging.basicConfig(
+        level=log_level,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        force=True,
+    )
     logging.getLogger().setLevel(log_level)
 
     if args.memory <= 0:
@@ -751,11 +887,15 @@ def _process_arguments_and_run() -> int:
             )
             if emulator_command:
                 output_directory = _determine_output_directory(
-                    results_path, emulator_command=emulator_command, is_vulkan=args.use_vulkan
+                    results_path,
+                    emulator_command=emulator_command,
+                    is_vulkan=args.use_vulkan,
                 )
 
                 if output_directory:
-                    existing_summaries = glob.glob(os.path.join(output_directory, "*", "summary.json"))
+                    existing_summaries = glob.glob(
+                        os.path.join(output_directory, "*", "summary.json")
+                    )
                     if existing_summaries:
                         logger.warning(
                             "Found %d existing summary.json files in %s. Skipping execution. Use --overwrite-existing-outputs to force run.",
@@ -764,7 +904,9 @@ def _process_arguments_and_run() -> int:
                         )
                         return 0
         except Exception:
-            logger.exception("Failed to check for existing results, assuming none exist")
+            logger.exception(
+                "Failed to check for existing results, assuming none exist"
+            )
 
     if args.iso:
         iso = os.path.abspath(os.path.expanduser(args.iso))
@@ -774,7 +916,11 @@ def _process_arguments_and_run() -> int:
         logger.error("Invalid ISO path '%s'", iso)
         return 1
 
-    hdd = os.path.abspath(os.path.expanduser(args.hdd)) if args.hdd else _download_xemu_hdd(cache_path)
+    hdd = (
+        os.path.abspath(os.path.expanduser(args.hdd))
+        if args.hdd
+        else _download_xemu_hdd(cache_path)
+    )
     if not hdd or not os.path.isfile(hdd):
         logger.error("Invalid xemu_hdd path")
         return 1
@@ -782,11 +928,15 @@ def _process_arguments_and_run() -> int:
     if args.toml:
         result = _extract_info_from_xemu_toml(args.toml)
         if not result:
-            logger.error("Failed to extract mcpx and bios from xemu toml at '%s'", args.toml)
+            logger.error(
+                "Failed to extract mcpx and bios from xemu toml at '%s'", args.toml
+            )
             return 1
         args.mcpx, args.bios = result
 
-    def _copy_inputs_and_run(temp_path: str, *, overwrite_existing_outputs: bool) -> int:
+    def _copy_inputs_and_run(
+        temp_path: str, *, overwrite_existing_outputs: bool
+    ) -> int:
         if args.shard_index is not None or args.shard_count <= 1:
             shard_index = 0 if args.shard_index is None else args.shard_index
             shard_count = 1 if args.shard_index is None else args.shard_count
@@ -814,7 +964,9 @@ def _process_arguments_and_run() -> int:
 
         futures = []
         shard_paths = []
-        with concurrent.futures.ProcessPoolExecutor(max_workers=args.shard_count) as executor:
+        with concurrent.futures.ProcessPoolExecutor(
+            max_workers=args.shard_count
+        ) as executor:
             for i in range(args.shard_count):
                 shard_temp_path = os.path.join(temp_path, f"shard_{i}")
                 os.makedirs(shard_temp_path, exist_ok=True)
@@ -849,7 +1001,9 @@ def _process_arguments_and_run() -> int:
             for future in concurrent.futures.as_completed(futures):
                 ret = future.result()
                 if ret != 0:
-                    logger.error("Shard failed with exit code %d, aborting all shards.", ret)
+                    logger.error(
+                        "Shard failed with exit code %d, aborting all shards.", ret
+                    )
                     for f in futures:
                         f.cancel()
                     return ret
@@ -859,11 +1013,15 @@ def _process_arguments_and_run() -> int:
 
     if args.temp_path:
         return _copy_inputs_and_run(
-            _ensure_path(args.temp_path), overwrite_existing_outputs=args.overwrite_existing_outputs
+            _ensure_path(args.temp_path),
+            overwrite_existing_outputs=args.overwrite_existing_outputs,
         )
 
     with tempfile.TemporaryDirectory() as temp_path:
-        return _copy_inputs_and_run(_ensure_path(temp_path), overwrite_existing_outputs=args.overwrite_existing_outputs)
+        return _copy_inputs_and_run(
+            _ensure_path(temp_path),
+            overwrite_existing_outputs=args.overwrite_existing_outputs,
+        )
 
 
 def main() -> int:
@@ -871,9 +1029,19 @@ def main() -> int:
 
 
 def merge_main() -> int:
-    parser = argparse.ArgumentParser(description="Merge multiple shard results into a single directory.")
-    parser.add_argument("--inputs", "-i", nargs="+", required=True, help="List of shard results directories.")
-    parser.add_argument("--output-dir", "-o", required=True, help="Directory to store merged results.")
+    parser = argparse.ArgumentParser(
+        description="Merge multiple shard results into a single directory."
+    )
+    parser.add_argument(
+        "--inputs",
+        "-i",
+        nargs="+",
+        required=True,
+        help="List of shard results directories.",
+    )
+    parser.add_argument(
+        "--output-dir", "-o", required=True, help="Directory to store merged results."
+    )
     args = parser.parse_args()
     _merge_shard_results(args.inputs, args.output_dir)
     return 0
