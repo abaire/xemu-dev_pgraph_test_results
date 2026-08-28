@@ -423,7 +423,7 @@ def run(
         iso_path=iso_path,
         ftp_ip="127.0.0.1",
         ftp_ip_override="10.0.2.2",
-        xbox_artifact_path=r"c:\nxdk_pgraph_tests",
+        xbox_artifact_path=r"z:\nxdk_pgraph_tests",
         test_failure_retries=test_failure_retries,
         timeout_seconds=timeout,
         stall_timeout_seconds=stall_timeout,
