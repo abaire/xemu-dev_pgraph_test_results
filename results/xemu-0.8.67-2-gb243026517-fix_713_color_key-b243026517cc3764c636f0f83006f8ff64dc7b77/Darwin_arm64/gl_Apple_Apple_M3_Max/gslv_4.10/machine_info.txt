@@ -1,0 +1,12 @@
+xemu_version: 0.8.67-2-gb243026517
+xemu_branch: fix_713_color_key
+xemu_commit: b243026517cc3764c636f0f83006f8ff64dc7b77
+xemu_date: Tue Jun  3 01:42:02 UTC 2025
+xemu_settings_get_base_path: base path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/
+xemu_settings_get_path: config path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/xemu.toml
+CPU: 
+OS_Version: Version 15.5 (Build 24F74)
+GL_VENDOR: Apple
+GL_RENDERER: Apple M3 Max
+GL_VERSION: 4.1 Metal - 89.4
+GL_SHADING_LANGUAGE_VERSION: 4.10
