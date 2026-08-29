@@ -1,0 +1,12 @@
+xemu_version: 0.8.82-1-g35914b4d6f
+xemu_branch: fix_2270_clamp_vtx_fog_output
+xemu_commit: 35914b4d6fd0c4e84c3f3fff6800996dfc05c7d4
+xemu_date: Mon Jun 23 20:45:57 UTC 2025
+xemu_settings_get_base_path: base path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/
+xemu_settings_get_path: config path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/xemu.toml
+CPU: 
+OS_Version: Version 15.5 (Build 24F74)
+GL_VENDOR: Apple
+GL_RENDERER: Apple M3 Max
+GL_VERSION: 4.1 Metal - 89.4
+GL_SHADING_LANGUAGE_VERSION: 4.10
