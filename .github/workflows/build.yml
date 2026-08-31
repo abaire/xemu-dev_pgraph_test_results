@@ -3,11 +3,16 @@ name: Build
 on:
   pull_request:
   workflow_dispatch:
+    inputs:
+      force_regenerate:
+        description: 'Force re-compute all diffs for this branch'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
-
 
 jobs:
   GetOutputPaths:
@@ -21,32 +26,87 @@ jobs:
       site_xemu_diff_path: ${{ steps.get_output_path.outputs.site_xemu_diffs }}
       site_output_path: ${{ steps.get_output_path.outputs.site_output_path }}
       branch: ${{ steps.get_output_path.outputs.branch }}
+      has_results: ${{ steps.get_output_path.outputs.has_results }}
+      force_regenerate: ${{ steps.get_output_path.outputs.force_regenerate }}
     steps:
-      - name: Get wiki output path
+      - name: Clone tree
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: '1'
+      - name: Get wiki output path and check for test results
         id: get_output_path
         run: |
           set -x
           branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "branch=${branch}" >> $GITHUB_OUTPUT
+          echo "force_regenerate=${{ inputs.force_regenerate }}" >> $GITHUB_OUTPUT
           # Replace any path separator characters in the branch name for 
           # artifact outputs.
-          branch="${branch//\//_}"
-          echo "output_path=wiki/${branch}" >> $GITHUB_OUTPUT 
-          echo "wiki_hw_diffs=wiki/${branch}/compare_hw" >> $GITHUB_OUTPUT 
-          echo "wiki_xemu_diffs=wiki/${branch}/compare_xemu" >> $GITHUB_OUTPUT 
-          echo "site_output_path=site/${branch}" >> $GITHUB_OUTPUT 
-          echo "site_hw_diffs=site/${branch}/compare_hw" >> $GITHUB_OUTPUT 
-          echo "site_xemu_diffs=site/${branch}/compare_xemu" >> $GITHUB_OUTPUT 
+          safe_branch="${branch//\//_}"
+          echo "output_path=wiki/${safe_branch}" >> $GITHUB_OUTPUT 
+          echo "wiki_hw_diffs=wiki/${safe_branch}/compare_hw" >> $GITHUB_OUTPUT 
+          echo "wiki_xemu_diffs=wiki/${safe_branch}/compare_xemu" >> $GITHUB_OUTPUT 
+          echo "site_output_path=site/${safe_branch}" >> $GITHUB_OUTPUT 
+          echo "site_hw_diffs=site/${safe_branch}/compare_hw" >> $GITHUB_OUTPUT 
+          echo "site_xemu_diffs=site/${safe_branch}/compare_xemu" >> $GITHUB_OUTPUT 
+
+          has_results="false"
+          if [ -d "results" ]; then
+            if [ -n "$(find results -name '*.png' 2>/dev/null | head -n 1)" ]; then
+              has_results="true"
+            fi
+          fi
+          echo "has_results=${has_results}" >> $GITHUB_OUTPUT
+          echo "Discovered test results in branch: ${has_results}"
+
+  PlanHardwareDiffs:
+    needs: [ GetOutputPaths ]
+    name: Plan HW diff tasks
+    runs-on: ubuntu-latest
+    if: needs.GetOutputPaths.outputs.has_results == 'true'
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      diff_count: ${{ steps.plan.outputs.diff_count }}
+      shard_count: ${{ steps.plan.outputs.shard_count }}
+    steps:
+      - name: Clone tree
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: '1'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install requirements
+        run: |
+          export PIP_BREAK_SYSTEM_PACKAGES=1
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Plan diff tasks
+        id: plan
+        run: |
+          python3 .github/scripts/plan_hw_diffs.py \
+            --results-dir results \
+            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}" \
+            --max-shards 32 \
+            --output-plan-file diff_tasks_hw.json \
+            ${{ needs.GetOutputPaths.outputs.force_regenerate == 'true' && '--force' || '' }}
+      - name: Upload plan artifact
+        if: steps.plan.outputs.diff_count > '0'
+        uses: actions/upload-artifact@v7
+        with:
+          name: hw-diff-plan
+          path: diff_tasks_hw.json
+          retention-days: 1
 
   GenerateHardwareDiffs:
-    needs: [ GetOutputPaths ]
+    needs: [ GetOutputPaths, PlanHardwareDiffs ]
     name: Generate hardware diffs (shard ${{ matrix.shard }})
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    if: needs.GetOutputPaths.outputs.has_results == 'true' && needs.PlanHardwareDiffs.outputs.diff_count > '0'
     strategy:
       fail-fast: false
-      matrix:
-        shard: [0, 1, 2, 3]
+      matrix: ${{ fromJson(needs.PlanHardwareDiffs.outputs.matrix) }}
+    timeout-minutes: 45
     steps:
       - name: Clone tree
         uses: actions/checkout@v7
@@ -59,35 +119,77 @@ jobs:
       - name: Install requirements
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            perceptualdiff
-
+          sudo apt-get install -y perceptualdiff
           export PIP_BREAK_SYSTEM_PACKAGES=1
-          pip3 install .
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Download plan
+        uses: actions/download-artifact@v8
+        with:
+          name: hw-diff-plan
       - name: Generate new diffs
         run: |
           set -x
-          python3 -m xemu_dev_pgraph.hw_diffs \
-            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}" \
+          python3 -m xemu_pgraph_ci_tools.hw_diffs \
+            --tasks-file diff_tasks_hw.json \
             --shard-index ${{ matrix.shard }} \
-            --shard-count 4
+            --shard-count ${{ needs.PlanHardwareDiffs.outputs.shard_count }} \
+            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}" \
+            --stage-dir diff-staging
       - uses: actions/upload-artifact@v7
         with:
           name: hardware_diffs_shard_${{ matrix.shard }}
-          path: "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}/"
+          path: diff-staging/
           if-no-files-found: warn
           compression-level: 1
+          retention-days: 1
 
   MergeHardwareDiffs:
-    needs: [ GetOutputPaths, GenerateHardwareDiffs ]
+    needs: [ GetOutputPaths, PlanHardwareDiffs, GenerateHardwareDiffs ]
     name: Merge hardware diff shards
     runs-on: ubuntu-latest
+    if: |
+      always() &&
+      needs.GetOutputPaths.outputs.has_results == 'true' &&
+      needs.PlanHardwareDiffs.result == 'success' &&
+      (needs.GenerateHardwareDiffs.result == 'success' || needs.GenerateHardwareDiffs.result == 'skipped')
     steps:
-      - uses: actions/download-artifact@v8
+      - name: Clone tree
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: '1'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install requirements
+        run: |
+          export PIP_BREAK_SYSTEM_PACKAGES=1
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Download shard diffs
+        if: needs.GenerateHardwareDiffs.result == 'success'
+        uses: actions/download-artifact@v8
         with:
           pattern: hardware_diffs_shard_*
-          path: "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
-          merge-multiple: true
+          path: incoming-diffs/
+      - name: Merge diffs
+        run: |
+          mkdir -p "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
+          if [ -d incoming-diffs ]; then
+            echo "Merging incoming HW shard diffs..."
+            for diff_dir in incoming-diffs/hardware_diffs_shard_*; do
+              if [ -d "$diff_dir" ]; then
+                echo "Merging $diff_dir..."
+                rsync -av --exclude="KEEP_ARTIFACT" "$diff_dir/" .
+              fi
+            done
+            rm -rf incoming-diffs
+          fi
+          rm -f KEEP_ARTIFACT
+      - name: Reduce HW summaries
+        run: |
+          python3 -m xemu_pgraph_ci_tools.hw_diffs \
+            --reduce-summaries \
+            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_hw_diff_path }}"
       - uses: actions/upload-artifact@v7
         with:
           name: hardware_diffs
@@ -95,10 +197,56 @@ jobs:
           if-no-files-found: warn
           compression-level: 1
 
-  GenerateXemuDiffs:
+  PlanXemuDiffs:
     needs: [ GetOutputPaths ]
-    name: Generate diffs against baseline xemu release
+    name: Plan Xemu baseline diff tasks
     runs-on: ubuntu-latest
+    if: needs.GetOutputPaths.outputs.has_results == 'true'
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      diff_count: ${{ steps.plan.outputs.diff_count }}
+      shard_count: ${{ steps.plan.outputs.shard_count }}
+    steps:
+      - name: Clone tree
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: '1'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install requirements
+        run: |
+          export PIP_BREAK_SYSTEM_PACKAGES=1
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Fetch and Match Baseline
+        run: python3 .github/scripts/fetch_baseline_artifact.py
+      - name: Plan diff tasks
+        id: plan
+        run: |
+          python3 .github/scripts/plan_xemu_diffs.py \
+            --results-dir results \
+            --baseline-dir "$XEMU_BASELINE_DIR" \
+            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}" \
+            --max-shards 32 \
+            --output-plan-file diff_tasks_xemu.json \
+            ${{ needs.GetOutputPaths.outputs.force_regenerate == 'true' && '--force' || '' }}
+      - name: Upload plan artifact
+        if: steps.plan.outputs.diff_count > '0'
+        uses: actions/upload-artifact@v7
+        with:
+          name: xemu-diff-plan
+          path: diff_tasks_xemu.json
+          retention-days: 1
+
+  GenerateXemuDiffs:
+    needs: [ GetOutputPaths, PlanXemuDiffs ]
+    name: Generate diffs against baseline xemu release (shard ${{ matrix.shard }})
+    runs-on: ubuntu-latest
+    if: needs.GetOutputPaths.outputs.has_results == 'true' && needs.PlanXemuDiffs.outputs.diff_count > '0'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.PlanXemuDiffs.outputs.matrix) }}
     timeout-minutes: 45
     steps:
       - name: Clone tree
@@ -109,22 +257,81 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'pip'
-
       - name: Install requirements
         run: |
           sudo apt-get update && sudo apt-get install -y perceptualdiff
           export PIP_BREAK_SYSTEM_PACKAGES=1
-          pip3 install .
-
-      - name: Fetch and Match Baseline
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Fetch Baseline
         run: python3 .github/scripts/fetch_baseline_artifact.py
-
+      - name: Download plan
+        uses: actions/download-artifact@v8
+        with:
+          name: xemu-diff-plan
       - name: Generate new diffs
         run: |
-          python3 -m xemu_dev_pgraph.xemu_diffs \
-            --baseline-dir "$XEMU_BASELINE_DIR" \
-            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}"
+          set -x
+          python3 -m xemu_pgraph_ci_tools.xemu_diffs \
+            --tasks-file diff_tasks_xemu.json \
+            --shard-index ${{ matrix.shard }} \
+            --shard-count ${{ needs.PlanXemuDiffs.outputs.shard_count }} \
+            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}" \
+            --stage-dir diff-staging
+      - uses: actions/upload-artifact@v7
+        with:
+          name: xemu_diffs_shard_${{ matrix.shard }}
+          path: diff-staging/
+          if-no-files-found: warn
+          compression-level: 1
+          retention-days: 1
 
+  MergeXemuDiffs:
+    needs: [ GetOutputPaths, PlanXemuDiffs, GenerateXemuDiffs ]
+    name: Merge Xemu diff shards
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      needs.GetOutputPaths.outputs.has_results == 'true' &&
+      needs.PlanXemuDiffs.result == 'success' &&
+      (needs.GenerateXemuDiffs.result == 'success' || needs.GenerateXemuDiffs.result == 'skipped')
+    steps:
+      - name: Clone tree
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: '1'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install requirements
+        run: |
+          export PIP_BREAK_SYSTEM_PACKAGES=1
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Download shard diffs
+        if: needs.GenerateXemuDiffs.result == 'success'
+        uses: actions/download-artifact@v8
+        with:
+          pattern: xemu_diffs_shard_*
+          path: incoming-diffs/
+      - name: Merge diffs
+        run: |
+          mkdir -p "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}"
+          if [ -d incoming-diffs ]; then
+            echo "Merging incoming Xemu shard diffs..."
+            for diff_dir in incoming-diffs/xemu_diffs_shard_*; do
+              if [ -d "$diff_dir" ]; then
+                echo "Merging $diff_dir..."
+                rsync -av --exclude="KEEP_ARTIFACT" "$diff_dir/" .
+              fi
+            done
+            rm -rf incoming-diffs
+          fi
+          rm -f KEEP_ARTIFACT
+      - name: Reduce Xemu summaries
+        run: |
+          python3 -m xemu_pgraph_ci_tools.xemu_diffs \
+            --reduce-summaries \
+            --output-dir "${{ needs.GetOutputPaths.outputs.wiki_xemu_diff_path }}"
       - uses: actions/upload-artifact@v7
         with:
           name: xemu_diffs
@@ -134,8 +341,13 @@ jobs:
 
   UpdateSite:
     name: Generate a comparison page in GitHub Pages for the current branch
-    needs: [ GetOutputPaths, MergeHardwareDiffs, GenerateXemuDiffs ]
+    needs: [ GetOutputPaths, MergeHardwareDiffs, MergeXemuDiffs ]
     runs-on: ubuntu-latest
+    if: |
+      always() &&
+      needs.GetOutputPaths.outputs.has_results == 'true' &&
+      (needs.MergeHardwareDiffs.result == 'success' || needs.MergeHardwareDiffs.result == 'skipped') &&
+      (needs.MergeXemuDiffs.result == 'success' || needs.MergeXemuDiffs.result == 'skipped')
     permissions:
       contents: write
     outputs:
@@ -150,22 +362,29 @@ jobs:
       - name: Install requirements
         run: |
           export PIP_BREAK_SYSTEM_PACKAGES=1
-          pip3 install .
+          pip3 install -r .github/scripts/requirements.txt
+      - name: Prepare diff directories
+        run: |
+          mkdir -p "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}"
+          mkdir -p "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}"
       - uses: actions/download-artifact@v8
+        continue-on-error: true
         with:
           name: hardware_diffs
           path: "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}"
       - uses: actions/download-artifact@v8
+        continue-on-error: true
         with:
           name: xemu_diffs
           path: "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}"
       - name: Generate Pages site
         run: |
           set -x
-          python3 -m xemu_dev_pgraph.site_generator \
+          python3 .github/scripts/generate_results_site.py \
             "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.branch }}" \
+            --templates-dir ".github/scripts/site-templates" \
             --output-dir "site" \
             --results-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads" \
             --site-resources-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/pages-branch"
@@ -190,10 +409,11 @@ jobs:
       - name: Regenerate the Pages top level index so it includes the previously generated content.
         run: |
           set -x
-          python3 -m xemu_dev_pgraph.site_generator \
+          python3 .github/scripts/generate_results_site.py \
             "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.branch }}" \
+            --templates-dir ".github/scripts/site-templates" \
             --top-index-only \
             --output-dir "site" \
             --results-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads" \
@@ -217,6 +437,7 @@ jobs:
   DeploySite:
     runs-on: ubuntu-latest
     needs: [ UpdateSite ]
+    if: needs.UpdateSite.result == 'success'
     permissions:
       contents: read
       pages: write

@@ -42,22 +42,17 @@ IF NOT EXIST "%~dp0venv\" (
         EXIT /B 1
     )
 
-    ECHO Installing package and dependencies...
+    ECHO Installing dependencies...
 
-    "%~dp0venv\Scripts\pip.exe" install -e "%~dp0.."
+    "%~dp0venv\Scripts\pip.exe" install "xemu-pgraph-ci-tools @ git+https://github.com/abaire/xemu-pgraph-ci-tools.git" pywin32
     IF %ERRORLEVEL% NEQ 0 (
-        ECHO ERROR: Failed to install Python package.
+        ECHO ERROR: Failed to install xemu-pgraph-ci-tools.
         EXIT /B 1
     )
-
-    ECHO.
-    ECHO Initial setup complete.
-    ECHO Please run this again to execute the tests.
-    EXIT /B 1
 )
 
 CALL "%~dp0venv\Scripts\activate.bat"
 
-"%~dp0venv\Scripts\xemu-pgraph-run.exe" %*
+"%~dp0venv\Scripts\python.exe" -m xemu_pgraph_ci_tools.runner %*
 
 ENDLOCAL
