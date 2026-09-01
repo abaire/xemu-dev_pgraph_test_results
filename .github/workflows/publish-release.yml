@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+      - 'scripts-v*'
   workflow_dispatch:
     inputs:
       tag_name:
@@ -24,40 +25,54 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: '3.12'
+      - name: Create artifacts directory
+        run: mkdir -p dist_release
 
-      - name: Install Build Tools
+      - name: Package for Windows
         run: |
-          python -m pip install --upgrade pip
-          pip install build wheel
+          mkdir -p package/windows
+          cp user_scripts/run.bat package/windows/
+          cp README.md package/windows/
+          cd package/windows && zip -r ../../dist_release/UserScripts-Windows.zip .
 
-      - name: Build Python Wheel & Source Distribution
+      - name: Package for macOS
         run: |
-          python -m build
+          mkdir -p package/macos
+          cp user_scripts/run.sh package/macos/
+          cp README.md package/macos/
+          chmod +x package/macos/run.sh
+          cd package/macos && zip -r ../../dist_release/UserScripts-macOS.zip .
+
+      - name: Package for Linux
+        run: |
+          mkdir -p package/linux
+          cp user_scripts/run.sh package/linux/
+          cp README.md package/linux/
+          chmod +x package/linux/run.sh
+          cd package/linux && zip -r ../../dist_release/UserScripts-Linux.zip .
 
       - name: Package Standalone Bundle Archive
         run: |
           BUNDLE_NAME="xemu-dev-pgraph-bundle.tar.gz"
-          tar -czf dist/${BUNDLE_NAME} \
+          tar -czf dist_release/${BUNDLE_NAME} \
             --exclude='.git*' \
             --exclude='.venv*' \
             --exclude='__pycache__' \
             --exclude='*.pyc' \
-            --exclude='build' \
-            --exclude='dist' \
+            --exclude='dist_release' \
+            --exclude='package' \
             .
-          echo "Created bundle archive dist/${BUNDLE_NAME}"
+          echo "Created bundle archive dist_release/${BUNDLE_NAME}"
 
       - name: Create / Update GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
           name: ${{ github.event.inputs.tag_name || github.ref_name }}
           files: |
-            dist/*.whl
-            dist/*.tar.gz
+            dist_release/UserScripts-Windows.zip
+            dist_release/UserScripts-macOS.zip
+            dist_release/UserScripts-Linux.zip
+            dist_release/*.tar.gz
           draft: false
           prerelease: false

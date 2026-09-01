@@ -1,57 +1,52 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[project]
-name = "xemu-dev-pgraph"
-version = "0.1.0"
-description = "Headless PGRAPH regression test runner and diff report generator for xemu"
-readme = "README.md"
-requires-python = ">=3.12"
-license = "unlicense"
-authors = [
-    { name = "Erik Abair" }
-]
+[tool.hatch.build.targets.wheel]
+packages = []
+
+[tool.hatch.envs.default]
+detached = true
 dependencies = [
-    "nxdk-pgraph-test-runner>=0.1.27",
-    "nxdk-pgraph-test-repacker>=0.1.0",
-    "requests~=2.33.1",
-    "GitPython~=3.1.44",
-    "Jinja2~=3.1.5",
-    "frozendict~=2.4.6",
+  "pytest",
+  "frozendict~=2.4.6",
+  "Jinja2~=3.1.5",
+  "requests~=2.33.1",
+  "xemu-pgraph-ci-tools @ git+https://github.com/abaire/xemu-pgraph-ci-tools.git",
 ]
 
-[project.scripts]
-xemu-pgraph-run = "xemu_dev_pgraph.runner:main"
-xemu-pgraph-compare = "xemu_dev_pgraph.comparator:main"
-xemu-pgraph-diff = "xemu_dev_pgraph.pipeline:main"
-xemu-pgraph-merge = "xemu_dev_pgraph.runner:merge_main"
-xemu-pgraph-hw-diff = "xemu_dev_pgraph.hw_diffs:main"
-xemu-pgraph-xemu-diff = "xemu_dev_pgraph.xemu_diffs:main"
-xemu-pgraph-site = "xemu_dev_pgraph.site_generator:main"
-
-[project.optional-dependencies]
-lpips = [
-    "lpips~=0.1.4",
-    "opencv-python~=4.11.0.86",
+[tool.hatch.envs.hatch-test]
+skip-install = true
+extra-dependencies = [
+  "frozendict~=2.4.6",
+  "Jinja2~=3.1.5",
+  "requests~=2.33.1",
+  "xemu-pgraph-ci-tools @ git+https://github.com/abaire/xemu-pgraph-ci-tools.git",
 ]
 
-
-[tool.setuptools.packages.find]
-include = ["xemu_dev_pgraph*"]
-
-[tool.setuptools.package-data]
-"xemu_dev_pgraph" = ["templates/*", "templates/**/*"]
+[tool.hatch.envs.hatch-static-analysis]
+detached = true
+dependencies = [
+  "mypy==2.3.1",
+  "ruff==0.16.4",
+]
 
 [tool.hatch.envs.types]
-type = "virtual"
-path = ".venv-mypy"
-extra-dependencies = [
-  "pip",
-  "mypy>=1.0.0",
+detached = true
+dependencies = [
+  "mypy==2.3.1",
+  "pytest",
+  "frozendict~=2.4.6",
+  "Jinja2~=3.1.5",
+  "requests~=2.33.1",
+  "xemu-pgraph-ci-tools @ git+https://github.com/abaire/xemu-pgraph-ci-tools.git",
 ]
+
 [tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:xemu_dev_pgraph}"
+check = "mypy --install-types --non-interactive .github/scripts tests"
+
+[tool.ruff]
+extend-exclude = ["submodules"]
 
 [tool.mypy]
-disable_error_code = ["import-untyped", "import-not-found"]
+ignore_missing_imports = true
