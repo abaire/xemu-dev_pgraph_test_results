@@ -394,6 +394,8 @@ jobs:
           set -x
           git fetch
           git status
+          mkdir -p "${{ runner.temp }}/site-scripts"
+          cp -r .github/scripts/* "${{ runner.temp }}/site-scripts/"
           tar -czf updated_site.tgz "${{ needs.GetOutputPaths.outputs.site_output_path }}"
           # Delete in case files that exist in the pages branch were modified.
           rm -rf "${{ needs.GetOutputPaths.outputs.site_output_path }}"
@@ -409,11 +411,11 @@ jobs:
       - name: Regenerate the Pages top level index so it includes the previously generated content.
         run: |
           set -x
-          python3 .github/scripts/generate_results_site.py \
+          python3 "${{ runner.temp }}/site-scripts/generate_results_site.py" \
             "${{ needs.GetOutputPaths.outputs.site_hw_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.site_xemu_diff_path }}" \
             "${{ needs.GetOutputPaths.outputs.branch }}" \
-            --templates-dir ".github/scripts/site-templates" \
+            --templates-dir "${{ runner.temp }}/site-scripts/site-templates" \
             --top-index-only \
             --output-dir "site" \
             --results-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads" \
