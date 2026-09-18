@@ -9,7 +9,12 @@ if TYPE_CHECKING:
     import pytest
 
 # Load fetch_baseline_artifact dynamically from .github/scripts
-script_path = Path(__file__).resolve().parent.parent / ".github" / "scripts" / "fetch_baseline_artifact.py"
+script_path = (
+    Path(__file__).resolve().parent.parent
+    / ".github"
+    / "scripts"
+    / "fetch_baseline_artifact.py"
+)
 spec = importlib.util.spec_from_file_location("fetch_baseline_artifact", script_path)
 assert spec
 assert spec.loader
@@ -42,7 +47,9 @@ def test_score_candidate() -> None:
     assert score_candidate(cand_newer, target_ver, target_env, target_renderer) == -1
 
 
-def test_get_local_context_missing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_get_local_context_missing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     # Set cwd to tmp_path where results/ is empty or missing
     monkeypatch.chdir(tmp_path)
     assert get_local_context() is None
