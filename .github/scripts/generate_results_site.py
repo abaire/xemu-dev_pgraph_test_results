@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-# ruff: noqa: S701, PLR2004
 
 from __future__ import annotations
 
@@ -152,7 +151,9 @@ class Generator:
 
     def _find_results(self) -> None:
         if not os.path.isdir(self.results_dir):
+            logger.warning("Results directory '%s' does not exist", self.results_dir)
             return
+        results_found = 0
         for result in glob.glob("**/*.png", root_dir=self.results_dir, recursive=True):
             components = result.replace("\\", "/").split("/")
             if len(components) < 2:
@@ -171,6 +172,12 @@ class Generator:
                 glsl=run_id.glsl_version or "Default",
                 result_url=f"{self.results_base_url}/results/{result}",
             )
+            results_found += 1
+        logger.info(
+            "Discovered %d test result image(s) in %s",
+            results_found,
+            self.results_dir,
+        )
 
     def _home_url(self, output_dir: str) -> str:
         return f"{os.path.relpath(self.output_dir, output_dir)}/index.html"
@@ -181,13 +188,24 @@ class Generator:
 
     def _find_hw_diffs(self) -> None:
         if not os.path.isdir(self.hw_golden_comparison):
+            logger.info(
+                "HW golden comparison dir '%s' does not exist; skipping HW diffs",
+                self.hw_golden_comparison,
+            )
             return
         hw_diff_relative_path = self.hw_golden_comparison.replace(
             self.output_dir, ""
         ).lstrip("/")
-        for hw_diff in glob.glob(
+        hw_diff_files = glob.glob(
             "**/*.png", root_dir=self.hw_golden_comparison, recursive=True
-        ):
+        )
+        logger.info(
+            "Discovered %d HW diff image(s) in %s",
+            len(hw_diff_files),
+            self.hw_golden_comparison,
+        )
+        matched_count = 0
+        for hw_diff in hw_diff_files:
             components = hw_diff.replace("\\", "/").split("/")
             if len(components) < 2:
                 continue
@@ -203,60 +221,209 @@ class Generator:
                 diff_link.hw_golden_url = (
                     f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
                 )
+                matched_count += 1
+            else:
+                logger.warning(
+                    "HW diff %s (key %s) not found in discovered results",
+                    hw_diff,
+                    diff_key,
+                )
+        logger.info("Matched %d HW diff(s) with test results", matched_count)
 
     def _load_comparison_registry(self) -> None:
         comparisons_path = os.path.join(self.xemu_golden_comparison, "comparisons.json")
         if os.path.isfile(comparisons_path):
-            with open(comparisons_path, encoding="utf-8") as infile:
-                self.comparison_registry = json.load(infile)
+            try:
+                with open(comparisons_path, encoding="utf-8") as infile:
+                    self.comparison_registry = json.load(infile)
+                logger.info(
+                    "Loaded comparison registry from %s with %d entries",
+                    comparisons_path,
+                    len(self.comparison_registry),
+                )
+            except Exception:
+                logger.exception(
+                    "Failed to load comparisons registry from %s", comparisons_path
+                )
+        else:
+            logger.info("No comparisons.json found at %s", comparisons_path)
 
-        for comparison in self.comparison_registry:
+        # Discover summary.json files to populate comparison registry if missing or incomplete
+        summary_files = glob.glob(
+            "**/summary.json", root_dir=self.xemu_golden_comparison, recursive=True
+        )
+        logger.info(
+            "Found %d summary.json file(s) in %s",
+            len(summary_files),
+            self.xemu_golden_comparison,
+        )
+        for summary_file in summary_files:
+            full_summary_path = os.path.join(self.xemu_golden_comparison, summary_file)
+            try:
+                with open(full_summary_path, encoding="utf-8") as f:
+                    summary_data = json.load(f)
+            except Exception:
+                logger.exception("Failed to load summary file: %s", full_summary_path)
+                continue
+
+            golden_id = summary_data.get("golden_identifier")
+            if not golden_id:
+                logger.warning(
+                    "Summary file %s missing 'golden_identifier'", full_summary_path
+                )
+                continue
+
+            comp_dir = os.path.dirname(summary_file).replace("\\", "/")
+            self.comparison_registry[comp_dir] = golden_id
+
+            comp_parts = [p for p in comp_dir.split("/") if p]
+            if len(comp_parts) >= 2:
+                results_subdir = "/".join(comp_parts[:-1])
+                results_key = os.path.join("results", results_subdir)
+                if results_key not in self.comparison_registry:
+                    self.comparison_registry[results_key] = golden_id
+
+            logger.debug(
+                "Registered comparison dir '%s' with golden identifier '%s'",
+                comp_dir,
+                golden_id,
+            )
+
+        for comparison in list(self.comparison_registry.keys()):
             run_info_file = os.path.join(comparison, "run_info.json")
             if run_info_file in self.run_infos:
                 continue
             if os.path.isfile(run_info_file):
-                with open(run_info_file, encoding="utf-8") as infile:
-                    self.run_infos[run_info_file] = json.load(infile)
+                try:
+                    with open(run_info_file, encoding="utf-8") as infile:
+                        self.run_infos[run_info_file] = json.load(infile)
+                        logger.debug("Loaded run_info from %s", run_info_file)
+                except Exception:
+                    logger.exception("Failed loading run_info from %s", run_info_file)
+
+    @staticmethod
+    def _compute_xemu_subpath(xemu_golden_info: str) -> str:
+        if not xemu_golden_info:
+            return ""
+
+        golden_run_id = RunIdentifier.parse(xemu_golden_info)
+        if golden_run_id and golden_run_id.xemu_version != "unknown":
+            if golden_run_id.run_identifier:
+                return "/".join(golden_run_id.run_identifier)
+            return (
+                f"{golden_run_id.xemu_version}/"
+                f"{golden_run_id.platform_info}/"
+                f"{golden_run_id.gl_info.replace(':', '/')}"
+            )
+
+        clean_info = xemu_golden_info.replace("\\", "/").rstrip("/")
+        parts = [p for p in clean_info.split("/") if p]
+        if "results" in parts:
+            idx = parts.index("results")
+            return "/".join(parts[idx + 1 :])
+        if len(parts) >= 3:
+            return "/".join(parts[2:])
+        return clean_info
 
     def _find_xemu_diffs(self) -> None:
         if not os.path.isdir(self.xemu_golden_comparison):
+            logger.info(
+                "xemu golden comparison dir '%s' does not exist; skipping xemu diffs",
+                self.xemu_golden_comparison,
+            )
             return
         xemu_diff_relative_path = self.xemu_golden_comparison.replace(
             self.output_dir, ""
         ).lstrip("/")
-        for xemu_diff in glob.glob(
+        diff_files = glob.glob(
             "**/*.png", root_dir=self.xemu_golden_comparison, recursive=True
-        ):
+        )
+        logger.info(
+            "Discovered %d diff image(s) in %s",
+            len(diff_files),
+            self.xemu_golden_comparison,
+        )
+        matched_count = 0
+        for xemu_diff in diff_files:
             components = xemu_diff.replace("\\", "/").split("/")
-            results_key = os.path.join("results", *components[:4])
-            xemu_golden_info = self.comparison_registry.get(results_key, "")
+            if len(components) < 2:
+                continue
 
             suite, filename = components[-2:]
             golden_filename = filename.replace("-diff.png", ".png")
             diff_key = os.path.join(suite, golden_filename)
-            if diff_key in self.results:
-                diff_link = self.results[diff_key]
-                golden_run_id = (
-                    RunIdentifier.parse(xemu_golden_info) if xemu_golden_info else None
+            if diff_key not in self.results:
+                logger.warning(
+                    "Diff image %s (diff_key '%s') has no matching test result in results directory",
+                    xemu_diff,
+                    diff_key,
                 )
-                xemu_subpath = (
-                    golden_run_id.output_subdirectory
-                    if golden_run_id and golden_run_id.xemu_version != "unknown"
-                    else "/".join(xemu_golden_info.split(os.path.sep)[2:])
-                    if xemu_golden_info
-                    else ""
+                continue
+
+            comp_dir = "/".join(components[:-2]) if len(components) > 2 else ""
+            results_subdir = "/".join(components[:-3]) if len(components) > 3 else ""
+            results_key = (
+                os.path.join("results", results_subdir) if results_subdir else ""
+            )
+
+            # Attempt resolution of xemu golden baseline info
+            xemu_golden_info = self.comparison_registry.get(comp_dir, "")
+            if not xemu_golden_info and results_key:
+                xemu_golden_info = self.comparison_registry.get(results_key, "")
+
+            if not xemu_golden_info and comp_dir:
+                summary_file = os.path.join(
+                    self.xemu_golden_comparison, comp_dir, "summary.json"
                 )
-                diff_link.xemu_build_info = xemu_subpath
-                diff_link.xemu_diff_image = xemu_diff
-                diff_link.xemu_diff_url = self._make_site_url(
-                    f"{xemu_diff_relative_path}/{xemu_diff}"
+                if os.path.isfile(summary_file):
+                    try:
+                        with open(summary_file, encoding="utf-8") as f:
+                            sdata = json.load(f)
+                            xemu_golden_info = sdata.get("golden_identifier", "")
+                    except Exception:
+                        logger.exception("Failed reading %s", summary_file)
+
+            if not xemu_golden_info and len(components) >= 3:
+                golden_comp = components[-3]
+                if golden_comp.startswith("xemu-") or "__" in golden_comp:
+                    xemu_golden_info = golden_comp.replace("__", ":")
+
+            logger.debug(
+                "Diff %s: resolved xemu_golden_info='%s' (comp_dir='%s', results_key='%s')",
+                xemu_diff,
+                xemu_golden_info,
+                comp_dir,
+                results_key,
+            )
+
+            xemu_subpath = self._compute_xemu_subpath(xemu_golden_info)
+            if not xemu_subpath:
+                logger.warning(
+                    "Could not determine xemu_subpath for diff %s from golden info '%s'",
+                    xemu_diff,
+                    xemu_golden_info,
                 )
-                if xemu_subpath:
-                    diff_link.xemu_golden_url = f"{self.xemu_golden_base_url}/results/{xemu_subpath}/{suite}/{golden_filename}"
-                if not diff_link.hw_golden_url:
-                    diff_link.hw_golden_url = (
-                        f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
-                    )
+
+            diff_link = self.results[diff_key]
+            diff_link.xemu_build_info = xemu_subpath
+            diff_link.xemu_diff_image = xemu_diff
+            diff_link.xemu_diff_url = self._make_site_url(
+                f"{xemu_diff_relative_path}/{xemu_diff}"
+            )
+            if xemu_subpath:
+                diff_link.xemu_golden_url = f"{self.xemu_golden_base_url}/results/{xemu_subpath}/{suite}/{golden_filename}"
+                logger.debug(
+                    "Set xemu_golden_url for %s: %s",
+                    diff_key,
+                    diff_link.xemu_golden_url,
+                )
+            if not diff_link.hw_golden_url:
+                diff_link.hw_golden_url = (
+                    f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
+                )
+            matched_count += 1
+
+        logger.info("Successfully matched and processed %d xemu diff(s)", matched_count)
 
     def _generate_comparison_page(self) -> None:
         output_dir = os.path.join(self.output_dir, self.branch.replace("/", "_"))
@@ -268,6 +435,12 @@ class Generator:
             if os.path.isfile(known_issues_file)
             else {}
         )
+        if known_issues_registry:
+            logger.info(
+                "Loaded known issues registry from %s with %d entries",
+                known_issues_file,
+                len(known_issues_registry),
+            )
 
         diffs_by_xemu_version: dict[str, dict[str, list[DiffLink]]] = defaultdict(
             lambda: defaultdict(list)
@@ -278,6 +451,25 @@ class Generator:
             diff.add_known_issues(known_issues_registry)
             diffs_by_xemu_version[diff.xemu_build_info][diff.suite].append(diff)
 
+        total_diffs = sum(
+            len(tests)
+            for suites in diffs_by_xemu_version.values()
+            for tests in suites.values()
+        )
+        logger.info(
+            "Comparison page for branch '%s': %d diff(s) across %d xemu version(s)",
+            self.branch,
+            total_diffs,
+            len(diffs_by_xemu_version),
+        )
+        for xemu_ver, suites in diffs_by_xemu_version.items():
+            logger.info(
+                "  Section 'vs %s': %d suite(s), %d diff(s)",
+                xemu_ver or "<empty>",
+                len(suites),
+                sum(len(t) for t in suites.values()),
+            )
+
         os.makedirs(output_dir, exist_ok=True)
         template_name = (
             "comparison_result.html.j2"
@@ -285,9 +477,11 @@ class Generator:
             else "no_diffs_result.html.j2"
         )
         template = self.env.get_template(template_name)
-        with open(
-            os.path.join(output_dir, "index.html"), "w", encoding="utf-8"
-        ) as outfile:
+        target_path = os.path.join(output_dir, "index.html")
+        logger.info(
+            "Writing comparison page to %s using %s", target_path, template_name
+        )
+        with open(target_path, "w", encoding="utf-8") as outfile:
             outfile.write(
                 template.render(
                     diffs_by_xemu_version=diffs_by_xemu_version,
@@ -309,11 +503,16 @@ class Generator:
                 continue
             comparison_pages[os.path.dirname(page)] = page
 
+        logger.info(
+            "Found %d comparison page(s) for top-level index in %s",
+            len(comparison_pages),
+            self.output_dir,
+        )
         template = self.env.get_template("index.html.j2")
         output_dir = self.output_dir
-        with open(
-            os.path.join(output_dir, "index.html"), "w", encoding="utf-8"
-        ) as outfile:
+        target_path = os.path.join(output_dir, "index.html")
+        logger.info("Writing top-level index page to %s", target_path)
+        with open(target_path, "w", encoding="utf-8") as outfile:
             outfile.write(
                 template.render(
                     comparison_pages=comparison_pages,
@@ -325,17 +524,17 @@ class Generator:
     def _write_js(self) -> None:
         js_template = self.env.get_template("script.js.j2")
         os.makedirs(self.js_output_dir, exist_ok=True)
-        with open(
-            os.path.join(self.js_output_dir, "script.js"), "w", encoding="utf-8"
-        ) as outfile:
+        target_path = os.path.join(self.js_output_dir, "script.js")
+        logger.debug("Writing script.js to %s", target_path)
+        with open(target_path, "w", encoding="utf-8") as outfile:
             outfile.write(js_template.render())
 
     def _write_css(self) -> None:
         css_template = self.env.get_template("site.css.j2")
         os.makedirs(self.css_output_dir, exist_ok=True)
-        with open(
-            os.path.join(self.css_output_dir, "site.css"), "w", encoding="utf-8"
-        ) as outfile:
+        target_path = os.path.join(self.css_output_dir, "site.css")
+        logger.debug("Writing site.css to %s", target_path)
+        with open(target_path, "w", encoding="utf-8") as outfile:
             outfile.write(
                 css_template.render(
                     comparison_golden_outline_size=6,
@@ -344,11 +543,15 @@ class Generator:
             )
 
     def generate_site(self) -> int:
+        logger.info("Generating site assets (CSS, JS)...")
         self._write_css()
         self._write_js()
         if not self.top_index_only:
+            logger.info("Generating comparison page...")
             self._generate_comparison_page()
+        logger.info("Generating index page...")
         self._generate_index_page()
+        logger.info("Site generation completed successfully.")
         return 0
 
 
@@ -415,8 +618,25 @@ def main() -> int:
         action="store_true",
         help="Only regenerate the top-level index page",
     )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Enable verbose / debug logging",
+    )
 
     args = parser.parse_args()
+
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.INFO,
+        format="%(levelname)s: %(message)s",
+    )
+    logger.info("Starting generate_results_site (verbose=%s)", args.verbose)
+    logger.info("Results branch: %s", args.results_branch)
+    logger.info("Results directory: %s", args.results_dir)
+    logger.info("HW comparison results dir: %s", args.hw_comparison_results)
+    logger.info("xemu comparison results dir: %s", args.xemu_comparison_results)
+    logger.info("Output dir: %s", args.output_dir)
 
     output_dir = os.path.abspath(os.path.expanduser(args.output_dir))
     hw_golden_comparison = os.path.abspath(

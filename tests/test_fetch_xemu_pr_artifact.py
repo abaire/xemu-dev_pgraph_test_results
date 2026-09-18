@@ -6,13 +6,9 @@ import json
 import sys
 import zipfile
 from pathlib import Path
-from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
 import pytest
-
-if TYPE_CHECKING:
-    pass
 
 # Load fetch_xemu_pr_artifact dynamically from .github/scripts
 script_path = (
@@ -226,8 +222,9 @@ def test_main_end_to_end(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Non
             return download_resp
         raise AssertionError(f"Unexpected url {url}")
 
-    with patch("requests.get", side_effect=mock_get):
-        with patch.object(
+    with (
+        patch("requests.get", side_effect=mock_get),
+        patch.object(
             sys,
             "argv",
             [
@@ -239,9 +236,10 @@ def test_main_end_to_end(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Non
                 "--token",
                 "tok",
             ],
-        ):
-            code = fetch_pr_module.main()
-            assert code == 0
+        ),
+    ):
+        code = fetch_pr_module.main()
+        assert code == 0
 
     assert (output_dir / "xemu").exists()
     meta_file = output_dir / "run_meta.json"

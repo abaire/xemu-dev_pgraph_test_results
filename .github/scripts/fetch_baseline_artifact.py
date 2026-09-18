@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: S607 Starting a process with a partial executable path
+
 
 from __future__ import annotations
 

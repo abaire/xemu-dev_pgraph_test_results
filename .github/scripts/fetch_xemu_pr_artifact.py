@@ -181,8 +181,7 @@ def export_github_output(outputs: dict[str, str]) -> None:
     if not github_output:
         return
     with open(github_output, "a", encoding="utf-8") as f:
-        for k, v in outputs.items():
-            f.write(f"{k}={v}\n")
+        f.writelines(f"{k}={v}\n" for k, v in outputs.items())
 
 
 def main() -> int:

@@ -387,7 +387,8 @@ jobs:
             --templates-dir ".github/scripts/site-templates" \
             --output-dir "site" \
             --results-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads" \
-            --site-resources-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/pages-branch"
+            --site-resources-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/pages-branch" \
+            --verbose
           ls site
       - name: Switch to pages-branch to restore existing content
         run: |
@@ -419,7 +420,8 @@ jobs:
             --top-index-only \
             --output-dir "site" \
             --results-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads" \
-            --site-resources-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/pages-branch"
+            --site-resources-base-url "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/pages-branch" \
+            --verbose
           ls site
       - name: Commit changes
         id: commit
