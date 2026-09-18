@@ -38,7 +38,9 @@ def get_local_context() -> tuple[tuple[int, int, int], str, str, str] | None:
 
     machine_infos = list(results_path.glob("**/machine_info.txt"))
     if not machine_infos:
-        logger.info("Could not find dev results machine_info.txt in '%s'.", results_path)
+        logger.info(
+            "Could not find dev results machine_info.txt in '%s'.", results_path
+        )
         return None
 
     path = machine_infos[0].resolve()
@@ -172,7 +174,9 @@ def main() -> int:
         final_baseline_dir = (Path("baseline-repo") / best_match_path).resolve()
 
         if not final_baseline_dir.is_dir():
-            logger.error("Resolved baseline directory %s does not exist.", final_baseline_dir)
+            logger.error(
+                "Resolved baseline directory %s does not exist.", final_baseline_dir
+            )
             return 1
 
         logger.info("FINAL_SELECTION=%s", final_baseline_dir)

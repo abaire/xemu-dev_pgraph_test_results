@@ -7,7 +7,12 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 # Load generate_results_site dynamically from .github/scripts
-script_path = Path(__file__).resolve().parent.parent / ".github" / "scripts" / "generate_results_site.py"
+script_path = (
+    Path(__file__).resolve().parent.parent
+    / ".github"
+    / "scripts"
+    / "generate_results_site.py"
+)
 spec = importlib.util.spec_from_file_location("generate_results_site", script_path)
 assert spec
 assert spec.loader
@@ -87,7 +92,12 @@ def test_generate_site_empty(tmp_path: Path) -> None:
     hw_dir.mkdir(parents=True)
     xemu_dir.mkdir(parents=True)
 
-    templates_dir = Path(__file__).resolve().parent.parent / ".github" / "scripts" / "site-templates"
+    templates_dir = (
+        Path(__file__).resolve().parent.parent
+        / ".github"
+        / "scripts"
+        / "site-templates"
+    )
 
     jinja_env = Environment(loader=FileSystemLoader(str(templates_dir)))
     jinja_env.globals["sidenav_width"] = 48

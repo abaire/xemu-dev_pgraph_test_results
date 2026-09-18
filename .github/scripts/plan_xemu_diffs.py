@@ -15,13 +15,29 @@ logger = logging.getLogger(__name__)
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Plan Xemu baseline diff matrix for GitHub Actions.")
-    parser.add_argument("--results-dir", default="results", help="Directory containing test outputs")
-    parser.add_argument("--baseline-dir", default=None, help="Directory containing baseline Xemu results")
-    parser.add_argument("--output-dir", default="compare-results", help="Directory containing diff results")
-    parser.add_argument("--max-shards", type=int, default=32, help="Maximum number of parallel shards")
+    parser = argparse.ArgumentParser(
+        description="Plan Xemu baseline diff matrix for GitHub Actions."
+    )
     parser.add_argument(
-        "--output-plan-file", default="diff_tasks.json", help="File to write the planned tasks JSON object"
+        "--results-dir", default="results", help="Directory containing test outputs"
+    )
+    parser.add_argument(
+        "--baseline-dir",
+        default=None,
+        help="Directory containing baseline Xemu results",
+    )
+    parser.add_argument(
+        "--output-dir",
+        default="compare-results",
+        help="Directory containing diff results",
+    )
+    parser.add_argument(
+        "--max-shards", type=int, default=32, help="Maximum number of parallel shards"
+    )
+    parser.add_argument(
+        "--output-plan-file",
+        default="diff_tasks.json",
+        help="File to write the planned tasks JSON object",
     )
     parser.add_argument(
         "--force",
@@ -32,7 +48,11 @@ def main() -> int:
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-    if not args.baseline_dir or not os.path.isdir(args.baseline_dir) or not os.path.isdir(args.results_dir):
+    if (
+        not args.baseline_dir
+        or not os.path.isdir(args.baseline_dir)
+        or not os.path.isdir(args.results_dir)
+    ):
         logger.info(
             "Baseline directory '%s' or results directory '%s' does not exist. No Xemu diffs to plan.",
             args.baseline_dir,
@@ -45,7 +65,9 @@ def main() -> int:
         print(f"matrix={matrix_json}")
 
         if args.output_plan_file:
-            os.makedirs(os.path.dirname(os.path.abspath(args.output_plan_file)), exist_ok=True)
+            os.makedirs(
+                os.path.dirname(os.path.abspath(args.output_plan_file)), exist_ok=True
+            )
             with open(args.output_plan_file, "w", encoding="utf-8") as f:
                 json.dump({"registry": {}, "tasks": []}, f, indent=2)
 
@@ -73,12 +95,20 @@ def main() -> int:
     shards = list(range(shard_count)) if shard_count > 0 else []
     matrix = {"shard": shards}
 
-    logger.info("Planned %d Xemu diff task(s) across %d shard(s)", diff_count, shard_count)
+    logger.info(
+        "Planned %d Xemu diff task(s) across %d shard(s)", diff_count, shard_count
+    )
 
     if args.output_plan_file:
-        os.makedirs(os.path.dirname(os.path.abspath(args.output_plan_file)), exist_ok=True)
+        os.makedirs(
+            os.path.dirname(os.path.abspath(args.output_plan_file)), exist_ok=True
+        )
         with open(args.output_plan_file, "w", encoding="utf-8") as f:
-            json.dump({"registry": registry, "tasks": [t.to_dict() for t in tasks]}, f, indent=2)
+            json.dump(
+                {"registry": registry, "tasks": [t.to_dict() for t in tasks]},
+                f,
+                indent=2,
+            )
         logger.info("Saved plan to %s", args.output_plan_file)
 
     matrix_json = json.dumps(matrix)

@@ -100,7 +100,9 @@ def test_plan_xemu_diffs_empty(tmp_path: Path) -> None:
     results_dir = tmp_path / "results"
     results_dir.mkdir()
     baseline_dir = tmp_path / "baseline"
-    baseline_run = baseline_dir / "xemu-0.8.134" / "Darwin_arm64" / "gl_Apple" / "gslv_4.10"
+    baseline_run = (
+        baseline_dir / "xemu-0.8.134" / "Darwin_arm64" / "gl_Apple" / "gslv_4.10"
+    )
     (baseline_run / "suite_1").mkdir(parents=True)
     (baseline_run / "results.json").write_text("{}", encoding="utf-8")
 
