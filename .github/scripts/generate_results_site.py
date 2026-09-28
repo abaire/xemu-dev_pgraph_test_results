@@ -14,6 +14,7 @@ import sys
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any
+from urllib.parse import quote
 
 from jinja2 import Environment, FileSystemLoader
 from xemu_pgraph_ci_tools.models import RunIdentifier
@@ -130,10 +131,10 @@ class Generator:
         self.results_dir = results_dir
         self.hw_golden_comparison = hw_golden_comparison
         self.xemu_golden_comparison = xemu_golden_comparison
-        self.results_base_url = results_base_url
-        self.site_resources_base_url = site_resources_base_url
-        self.hw_golden_base_url = hw_golden_base_url
-        self.xemu_golden_base_url = xemu_golden_base_url
+        self.results_base_url = results_base_url.rstrip("/")
+        self.site_resources_base_url = site_resources_base_url.rstrip("/")
+        self.hw_golden_base_url = hw_golden_base_url.rstrip("/")
+        self.xemu_golden_base_url = xemu_golden_base_url.rstrip("/")
         self.output_dir = output_dir.rstrip("/")
         self.css_output_dir = output_dir.rstrip("/")
         self.js_output_dir = output_dir.rstrip("/")
@@ -170,7 +171,7 @@ class Generator:
                 machine=run_id.platform_info,
                 gl=run_id.gl_version or "OpenGL",
                 glsl=run_id.glsl_version or "Default",
-                result_url=f"{self.results_base_url}/results/{result}",
+                result_url=f"{self.results_base_url}/results/{quote(result.replace(os.sep, '/'))}",
             )
             results_found += 1
         logger.info(
@@ -184,7 +185,9 @@ class Generator:
 
     def _make_site_url(self, path: str) -> str:
         clean_path = path.lstrip("/")
-        return f"{self.site_resources_base_url}/{os.path.basename(self.output_dir)}/{clean_path}"
+        quoted_path = quote(clean_path.replace(os.sep, "/"))
+        out_base = quote(os.path.basename(self.output_dir))
+        return f"{self.site_resources_base_url}/{out_base}/{quoted_path}"
 
     def _find_hw_diffs(self) -> None:
         if not os.path.isdir(self.hw_golden_comparison):
@@ -218,9 +221,7 @@ class Generator:
                 diff_link.hw_diff_url = self._make_site_url(
                     f"{hw_diff_relative_path}/{hw_diff}"
                 )
-                diff_link.hw_golden_url = (
-                    f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
-                )
+                diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{quote(suite)}/{quote(golden_filename)}"
                 matched_count += 1
             else:
                 logger.warning(
@@ -411,16 +412,15 @@ class Generator:
                 f"{xemu_diff_relative_path}/{xemu_diff}"
             )
             if xemu_subpath:
-                diff_link.xemu_golden_url = f"{self.xemu_golden_base_url}/results/{xemu_subpath}/{suite}/{golden_filename}"
+                quoted_subpath = quote(xemu_subpath.replace(os.sep, "/"))
+                diff_link.xemu_golden_url = f"{self.xemu_golden_base_url}/results/{quoted_subpath}/{quote(suite)}/{quote(golden_filename)}"
                 logger.debug(
                     "Set xemu_golden_url for %s: %s",
                     diff_key,
                     diff_link.xemu_golden_url,
                 )
             if not diff_link.hw_golden_url:
-                diff_link.hw_golden_url = (
-                    f"{self.hw_golden_base_url}/results/{suite}/{golden_filename}"
-                )
+                diff_link.hw_golden_url = f"{self.hw_golden_base_url}/results/{quote(suite)}/{quote(golden_filename)}"
             matched_count += 1
 
         logger.info("Successfully matched and processed %d xemu diff(s)", matched_count)
