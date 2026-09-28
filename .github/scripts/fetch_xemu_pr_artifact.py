@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Fetches the Linux release build artifact for a given xemu PR from xemu-project/xemu."""
 
+# ruff: noqa: BLE001 Do not catch blind exception
+
 from __future__ import annotations
 
 import argparse
