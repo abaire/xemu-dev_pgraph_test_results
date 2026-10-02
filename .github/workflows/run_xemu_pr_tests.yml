@@ -129,8 +129,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-        total_shards: [16]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+        total_shards: [32]
     steps:
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -279,7 +279,7 @@ jobs:
           - **nxdk_pgraph_tests tag**: \`${PGRAPH_TAG}\`
           - **BIOS**: Latest Roswell BIOS
           - **Renderer**: Software GL (Mesa llvmpipe via xvfb)
-          - **Execution**: 16 parallel CI shards
+          - **Execution**: 32 parallel CI shards
 
           Results have been committed to \`${BRANCH_NAME}\`. Merging this PR to \`main\` will automatically trigger the downstream pipeline to compute HW/xemu baseline diffs and update GitHub Pages.
           EOF

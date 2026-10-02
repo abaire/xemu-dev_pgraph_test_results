@@ -4,6 +4,7 @@ import importlib.util
 import json
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -204,7 +205,7 @@ def test_generate_site_populates_xemu_golden_from_summary_json(tmp_path: Path) -
 
     page_content = (output_dir / branch / "index.html").read_text()
     expected_golden_subpath = "xemu-0.8.136-fc24584ce88f0915ad7f04775bb7712c2e3f49ee/Linux_x86_64/gl_Mesa_llvmpipe_(LLVM_20.1.2,_256_bits)/gslv_4.50"
-    expected_golden_url = f"https://example.com/xemu/results/{expected_golden_subpath}/Blend_surface/R5G6B5_Add_SrcA_1-SrcA.png"
+    expected_golden_url = f"https://example.com/xemu/results/{quote(expected_golden_subpath)}/Blend_surface/R5G6B5_Add_SrcA_1-SrcA.png"
 
     assert f"vs {expected_golden_subpath}" in page_content
     assert f'src="{expected_golden_url}"' in page_content
@@ -275,7 +276,7 @@ def test_generate_site_populates_xemu_golden_from_comparisons_json(
 
     page_content = (output_dir / branch / "index.html").read_text()
     expected_golden_subpath = "xemu-0.8.136-fc24584ce88f0915ad7f04775bb7712c2e3f49ee/Linux_x86_64/gl_Mesa_llvmpipe_(LLVM_20.1.2,_256_bits)/gslv_4.50"
-    expected_golden_url = f"https://example.com/xemu/results/{expected_golden_subpath}/Blend_surface/R5G6B5_Add_SrcA_1-SrcA.png"
+    expected_golden_url = f"https://example.com/xemu/results/{quote(expected_golden_subpath)}/Blend_surface/R5G6B5_Add_SrcA_1-SrcA.png"
 
     assert f"vs {expected_golden_subpath}" in page_content
     assert f'src="{expected_golden_url}"' in page_content

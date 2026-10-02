@@ -70,9 +70,11 @@ def test_fetch_pr_details_not_found() -> None:
     fake_response = MagicMock()
     fake_response.status_code = 404
 
-    with patch("requests.get", return_value=fake_response):
-        with pytest.raises(ValueError, match="Pull request #999 was not found"):
-            fetch_pr_details(999)
+    with (
+        patch("requests.get", return_value=fake_response),
+        pytest.raises(ValueError, match="Pull request #999 was not found"),
+    ):
+        fetch_pr_details(999)
 
 
 def test_find_ci_run_prefers_ci() -> None:
@@ -100,9 +102,11 @@ def test_find_ci_run_in_progress() -> None:
         ]
     }
 
-    with patch("requests.get", return_value=fake_response):
-        with pytest.raises(RuntimeError, match="is currently in progress"):
-            find_ci_run("abcdef")
+    with (
+        patch("requests.get", return_value=fake_response),
+        pytest.raises(RuntimeError, match="is currently in progress"),
+    ):
+        find_ci_run("abcdef")
 
 
 def test_find_artifact_success() -> None:
@@ -129,9 +133,11 @@ def test_find_artifact_expired() -> None:
         ]
     }
 
-    with patch("requests.get", return_value=fake_response):
-        with pytest.raises(RuntimeError, match="has expired"):
-            find_artifact(1, "xemu-ubuntu-x86_64-release")
+    with (
+        patch("requests.get", return_value=fake_response),
+        pytest.raises(RuntimeError, match="has expired"),
+    ):
+        find_artifact(1, "xemu-ubuntu-x86_64-release")
 
 
 def test_find_artifact_not_found() -> None:
@@ -139,9 +145,11 @@ def test_find_artifact_not_found() -> None:
     fake_response.status_code = 200
     fake_response.json.return_value = {"artifacts": []}
 
-    with patch("requests.get", return_value=fake_response):
-        with pytest.raises(RuntimeError, match="not found in run 1"):
-            find_artifact(1, "xemu-ubuntu-x86_64-release")
+    with (
+        patch("requests.get", return_value=fake_response),
+        pytest.raises(RuntimeError, match="not found in run 1"),
+    ):
+        find_artifact(1, "xemu-ubuntu-x86_64-release")
 
 
 def test_download_and_extract_artifact(tmp_path: Path) -> None:
