@@ -17,6 +17,11 @@ from typing import Any
 from urllib.parse import quote
 
 from jinja2 import Environment, FileSystemLoader
+from xemu_pgraph_ci_tools.golden_config import (
+    DEFAULT_HW_GOLDEN_CONFIG_URL,
+    GoldenConfig,
+    load_golden_config,
+)
 from xemu_pgraph_ci_tools.models import RunIdentifier
 
 logger = logging.getLogger(__name__)
@@ -126,6 +131,7 @@ class Generator:
         output_dir: str,
         jinja_env: Environment,
         top_index_only: bool = False,
+        golden_config: GoldenConfig | None = None,
     ):
         self.branch = branch
         self.results_dir = results_dir
@@ -140,6 +146,7 @@ class Generator:
         self.js_output_dir = output_dir.rstrip("/")
         self.env = jinja_env
         self.top_index_only = top_index_only
+        self.golden_config = golden_config or GoldenConfig()
         self.comparison_registry: dict[str, str] = {}
         self.run_infos: dict[str, dict[str, Any]] = defaultdict(dict)
 
@@ -215,6 +222,12 @@ class Generator:
             suite, filename = components[-2:]
             golden_filename = filename.replace("-diff.png", ".png")
             diff_key = os.path.join(suite, golden_filename)
+            test_name = golden_filename.removesuffix(".png")
+            if self.golden_config.is_deprecated(suite, test_name):
+                logger.debug(
+                    "Skipping deprecated test %s in HW diff processing", diff_key
+                )
+                continue
             if diff_key in self.results:
                 diff_link = self.results[diff_key]
                 diff_link.hw_diff_image = hw_diff
@@ -353,6 +366,12 @@ class Generator:
             suite, filename = components[-2:]
             golden_filename = filename.replace("-diff.png", ".png")
             diff_key = os.path.join(suite, golden_filename)
+            test_name = golden_filename.removesuffix(".png")
+            if self.golden_config.is_deprecated(suite, test_name):
+                logger.debug(
+                    "Skipping deprecated test %s in Xemu diff processing", diff_key
+                )
+                continue
             if diff_key not in self.results:
                 logger.warning(
                     "Diff image %s (diff_key '%s') has no matching test result in results directory",
@@ -447,6 +466,8 @@ class Generator:
         )
         for diff in self.results.values():
             if not diff.xemu_diff_url:
+                continue
+            if self.golden_config.is_deprecated(diff.suite, diff.test_name):
                 continue
             diff.add_known_issues(known_issues_registry)
             diffs_by_xemu_version[diff.xemu_build_info][diff.suite].append(diff)
@@ -611,6 +632,26 @@ def main() -> int:
         help="Base URL for hardware golden results",
     )
     parser.add_argument(
+        "--golden-config",
+        default=None,
+        help="Path to golden config.json file",
+    )
+    parser.add_argument(
+        "--golden-config-url",
+        default=DEFAULT_HW_GOLDEN_CONFIG_URL,
+        help="URL for golden config.json",
+    )
+    parser.add_argument(
+        "--golden-dir",
+        default=None,
+        help="Directory containing golden HW results",
+    )
+    parser.add_argument(
+        "--cache-path",
+        default="cache",
+        help="Directory for caching downloaded goldens",
+    )
+    parser.add_argument(
         "--templates-dir", help="Directory containing Jinja2 site templates"
     )
     parser.add_argument(
@@ -686,6 +727,13 @@ def main() -> int:
     jinja_env.globals["sidenav_width"] = 48
     jinja_env.globals["sidenav_icon_width"] = 32
 
+    golden_config = load_golden_config(
+        config_path=args.golden_config,
+        golden_dir=args.golden_dir,
+        cache_path=args.cache_path,
+        config_url=args.golden_config_url,
+    )
+
     generator = Generator(
         results_dir=args.results_dir,
         hw_golden_comparison=hw_golden_comparison,
@@ -698,6 +746,7 @@ def main() -> int:
         output_dir=output_dir,
         jinja_env=jinja_env,
         top_index_only=args.top_index_only,
+        golden_config=golden_config,
     )
     return generator.generate_site()
 

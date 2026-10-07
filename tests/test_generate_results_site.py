@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from urllib.parse import quote
 
+import pytest
 from jinja2 import Environment, FileSystemLoader
 
 # Load generate_results_site dynamically from .github/scripts
@@ -281,3 +282,136 @@ def test_generate_site_populates_xemu_golden_from_comparisons_json(
     assert f"vs {expected_golden_subpath}" in page_content
     assert f'src="{expected_golden_url}"' in page_content
     assert 'src=""' not in page_content
+
+
+def test_generate_site_suppresses_deprecated_hw_diffs(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    import logging
+
+    from xemu_pgraph_ci_tools.golden_config import GoldenConfig
+
+    output_dir = tmp_path / "site"
+    branch = "my_branch"
+    hw_dir = output_dir / branch / "compare_hw"
+    xemu_dir = output_dir / branch / "compare_xemu"
+    hw_dir.mkdir(parents=True)
+    xemu_dir.mkdir(parents=True)
+
+    results_dir = tmp_path / "results"
+    results_dir.mkdir()
+
+    # Create an HW diff for a deprecated test and an unknown non-deprecated test
+    deprecated_diff = (
+        hw_dir / "Xbox--Xbox--DirectX--nv2a" / "Blend_tests" / "0_ADD_1-diff.png"
+    )
+    deprecated_diff.parent.mkdir(parents=True)
+    deprecated_diff.write_bytes(b"DIFF")
+
+    unknown_diff = (
+        hw_dir / "Xbox--Xbox--DirectX--nv2a" / "Other_tests" / "unknown-diff.png"
+    )
+    unknown_diff.parent.mkdir(parents=True)
+    unknown_diff.write_bytes(b"DIFF")
+
+    templates_dir = (
+        Path(__file__).resolve().parent.parent
+        / ".github"
+        / "scripts"
+        / "site-templates"
+    )
+    jinja_env = Environment(loader=FileSystemLoader(str(templates_dir)))
+    jinja_env.globals["sidenav_width"] = 48
+    jinja_env.globals["sidenav_icon_width"] = 32
+
+    golden_config = GoldenConfig(deprecated_tests={"Blend_tests": ["0_ADD_1"]})
+
+    generator = generate_results_site.Generator(
+        results_dir=str(results_dir),
+        hw_golden_comparison=str(hw_dir),
+        xemu_golden_comparison=str(xemu_dir),
+        branch=branch,
+        results_base_url="https://example.com/results",
+        site_resources_base_url="https://example.com/site",
+        hw_golden_base_url="https://example.com/hw",
+        xemu_golden_base_url="https://example.com/xemu",
+        output_dir=str(output_dir),
+        jinja_env=jinja_env,
+        top_index_only=False,
+        golden_config=golden_config,
+    )
+
+    with caplog.at_level(logging.WARNING):
+        generator._find_hw_diffs()
+
+    # The deprecated test must NOT trigger a warning
+    assert "Blend_tests/0_ADD_1" not in caplog.text
+    assert "0_ADD_1-diff.png" not in caplog.text
+
+    # The unknown non-deprecated test SHOULD trigger a warning
+    assert "unknown-diff.png" in caplog.text
+
+
+def test_generate_site_suppresses_deprecated_xemu_diffs(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    import logging
+
+    from xemu_pgraph_ci_tools.golden_config import GoldenConfig
+
+    output_dir = tmp_path / "site"
+    branch = "my_branch"
+    hw_dir = output_dir / branch / "compare_hw"
+    xemu_dir = output_dir / branch / "compare_xemu"
+    hw_dir.mkdir(parents=True)
+    xemu_dir.mkdir(parents=True)
+
+    results_dir = tmp_path / "results"
+    results_dir.mkdir()
+
+    # Create a Xemu diff for a deprecated test and an unknown non-deprecated test
+    diff_dir = xemu_dir / "run1" / "baseline1"
+    deprecated_diff = diff_dir / "Blend_tests" / "0_ADD_1-diff.png"
+    deprecated_diff.parent.mkdir(parents=True)
+    deprecated_diff.write_bytes(b"DIFF")
+
+    unknown_diff = diff_dir / "Other_tests" / "unknown-diff.png"
+    unknown_diff.parent.mkdir(parents=True)
+    unknown_diff.write_bytes(b"DIFF")
+
+    templates_dir = (
+        Path(__file__).resolve().parent.parent
+        / ".github"
+        / "scripts"
+        / "site-templates"
+    )
+    jinja_env = Environment(loader=FileSystemLoader(str(templates_dir)))
+    jinja_env.globals["sidenav_width"] = 48
+    jinja_env.globals["sidenav_icon_width"] = 32
+
+    golden_config = GoldenConfig(deprecated_tests={"Blend_tests": ["0_ADD_1"]})
+
+    generator = generate_results_site.Generator(
+        results_dir=str(results_dir),
+        hw_golden_comparison=str(hw_dir),
+        xemu_golden_comparison=str(xemu_dir),
+        branch=branch,
+        results_base_url="https://example.com/results",
+        site_resources_base_url="https://example.com/site",
+        hw_golden_base_url="https://example.com/hw",
+        xemu_golden_base_url="https://example.com/xemu",
+        output_dir=str(output_dir),
+        jinja_env=jinja_env,
+        top_index_only=False,
+        golden_config=golden_config,
+    )
+
+    with caplog.at_level(logging.WARNING):
+        generator._find_xemu_diffs()
+
+    # The deprecated test must NOT trigger a warning
+    assert "Blend_tests/0_ADD_1" not in caplog.text
+    assert "0_ADD_1-diff.png" not in caplog.text
+
+    # The unknown non-deprecated test SHOULD trigger a warning
+    assert "unknown-diff.png" in caplog.text
