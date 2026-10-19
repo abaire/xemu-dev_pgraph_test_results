@@ -25,6 +25,7 @@ spec.loader.exec_module(fetch_baseline)
 parse_version = fetch_baseline.parse_version
 score_candidate = fetch_baseline.score_candidate
 get_local_context = fetch_baseline.get_local_context
+get_local_contexts = fetch_baseline.get_local_contexts
 
 
 def test_parse_version() -> None:
@@ -45,6 +46,44 @@ def test_score_candidate() -> None:
     # Newer candidate than target should be rejected (-1)
     cand_newer = Path("results/xemu-0.8.136-master/Darwin_arm64/gl_Apple/gslv_4.10")
     assert score_candidate(cand_newer, target_ver, target_env, target_renderer) == -1
+
+
+def test_get_local_contexts_dual(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    gl_dir = (
+        tmp_path
+        / "results"
+        / "xemu-0.8.136-1234"
+        / "Linux_x86_64"
+        / "gl_Mesa_llvmpipe"
+        / "glsl_4.50"
+    )
+    gl_dir.mkdir(parents=True)
+    (gl_dir / "machine_info.txt").write_text(
+        "GL_RENDERER: llvmpipe\nGL_VERSION: 4.5\n", encoding="utf-8"
+    )
+    (gl_dir / "renderer.json").write_text('{"vulkan": false}', encoding="utf-8")
+
+    vk_dir = (
+        tmp_path
+        / "results"
+        / "xemu-0.8.136-1234"
+        / "Linux_x86_64"
+        / "vk_Mesa_llvmpipe"
+        / "glsl_4.50"
+    )
+    vk_dir.mkdir(parents=True)
+    (vk_dir / "machine_info.txt").write_text(
+        "Selected physical device: llvmpipe\n", encoding="utf-8"
+    )
+    (vk_dir / "renderer.json").write_text('{"vulkan": true}', encoding="utf-8")
+
+    contexts = get_local_contexts()
+    assert len(contexts) == 2
+    renderers = {ctx[2] for ctx in contexts}
+    assert renderers == {"OpenGL", "Vulkan"}
 
 
 def test_get_local_context_missing(

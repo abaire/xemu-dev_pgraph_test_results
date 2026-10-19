@@ -10,6 +10,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+from renderer_info import detect_renderer
 from xemu_pgraph_ci_tools.models import RunIdentifier
 
 # Configure logging for CI visibility
@@ -29,38 +30,48 @@ def parse_version(text: str) -> tuple[int, int, int]:
     return (0, 0, 0)
 
 
-def get_local_context() -> tuple[tuple[int, int, int], str, str, str] | None:
-    """Returns (target_version_tuple, env_signature, renderer_type, local_version_str) or None."""
+def get_local_contexts() -> list[tuple[tuple[int, int, int], str, str, str]]:
+    """Returns list of (target_version_tuple, env_signature, renderer_type, local_version_str)."""
     results_path = Path("results")
     if not results_path.is_dir():
         logger.info("No 'results' directory found.")
-        return None
+        return []
 
-    machine_infos = list(results_path.glob("**/machine_info.txt"))
+    machine_infos = sorted(results_path.glob("**/machine_info.txt"))
     if not machine_infos:
         logger.info(
             "Could not find dev results machine_info.txt in '%s'.", results_path
         )
-        return None
+        return []
 
-    path = machine_infos[0].resolve()
-    parts = path.parts
-    idx = parts.index("results")
+    contexts: list[tuple[tuple[int, int, int], str, str, str]] = []
+    for m_path in machine_infos:
+        resolved_path = m_path.resolve()
+        parts = resolved_path.parts
+        if "results" not in parts:
+            continue
+        idx = parts.index("results")
+        if len(parts) <= idx + 1:
+            logger.warning(
+                "Path %s does not contain xemu version component.", resolved_path
+            )
+            continue
 
-    if len(parts) <= idx + 1:
-        logger.warning("Path %s does not contain xemu version component.", path)
-        return None
+        local_version_str = parts[idx + 1]
+        target_version = parse_version(local_version_str)
+        env_sig = os.path.join(*parts[idx + 2 : -1]) if len(parts) > idx + 2 else ""
 
-    local_version_str = parts[idx + 1]
-    target_version = parse_version(local_version_str)
-    env_sig = os.path.join(*parts[idx + 2 : -1]) if len(parts) > idx + 2 else ""
+        renderer = detect_renderer(resolved_path.parent)
 
-    renderer = "OpenGL"
-    with path.open(encoding="utf-8", errors="replace") as f:
-        if "- VK_" in f.read():
-            renderer = "Vulkan"
+        contexts.append((target_version, env_sig, renderer, local_version_str))
 
-    return target_version, env_sig, renderer, local_version_str
+    return contexts
+
+
+def get_local_context() -> tuple[tuple[int, int, int], str, str, str] | None:
+    """Returns the first local context found, or None for backwards compatibility."""
+    contexts = get_local_contexts()
+    return contexts[0] if contexts else None
 
 
 def score_candidate(
@@ -88,12 +99,8 @@ def score_candidate(
     if run_id.platform_info == target_os:
         score += 1000000
 
-    m_info = Path("manifest-repo") / candidate_path / "machine_info.txt"
-    if m_info.exists():
-        with m_info.open(encoding="utf-8", errors="replace") as f:
-            content = f.read()
-            if (target_renderer == "Vulkan") == ("- VK_" in content):
-                score += 500000
+    if target_renderer == detect_renderer(Path("manifest-repo") / candidate_path):
+        score += 500000
 
     return score
 
@@ -109,13 +116,17 @@ def main() -> int:
     )
 
     try:
-        context = get_local_context()
-        if context is None:
+        contexts = get_local_contexts()
+        if not contexts:
             logger.info("No local test results found. Skipping baseline fetch.")
             return 0
 
-        target_ver, env_sig, renderer, local_ver_str = context
-        logger.info("Local Context: %s | %s | %s", local_ver_str, env_sig, renderer)
+        _target_ver, env_sig, renderer, local_ver_str = contexts[0]
+        logger.info(
+            "Local Context (primary): %s | %s | %s", local_ver_str, env_sig, renderer
+        )
+        if len(contexts) > 1:
+            logger.info("Found %d total local run contexts.", len(contexts))
 
         # 1. Fetch manifest from main
         logger.info("Fetching manifest from %s/%s@main...", owner, repo)
@@ -139,9 +150,13 @@ def main() -> int:
         scored = []
         for cp in candidates:
             rel_path = cp.relative_to("manifest-repo")
-            score = score_candidate(rel_path, target_ver, env_sig, renderer)
-            if score >= 0:
-                scored.append((score, rel_path))
+            # Score against each local context and take the best score
+            best_ctx_score = max(
+                score_candidate(rel_path, c_ver, c_env, c_rend)
+                for c_ver, c_env, c_rend, _ in contexts
+            )
+            if best_ctx_score >= 0:
+                scored.append((best_ctx_score, rel_path))
 
         if not scored:
             logger.error("No suitable baseline found in manifest.")
@@ -171,11 +186,21 @@ def main() -> int:
         )
 
         # The archive branches contain the 'results' folder at the root
-        final_baseline_dir = (Path("baseline-repo") / best_match_path).resolve()
+        # If multiple contexts exist or version dir exists, point to the version root
+        version_baseline_dir = (
+            Path("baseline-repo") / "results" / version_id
+        ).resolve()
+        single_baseline_dir = (Path("baseline-repo") / best_match_path).resolve()
 
-        if not final_baseline_dir.is_dir():
+        if len(contexts) > 1 and version_baseline_dir.is_dir():
+            final_baseline_dir = version_baseline_dir
+        elif single_baseline_dir.is_dir():
+            final_baseline_dir = single_baseline_dir
+        elif version_baseline_dir.is_dir():
+            final_baseline_dir = version_baseline_dir
+        else:
             logger.error(
-                "Resolved baseline directory %s does not exist.", final_baseline_dir
+                "Resolved baseline directory %s does not exist.", single_baseline_dir
             )
             return 1
 

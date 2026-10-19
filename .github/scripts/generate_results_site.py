@@ -17,6 +17,7 @@ from typing import Any
 from urllib.parse import quote
 
 from jinja2 import Environment, FileSystemLoader
+from renderer_info import OPENGL, VULKAN, detect_renderer
 from xemu_pgraph_ci_tools.golden_config import (
     DEFAULT_HW_GOLDEN_CONFIG_URL,
     GoldenConfig,
@@ -47,6 +48,15 @@ class DiffLink:
     xemu_golden_url: str = ""
 
     known_issues: list[str] = dataclasses.field(default_factory=list)
+    renderer_label: str = OPENGL
+
+    @property
+    def renderer(self) -> str:
+        return "vk" if self.renderer_label == VULKAN else "gl"
+
+    @property
+    def test_key(self) -> str:
+        return f"{self.suite}/{self.filename}"
 
     @property
     def sort_key(self) -> str:
@@ -116,6 +126,16 @@ class DiffLink:
         )
 
 
+@dataclass
+class ComparisonSection:
+    xemu_release: str
+    renderer: str  # "gl" or "vk"
+    renderer_label: str  # "OpenGL" or "Vulkan"
+    anchor_prefix: str  # "" for primary/GL, "vk-" for secondary/VK
+    suites: dict[str, list[DiffLink]]
+    diff_count: int
+
+
 class Generator:
     def __init__(
         self,
@@ -167,18 +187,26 @@ class Generator:
             if len(components) < 2:
                 continue
             suite, filename = components[-2:]
-            run_path = os.path.dirname(
-                os.path.dirname(os.path.join(self.results_dir, result))
-            )
-            run_id = RunIdentifier.parse(run_path)
-            diff_key = os.path.join(suite, filename)
+            full_result_path = os.path.join(self.results_dir, result)
+            rel_run_path = "/".join(components[:-2]) if len(components) > 2 else ""
+            if rel_run_path:
+                run_id = RunIdentifier.parse(rel_run_path)
+                diff_key = f"{run_id.minimal_path}/{suite}/{filename}"
+            else:
+                run_path = os.path.dirname(os.path.dirname(full_result_path))
+                run_id = RunIdentifier.parse(run_path)
+                diff_key = os.path.join(suite, filename)
             self.results[diff_key] = DiffLink(
                 filename=filename,
                 suite=suite,
-                machine=run_id.platform_info,
-                gl=run_id.gl_version or "OpenGL",
+                machine=run_id.platform_info if rel_run_path else "",
+                gl=run_id.gl_version
+                or ("OpenGL" if not rel_run_path else run_id.gl_info),
                 glsl=run_id.glsl_version or "Default",
                 result_url=f"{self.results_base_url}/results/{quote(result.replace(os.sep, '/'))}",
+                renderer_label=detect_renderer(
+                    os.path.dirname(os.path.dirname(full_result_path))
+                ),
             )
             results_found += 1
         logger.info(
@@ -186,6 +214,45 @@ class Generator:
             results_found,
             self.results_dir,
         )
+
+    def _lookup_result(
+        self, run_key: str, suite: str, filename: str
+    ) -> DiffLink | None:
+        target_suffix = f"/{suite}/{filename}"
+        exact_key = f"{suite}/{filename}"
+
+        if run_key:
+            direct_candidate = f"{run_key}/{suite}/{filename}"
+            if direct_candidate in self.results:
+                return self.results[direct_candidate]
+
+            run_id = RunIdentifier.parse(run_key)
+            if run_id:
+                cand = f"{run_id.minimal_path}/{suite}/{filename}"
+                if cand in self.results:
+                    return self.results[cand]
+
+            matching_keys = [
+                k for k in self.results if k.endswith(target_suffix) or k == exact_key
+            ]
+            if len(matching_keys) == 1:
+                return self.results[matching_keys[0]]
+
+            renderer = detect_renderer(os.path.join(self.results_dir, run_key))
+            renderer_matches = [
+                k for k in matching_keys if self.results[k].renderer_label == renderer
+            ]
+            if len(renderer_matches) == 1:
+                return self.results[renderer_matches[0]]
+
+        if exact_key in self.results:
+            return self.results[exact_key]
+
+        matching_keys = [k for k in self.results if k.endswith(target_suffix)]
+        if len(matching_keys) == 1:
+            return self.results[matching_keys[0]]
+
+        return None
 
     def _home_url(self, output_dir: str) -> str:
         return f"{os.path.relpath(self.output_dir, output_dir)}/index.html"
@@ -228,8 +295,15 @@ class Generator:
                     "Skipping deprecated test %s in HW diff processing", diff_key
                 )
                 continue
-            if diff_key in self.results:
-                diff_link = self.results[diff_key]
+
+            if "Xbox--Xbox--DirectX--nv2a" in components:
+                idx = components.index("Xbox--Xbox--DirectX--nv2a")
+                run_key = "/".join(components[:idx])
+            else:
+                run_key = "/".join(components[:-2]) if len(components) > 2 else ""
+
+            diff_link = self._lookup_result(run_key, suite, golden_filename)
+            if diff_link:
                 diff_link.hw_diff_image = hw_diff
                 diff_link.hw_diff_url = self._make_site_url(
                     f"{hw_diff_relative_path}/{hw_diff}"
@@ -372,7 +446,10 @@ class Generator:
                     "Skipping deprecated test %s in Xemu diff processing", diff_key
                 )
                 continue
-            if diff_key not in self.results:
+
+            results_subdir = "/".join(components[:-3]) if len(components) > 3 else ""
+            diff_link = self._lookup_result(results_subdir, suite, golden_filename)
+            if not diff_link:
                 logger.warning(
                     "Diff image %s (diff_key '%s') has no matching test result in results directory",
                     xemu_diff,
@@ -381,7 +458,6 @@ class Generator:
                 continue
 
             comp_dir = "/".join(components[:-2]) if len(components) > 2 else ""
-            results_subdir = "/".join(components[:-3]) if len(components) > 3 else ""
             results_key = (
                 os.path.join("results", results_subdir) if results_subdir else ""
             )
@@ -424,7 +500,6 @@ class Generator:
                     xemu_golden_info,
                 )
 
-            diff_link = self.results[diff_key]
             diff_link.xemu_build_info = xemu_subpath
             diff_link.xemu_diff_image = xemu_diff
             diff_link.xemu_diff_url = self._make_site_url(
@@ -461,40 +536,73 @@ class Generator:
                 len(known_issues_registry),
             )
 
-        diffs_by_xemu_version: dict[str, dict[str, list[DiffLink]]] = defaultdict(
-            lambda: defaultdict(list)
-        )
+        active_diffs: list[DiffLink] = []
         for diff in self.results.values():
             if not diff.xemu_diff_url:
                 continue
             if self.golden_config.is_deprecated(diff.suite, diff.test_name):
                 continue
             diff.add_known_issues(known_issues_registry)
-            diffs_by_xemu_version[diff.xemu_build_info][diff.suite].append(diff)
+            active_diffs.append(diff)
 
-        total_diffs = sum(
-            len(tests)
-            for suites in diffs_by_xemu_version.values()
-            for tests in suites.values()
+        has_gl_diffs = any(diff.renderer == "gl" for diff in active_diffs)
+        has_vk_diffs = any(diff.renderer == "vk" for diff in active_diffs)
+
+        sections_map: dict[tuple[str, str], dict[str, list[DiffLink]]] = defaultdict(
+            lambda: defaultdict(list)
         )
+        for diff in active_diffs:
+            section_key = (diff.xemu_build_info, diff.renderer)
+            sections_map[section_key][diff.suite].append(diff)
+
+        sorted_section_keys = sorted(
+            sections_map.keys(),
+            key=lambda k: (0 if k[1] == "gl" else 1, k[0]),
+        )
+
+        comparison_sections: list[ComparisonSection] = []
+        for xemu_release, rend in sorted_section_keys:
+            suites = sections_map[(xemu_release, rend)]
+            diff_count = sum(len(links) for links in suites.values())
+            anchor_prefix = "vk-" if (rend == "vk" and has_gl_diffs) else ""
+            comparison_sections.append(
+                ComparisonSection(
+                    xemu_release=xemu_release,
+                    renderer=rend,
+                    renderer_label=VULKAN if rend == "vk" else OPENGL,
+                    anchor_prefix=anchor_prefix,
+                    suites=suites,
+                    diff_count=diff_count,
+                )
+            )
+
+        gl_diff_count = sum(
+            s.diff_count for s in comparison_sections if s.renderer == "gl"
+        )
+        vk_diff_count = sum(
+            s.diff_count for s in comparison_sections if s.renderer == "vk"
+        )
+
+        total_diffs = sum(s.diff_count for s in comparison_sections)
         logger.info(
-            "Comparison page for branch '%s': %d diff(s) across %d xemu version(s)",
+            "Comparison page for branch '%s': %d diff(s) across %d section(s)",
             self.branch,
             total_diffs,
-            len(diffs_by_xemu_version),
+            len(comparison_sections),
         )
-        for xemu_ver, suites in diffs_by_xemu_version.items():
+        for section in comparison_sections:
             logger.info(
-                "  Section 'vs %s': %d suite(s), %d diff(s)",
-                xemu_ver or "<empty>",
-                len(suites),
-                sum(len(t) for t in suites.values()),
+                "  Section '%s' vs %s: %d suite(s), %d diff(s)",
+                section.renderer_label,
+                section.xemu_release or "<empty>",
+                len(section.suites),
+                section.diff_count,
             )
 
         os.makedirs(output_dir, exist_ok=True)
         template_name = (
             "comparison_result.html.j2"
-            if diffs_by_xemu_version
+            if comparison_sections
             else "no_diffs_result.html.j2"
         )
         template = self.env.get_template(template_name)
@@ -505,7 +613,11 @@ class Generator:
         with open(target_path, "w", encoding="utf-8") as outfile:
             outfile.write(
                 template.render(
-                    diffs_by_xemu_version=diffs_by_xemu_version,
+                    comparison_sections=comparison_sections,
+                    has_gl_diffs=has_gl_diffs,
+                    has_vk_diffs=has_vk_diffs,
+                    gl_diff_count=gl_diff_count,
+                    vk_diff_count=vk_diff_count,
                     run_information=self.run_infos,
                     branch=self.branch,
                     css_dir=os.path.relpath(self.css_output_dir, output_dir),
