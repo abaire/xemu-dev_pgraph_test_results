@@ -84,7 +84,35 @@ function enableAnchorCopying(document) {
     h4Elements.forEach(addClickHandler);
 }
 
+function enableRendererFiltering(document) {
+    let activeFilter = 'both';
+
+    const filterBtns = document.querySelectorAll('[data-renderer-filter]');
+    const sections = document.querySelectorAll('.renderer-section');
+
+    function applyFilters() {
+        filterBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.rendererFilter === activeFilter);
+        });
+
+        sections.forEach(section => {
+            const matchesRenderer = (activeFilter === 'both') || (section.dataset.renderer === activeFilter);
+            section.style.display = matchesRenderer ? '' : 'none';
+        });
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeFilter = btn.dataset.rendererFilter;
+            applyFilters();
+        });
+    });
+
+    applyFilters();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     enableImageCycling(document);
     enableAnchorCopying(document);
+    enableRendererFiltering(document);
 });

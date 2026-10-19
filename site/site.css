@@ -197,3 +197,144 @@
     background-color: #ffe6e6;
     padding: 10px;
 }
+
+.renderer-filter-bar {
+    background: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 16px 0 24px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.renderer-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.renderer-filter-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #24292f;
+    margin-right: 4px;
+}
+
+.renderer-filter-btn {
+    background: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #24292f;
+    transition: all 0.15s ease;
+}
+
+.renderer-filter-btn:hover {
+    background: #f3f4f6;
+    border-color: #1b1f2426;
+}
+
+.renderer-filter-btn.active {
+    background: #0969da;
+    border-color: #0969da;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+
+
+.renderer-section {
+    margin-bottom: 40px;
+    border-radius: 8px;
+    padding: 0 20px 24px 20px;
+    transition: opacity 0.2s ease;
+}
+
+.renderer-section.renderer-gl {
+    background-color: #f8fafd;
+    border-left: 6px solid #2b6cb0;
+    border-top: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.renderer-section.renderer-vk {
+    background-color: #fdf4f5;
+    border-left: 6px solid #a41e22;
+    border-top: 1px solid #fbd5d7;
+    border-right: 1px solid #fbd5d7;
+    border-bottom: 1px solid #fbd5d7;
+}
+
+.renderer-sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    margin: 0 -20px 20px -20px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(8px);
+}
+
+.renderer-section.renderer-gl .renderer-sticky-header {
+    background-color: #eaf2fb;
+    border-bottom-color: #b8d5f2;
+}
+
+.renderer-section.renderer-vk .renderer-sticky-header {
+    background-color: #fbe4e6;
+    border-bottom-color: #f5b8bd;
+}
+
+.renderer-header-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.renderer-header-title h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.renderer-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.renderer-badge-gl {
+    background-color: #2b6cb0;
+    color: #ffffff;
+}
+
+.renderer-badge-vk {
+    background-color: #a41e22;
+    color: #ffffff;
+}
+
+.renderer-quick-switch {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+
+.test-diff-entry {
+    margin-bottom: 28px;
+}
