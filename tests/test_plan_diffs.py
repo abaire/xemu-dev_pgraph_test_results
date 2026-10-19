@@ -4,6 +4,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 
 def test_plan_hw_diffs_empty(tmp_path: Path) -> None:
@@ -151,7 +152,7 @@ def test_plan_xemu_diffs_empty(tmp_path: Path) -> None:
 
 
 def test_plan_hw_diffs_filters_deprecated_tasks(tmp_path: Path) -> None:
-    from unittest.mock import MagicMock, patch
+    from unittest.mock import patch
 
     from xemu_pgraph_ci_tools.golden_config import GoldenConfig
 
@@ -196,7 +197,7 @@ def test_plan_hw_diffs_filters_deprecated_tasks(tmp_path: Path) -> None:
 
 
 def test_plan_xemu_diffs_filters_deprecated_tasks(tmp_path: Path) -> None:
-    from unittest.mock import MagicMock, patch
+    from unittest.mock import patch
 
     from xemu_pgraph_ci_tools.golden_config import GoldenConfig
 
@@ -250,3 +251,101 @@ def test_plan_xemu_diffs_filters_deprecated_tasks(tmp_path: Path) -> None:
     assert len(plan_data["tasks"]) == 1
     assert plan_data["tasks"][0]["suite"] == "Valid_suite"
     assert plan_data["tasks"][0]["test"] == "Valid_test"
+
+
+def test_plan_xemu_diffs_dual_renderers(tmp_path: Path) -> None:
+    scripts_dir = str(Path(__file__).parent.parent / ".github" / "scripts")
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+    import plan_xemu_diffs
+
+    results_dir = tmp_path / "results"
+    gl_res = (
+        results_dir
+        / "xemu-0.8.136-PR"
+        / "Linux_x86_64"
+        / "gl_Mesa_llvmpipe"
+        / "glsl_4.50"
+    )
+    (gl_res / "Blend_surface").mkdir(parents=True)
+    (gl_res / "results.json").write_text("{}", encoding="utf-8")
+    (gl_res / "machine_info.txt").write_text(
+        "GL_RENDERER: llvmpipe\nGL_VERSION: 4.5\n", encoding="utf-8"
+    )
+    (gl_res / "Blend_surface" / "test1.png").write_bytes(b"GL_RES")
+
+    vk_res = (
+        results_dir
+        / "xemu-0.8.136-PR"
+        / "Linux_x86_64"
+        / "vk_Mesa_llvmpipe"
+        / "glsl_4.50"
+    )
+    (vk_res / "Blend_surface").mkdir(parents=True)
+    (vk_res / "results.json").write_text("{}", encoding="utf-8")
+    (vk_res / "machine_info.txt").write_text(
+        "Selected physical device: llvmpipe\n- VK_KHR_surface\n", encoding="utf-8"
+    )
+    (vk_res / "Blend_surface" / "test1.png").write_bytes(b"VK_RES")
+
+    baseline_dir = tmp_path / "baseline"
+    gl_base = (
+        baseline_dir
+        / "xemu-0.8.136-master"
+        / "Linux_x86_64"
+        / "gl_Mesa_llvmpipe"
+        / "glsl_4.50"
+    )
+    (gl_base / "Blend_surface").mkdir(parents=True)
+    (gl_base / "results.json").write_text("{}", encoding="utf-8")
+    (gl_base / "machine_info.txt").write_text(
+        "GL_RENDERER: llvmpipe\nGL_VERSION: 4.5\n", encoding="utf-8"
+    )
+    (gl_base / "Blend_surface" / "test1.png").write_bytes(b"GL_BASE")
+
+    vk_base = (
+        baseline_dir
+        / "xemu-0.8.136-master"
+        / "Linux_x86_64"
+        / "vk_Mesa_llvmpipe"
+        / "glsl_4.50"
+    )
+    (vk_base / "Blend_surface").mkdir(parents=True)
+    (vk_base / "results.json").write_text("{}", encoding="utf-8")
+    (vk_base / "machine_info.txt").write_text(
+        "Selected physical device: llvmpipe\n- VK_KHR_surface\n", encoding="utf-8"
+    )
+    (vk_base / "Blend_surface" / "test1.png").write_bytes(b"VK_BASE")
+
+    output_dir = tmp_path / "compare-results"
+    output_dir.mkdir()
+    plan_file = tmp_path / "diff_tasks_xemu.json"
+
+    with patch(
+        "sys.argv",
+        [
+            "plan_xemu_diffs.py",
+            "--results-dir",
+            str(results_dir),
+            "--baseline-dir",
+            str(baseline_dir),
+            "--output-dir",
+            str(output_dir),
+            "--output-plan-file",
+            str(plan_file),
+            "--force",
+        ],
+    ):
+        ret = plan_xemu_diffs.main()
+        assert ret == 0
+
+    assert plan_file.exists()
+    plan_data = json.loads(plan_file.read_text(encoding="utf-8"))
+    tasks = plan_data["tasks"]
+    assert len(tasks) == 2
+
+    gl_task = next(t for t in tasks if "gl_Mesa_llvmpipe" in t["source_image"])
+    vk_task = next(t for t in tasks if "vk_Mesa_llvmpipe" in t["source_image"])
+
+    assert "gl_Mesa_llvmpipe" in gl_task["golden_image"]
+    assert "vk_Mesa_llvmpipe" in vk_task["golden_image"]

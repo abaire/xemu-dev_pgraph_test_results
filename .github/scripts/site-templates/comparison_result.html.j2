@@ -10,84 +10,117 @@
 
     {%- include "warning_header.html.j2" -%}
 
-    {% for xemu_release, suite_results in diffs_by_xemu_version | dictsort %}
+    {% if has_gl_diffs and has_vk_diffs %}
+    <div class="renderer-filter-bar">
+        <div class="renderer-filter-group">
+            <span class="renderer-filter-label">Renderer:</span>
+            <button type="button" class="renderer-filter-btn active" data-renderer-filter="both">Both (GL + VK)</button>
+            <button type="button" class="renderer-filter-btn" data-renderer-filter="gl">OpenGL ({{ gl_diff_count }})</button>
+            <button type="button" class="renderer-filter-btn" data-renderer-filter="vk">Vulkan ({{ vk_diff_count }})</button>
+        </div>
+    </div>
+    {% endif %}
 
-        <h2 id="{{ xemu_release }}">vs {{ xemu_release }}</h2>
+    {% for section in comparison_sections %}
 
-        {%- for suite_name, diff_links in suite_results | dictsort %}
+        <div class="renderer-section renderer-{{ section.renderer }}" data-renderer="{{ section.renderer }}">
 
-            <h3 id="{{ suite_name }}">🔗 {{ suite_name }}</h3>
+            <div class="renderer-sticky-header">
+                <div class="renderer-header-title">
+                    <span class="renderer-badge renderer-badge-{{ section.renderer }}">{{ section.renderer_label }}</span>
+                    <h2 id="{{ section.anchor_prefix }}{{ section.xemu_release }}">vs {{ section.xemu_release }}</h2>
+                </div>
+                {% if has_gl_diffs and has_vk_diffs %}
+                <div class="renderer-quick-switch" aria-label="Quick renderer switch">
+                    <button type="button" class="renderer-filter-btn active" data-renderer-filter="both">Both</button>
+                    <button type="button" class="renderer-filter-btn" data-renderer-filter="gl">GL ({{ gl_diff_count }})</button>
+                    <button type="button" class="renderer-filter-btn" data-renderer-filter="vk">VK ({{ vk_diff_count }})</button>
+                </div>
+                {% endif %}
+            </div>
 
-            {%- for result in diff_links | sort(attribute='test_name') %}
+            {%- for suite_name, diff_links in section.suites | dictsort %}
 
-                <h4 id="{{ result.test_name }}">🔗 {{ result.test_name }}</h4>
+                <div class="suite-block" data-suite="{{ suite_name }}">
+                    <h3 id="{{ section.anchor_prefix }}{{ suite_name }}">🔗 {{ suite_name }}</h3>
 
-                {%- if result.known_issues %}
-                    <div class="known-issues">
-                    <ul>
-                    {%- for issue in result.known_issues %}
-                        <li>
-                        <div class="known-issue">{{ issue }}</div>
-                        </li>
-                    {% endfor %}
-                    </ul>
-                    </div>
-                {% endif -%}
+                    {%- for result in diff_links | sort(attribute='test_name') %}
 
-                <div class="comparison-image-set">
+                        <div class="test-diff-entry" data-test-key="{{ result.test_key }}">
+                            <h4 id="{{ section.anchor_prefix }}{{ result.test_name }}">🔗 {{ result.test_name }}</h4>
 
-                    <div class="titled-image-container">
-                        <div class="image-title">vs Xemu</div>
-                        <img src="{{ result.xemu_diff_url }}"
-                             alt="Diff result for {{ suite_name }}::{{ result.test_name }} vs old xemu"
-                             class="inline-image">
-                    </div>
+                            {%- if result.known_issues %}
+                                <div class="known-issues">
+                                <ul>
+                                {%- for issue in result.known_issues %}
+                                    <li>
+                                    <div class="known-issue">{{ issue }}</div>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                                </div>
+                            {% endif -%}
 
-                    <div class="image-group">
-                        <div class="image-group-title-bar">
-                            <div class="image-title"
-                                 data-state="source"><a
-                                    href="{{ result.result_url }}">Source</a>
+                            <div class="comparison-image-set">
+
+                                <div class="titled-image-container">
+                                    <div class="image-title">vs Xemu</div>
+                                    <img src="{{ result.xemu_diff_url }}"
+                                         alt="Diff result for {{ suite_name }}::{{ result.test_name }} vs old xemu"
+                                         class="inline-image">
+                                </div>
+
+                                <div class="image-group">
+                                    <div class="image-group-title-bar">
+                                        <div class="image-title"
+                                             data-state="source"><a
+                                                href="{{ result.result_url }}">Source</a>
+                                        </div>
+                                        <div class="image-title"
+                                             data-state="golden-xemu"><a
+                                                href="{{ result.xemu_golden_url }}">xemu
+                                            Golden</a>
+                                        </div>
+                                        <div class="image-title"
+                                             data-state="golden-hw"><a
+                                                href="{{ result.hw_golden_url }}">Xbox
+                                            Golden</a>
+                                        </div>
+                                    </div>
+                                    <img src="{{ result.result_url }}"
+                                         alt="Source image for {{ suite_name }}::{{ result.test_name }}"
+                                         class="image-comparison"
+                                         data-state="source">
+                                    <img src="{{ result.xemu_golden_url }}"
+                                         alt="Golden image for {{ suite_name }}::{{ result.test_name }} in xemu"
+                                         class="image-comparison"
+                                         data-state="golden-xemu" style="display: none;">
+                                    <img src="{{ result.hw_golden_url }}"
+                                         alt="Golden image for {{ suite_name }}::{{ result.test_name }} on Xbox"
+                                         class="image-comparison"
+                                         data-state="golden-hw" style="display: none;">
+                                </div>
+
+                                {%- if result.hw_diff_url %}
+                                    <div class="titled-image-container">
+                                        <div class="image-title">vs Xbox</div>
+                                        <img src="{{ result.hw_diff_url }}"
+                                             alt="Diff result for {{ suite_name }}::{{ result.test_name }} vs Xbox"
+                                             class="inline-image">
+                                    </div>
+                                {%- endif %}
+
                             </div>
-                            <div class="image-title"
-                                 data-state="golden-xemu"><a
-                                    href="{{ result.xemu_golden_url }}">xemu
-                                Golden</a>
-                            </div>
-                            <div class="image-title"
-                                 data-state="golden-hw"><a
-                                    href="{{ result.hw_golden_url }}">Xbox
-                                Golden</a>
-                            </div>
+
                         </div>
-                        <img src="{{ result.result_url }}"
-                             alt="Source image for {{ suite_name }}::{{ result.test_name }}"
-                             class="image-comparison"
-                             data-state="source">
-                        <img src="{{ result.xemu_golden_url }}"
-                             alt="Golden image for {{ suite_name }}::{{ result.test_name }} in xemu"
-                             class="image-comparison"
-                             data-state="golden-xemu" style="display: none;">
-                        <img src="{{ result.hw_golden_url }}"
-                             alt="Golden image for {{ suite_name }}::{{ result.test_name }} on Xbox"
-                             class="image-comparison"
-                             data-state="golden-hw" style="display: none;">
-                    </div>
 
-                    {% if result.hw_diff_url -%}
-                        <div class="titled-image-container">
-                            <div class="image-title">vs Xbox</div>
-                            <img src="{{ result.hw_diff_url }}"
-                                 alt="Diff result for {{ suite_name }}::{{ result.test_name }} vs Xbox"
-                                 class="inline-image">
-                        </div>
-                    {% endif %}
+                    {%- endfor %}
 
                 </div>
 
-            {%- endfor %}
+            {% endfor -%}
 
-        {% endfor -%}
+        </div>
 
     {%- endfor %}
 

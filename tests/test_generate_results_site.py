@@ -415,3 +415,118 @@ def test_generate_site_suppresses_deprecated_xemu_diffs(
 
     # The unknown non-deprecated test SHOULD trigger a warning
     assert "unknown-diff.png" in caplog.text
+
+
+def test_generate_site_dual_renderers(tmp_path: Path) -> None:
+    output_dir = tmp_path / "site"
+    branch = "results_dual_pr"
+    hw_dir = output_dir / branch / "compare_hw"
+    xemu_dir = output_dir / branch / "compare_xemu"
+    hw_dir.mkdir(parents=True)
+    xemu_dir.mkdir(parents=True)
+
+    results_dir = tmp_path / "results"
+    gl_run = "xemu-0.8.136-PR/Linux_x86_64/gl_Mesa_llvmpipe/glsl_4.50"
+    vk_run = "xemu-0.8.136-PR/Linux_x86_64/vk_Mesa_llvmpipe/glsl_4.50"
+
+    # Create source images
+    gl_img_dir = results_dir / gl_run / "SuiteA"
+    gl_img_dir.mkdir(parents=True)
+    (gl_img_dir / "Test1.png").write_bytes(b"GL_TEST1")
+
+    vk_img_dir = results_dir / vk_run / "SuiteA"
+    vk_img_dir.mkdir(parents=True)
+    (vk_img_dir / "Test1.png").write_bytes(b"VK_TEST1_DIFFERENT")
+    (vk_img_dir / "Test2.png").write_bytes(b"VK_TEST2_ONLY")
+
+    # Create HW diffs
+    gl_hw_dir = hw_dir / gl_run / "Xbox--Xbox--DirectX--nv2a" / "SuiteA"
+    gl_hw_dir.mkdir(parents=True)
+    (gl_hw_dir / "Test1-diff.png").write_bytes(b"GL_HW_DIFF")
+
+    vk_hw_dir = hw_dir / vk_run / "Xbox--Xbox--DirectX--nv2a" / "SuiteA"
+    vk_hw_dir.mkdir(parents=True)
+    (vk_hw_dir / "Test1-diff.png").write_bytes(b"VK_HW_DIFF")
+    (vk_hw_dir / "Test2-diff.png").write_bytes(b"VK_HW_DIFF_2")
+
+    # Create Xemu diffs
+    gl_gold_dir = "xemu-0.8.136-master__Linux_x86_64__gl_Mesa_llvmpipe__glsl_4.50"
+    vk_gold_dir = "xemu-0.8.136-master__Linux_x86_64__vk_Mesa_llvmpipe__glsl_4.50"
+
+    gl_xemu_diff_dir = xemu_dir / gl_run / gl_gold_dir / "SuiteA"
+    gl_xemu_diff_dir.mkdir(parents=True)
+    (gl_xemu_diff_dir / "Test1-diff.png").write_bytes(b"GL_DIFF_BYTES")
+    (gl_xemu_diff_dir.parent / "summary.json").write_text(
+        json.dumps(
+            {
+                "golden_identifier": "xemu-0.8.136-master:Linux_x86_64:gl_Mesa_llvmpipe:glsl_4.50",
+                "result_identifier": f"{gl_run.replace('/', ':')}",
+            }
+        )
+    )
+
+    vk_xemu_diff_dir = xemu_dir / vk_run / vk_gold_dir / "SuiteA"
+    vk_xemu_diff_dir.mkdir(parents=True)
+    (vk_xemu_diff_dir / "Test1-diff.png").write_bytes(b"VK_DIFF_BYTES")
+    (vk_xemu_diff_dir / "Test2-diff.png").write_bytes(b"VK_DIFF_BYTES_2")
+    (vk_xemu_diff_dir.parent / "summary.json").write_text(
+        json.dumps(
+            {
+                "golden_identifier": "xemu-0.8.136-master:Linux_x86_64:vk_Mesa_llvmpipe:glsl_4.50",
+                "result_identifier": f"{vk_run.replace('/', ':')}",
+            }
+        )
+    )
+
+    templates_dir = (
+        Path(__file__).resolve().parent.parent
+        / ".github"
+        / "scripts"
+        / "site-templates"
+    )
+    jinja_env = Environment(loader=FileSystemLoader(str(templates_dir)))
+    jinja_env.globals["sidenav_width"] = 48
+    jinja_env.globals["sidenav_icon_width"] = 32
+
+    generator = generate_results_site.Generator(
+        results_dir=str(results_dir),
+        hw_golden_comparison=str(hw_dir),
+        xemu_golden_comparison=str(xemu_dir),
+        branch=branch,
+        results_base_url="https://example.com/results",
+        site_resources_base_url="https://example.com/site",
+        hw_golden_base_url="https://example.com/hw",
+        xemu_golden_base_url="https://example.com/xemu",
+        output_dir=str(output_dir),
+        jinja_env=jinja_env,
+        top_index_only=False,
+    )
+
+    res = generator.generate_site()
+    assert res == 0
+
+    page_content = (output_dir / branch / "index.html").read_text(encoding="utf-8")
+
+    # 1. Check filter bar and controls
+    assert 'class="renderer-filter-bar"' in page_content
+    assert 'data-renderer-filter="both"' in page_content
+    assert "OpenGL (1)" in page_content
+    assert "Vulkan (2)" in page_content
+
+    # 2. Check sections and GL-first ordering
+    gl_pos = page_content.find('class="renderer-section renderer-gl"')
+    vk_pos = page_content.find('class="renderer-section renderer-vk"')
+    assert gl_pos != -1
+    assert vk_pos != -1
+    assert gl_pos < vk_pos, "OpenGL section must appear before Vulkan section"
+
+    # 3. Check sticky headers and badges
+    assert 'class="renderer-sticky-header"' in page_content
+    assert 'class="renderer-badge renderer-badge-gl">OpenGL</span>' in page_content
+    assert 'class="renderer-badge renderer-badge-vk">Vulkan</span>' in page_content
+
+    # 4. Check Vulkan anchor prefix
+    assert 'id="vk-SuiteA"' in page_content
+    assert 'id="vk-Test1"' in page_content
+    assert 'id="SuiteA"' in page_content
+    assert 'id="Test1"' in page_content
