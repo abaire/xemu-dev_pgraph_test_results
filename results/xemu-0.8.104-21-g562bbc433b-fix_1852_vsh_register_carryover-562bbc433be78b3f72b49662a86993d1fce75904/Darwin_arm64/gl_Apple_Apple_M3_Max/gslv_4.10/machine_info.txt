@@ -1,0 +1,12 @@
+xemu_version: 0.8.104-21-g562bbc433b
+xemu_branch: fix_1852_vsh_register_carryover
+xemu_commit: 562bbc433be78b3f72b49662a86993d1fce75904
+xemu_date: Wed Oct 15 14:33:47 UTC 2025
+xemu_settings_get_base_path: base path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/
+xemu_settings_get_path: config path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/xemu.toml
+CPU: 
+OS_Version: Version 15.7.1 (Build 24G231)
+GL_VENDOR: Apple
+GL_RENDERER: Apple M3 Max
+GL_VERSION: 4.1 Metal - 89.4
+GL_SHADING_LANGUAGE_VERSION: 4.10
