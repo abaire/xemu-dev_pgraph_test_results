@@ -1,0 +1,12 @@
+xemu_version: 0.8.54-1-g154c54f691
+xemu_branch: fix_unbound_texture_alpha
+xemu_commit: 154c54f691a26ad1ded309282a2e38d4105f2d70
+xemu_date: Tue Apr 22 23:44:26 UTC 2025
+xemu_settings_get_base_path: base path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/
+xemu_settings_get_path: config path: /Users/abaire/development/xbox/pgraph_xemu_results/xemu-dev_pgraph/local/xemu/xemu.toml
+CPU: 
+OS_Version: Version 15.3.2 (Build 24D81)
+GL_VENDOR: Apple
+GL_RENDERER: Apple M3 Max
+GL_VERSION: 4.1 Metal - 89.3
+GL_SHADING_LANGUAGE_VERSION: 4.10
