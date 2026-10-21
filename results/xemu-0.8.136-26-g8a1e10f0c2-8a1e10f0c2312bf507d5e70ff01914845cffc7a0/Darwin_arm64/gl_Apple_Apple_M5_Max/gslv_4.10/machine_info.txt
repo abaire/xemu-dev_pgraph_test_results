@@ -1,0 +1,10 @@
+xemu_version: 0.8.136-26-g8a1e10f0c2
+xemu_commit: 8a1e10f0c2312bf507d5e70ff01914845cffc7a0
+xemu_date: Thu Aug 20 00:38:01 UTC 2026
+xemu_settings_set_path: config path: /var/folders/z9/z9hjjrbs36741slg5blhthkr0000gn/T/tmpel5fq9en/shard_0/inputs/xemu.toml
+CPU: 
+OS_Version: Version 26.3.1 (Build 25D2128)
+GL_VENDOR: Apple
+GL_RENDERER: Apple M5 Max
+GL_VERSION: 4.1 Metal - 90.5
+GL_SHADING_LANGUAGE_VERSION: 4.10
