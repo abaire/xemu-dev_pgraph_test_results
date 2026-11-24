@@ -464,6 +464,11 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: 'site'
+          # Unique per attempt so re-runs don't collide with artifacts left by
+          # earlier attempts (deploy-pages fails if it finds more than one).
+          name: github-pages-${{ github.run_attempt }}
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
